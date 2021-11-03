@@ -1,5 +1,5 @@
 let express = require('express');
-
+const what = "mistake";
 let app = express();
 
 let fav = require('serve-favicon');
