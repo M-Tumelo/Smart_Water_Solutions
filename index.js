@@ -8,7 +8,6 @@ var moment = require('moment');
 
 const exphbs = require('express-handlebars');
 
-const pizza_cart = require('./userCart');
 const bodyParser = require('body-parser');
 
 //import sqlite modules
