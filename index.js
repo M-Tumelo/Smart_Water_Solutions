@@ -45,10 +45,15 @@ open({
   await db.migrate();
 
   // only setup the routes once the database connection has been established
-  app.get('', (req, res) => {
+  app.get('/user', (req, res) => {
     res.render('image');
   });
-  app.post('', (req, res) => {
+
+app.get('/', (req, res)=>{
+  res.render('home');
+})
+
+  app.post('/user', (req, res) => {
     let sampleFile;
     let uploadPath;
   
@@ -57,6 +62,7 @@ open({
     }
     sampleFile = req.files.sampleFile;
     console.log(sampleFile);
+  });
 
   app.post('/login', async (req, res) => {
     req.session.email = req.body.email;
@@ -103,10 +109,8 @@ open({
 
 });
 
-
 let PORT = process.env.PORT || 3001;
 
 app.listen(PORT, function () {
   console.log('App starting on port', PORT);
-});
 });
