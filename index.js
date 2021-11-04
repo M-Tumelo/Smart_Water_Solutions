@@ -53,6 +53,14 @@ app.get('/', (req, res)=>{
   res.render('home');
 })
 
+app.get('/register', (req, res)=>{
+  res.render('home');
+})
+
+app.get('/login', (req, res)=>{
+  res.render('home');
+})
+
   app.post('/user', (req, res) => {
     let sampleFile;
     let uploadPath;
@@ -67,20 +75,21 @@ app.get('/', (req, res)=>{
   app.post('/login', async (req, res) => {
     req.session.email = req.body.email;
     req.session.psw = req.body.psw;
-    let sql = await db.get('Select Email email, Password psw from signup where Email = ?', req.session.email);
+    let sql = await db.get('Select * from signup where Email = ?', req.session.email);
     console.log(sql)
     if (sql == null) {
       console.log('Incorrect Email or password');
       res.redirect('/');
     }
-    if (sql.psw !== req.session.psw) {
+    if (sql.password !== req.session.psw) {
       console.log('Incorrect Email or password')
       res.redirect('/')
     }
     else {
-      res.redirect('/')
+      if(sql.type_of_user == 'user') res.redirect('/user');
+      else res.redirect('/technician');
     }
-
+console.log(sql.type_user)
   });
   app.post('/register', async (req, res) => {
     const { name, email, psw, psw1, user_type } = req.body;
@@ -90,7 +99,7 @@ app.get('/', (req, res)=>{
     req.session.psw = psw;
     req.session.psw1 = psw1;
     req.session.user_type = user_type;
-    let sql = await db.get('Select Email email, Password psw from signup where Email = ?', req.session.email);
+    let sql = await db.get('Select * from signup where Email = ?', req.session.email);
     if (sql == null) {
       if (req.session.psw == psw1) {
         const insert_details = 'insert into signup (name, email, password, type_of_user) values (?, ?, ?, ?)';
