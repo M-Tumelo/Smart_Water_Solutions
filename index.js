@@ -1,4 +1,5 @@
 let express = require('express');
+const fileupload = require('express-fileupload');
 
 let app = express();
 
@@ -22,11 +23,13 @@ const session = require('express-session');
 const { compile } = require('handlebars');
 
 //Set-up middleware
+
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true
 }))
+
 //app.use(fav(path.join(__dirname, 'public', 'img/favicon.ico')))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -42,10 +45,18 @@ open({
   await db.migrate();
 
   // only setup the routes once the database connection has been established
-  app.get('/', (req, res) => {
-
-    res.render('home');
+  app.get('', (req, res) => {
+    res.render('image');
   });
+  app.post('', (req, res) => {
+    let sampleFile;
+    let uploadPath;
+  
+    if (!req.files || Object.keys(req.files).length === 0) {
+      return res.status(400).send('No files were uploaded.');
+    }
+    sampleFile = req.files.sampleFile;
+    console.log(sampleFile);
 
   app.post('/login', async (req, res) => {
     req.session.email = req.body.email;
@@ -97,4 +108,5 @@ let PORT = process.env.PORT || 3001;
 
 app.listen(PORT, function () {
   console.log('App starting on port', PORT);
+});
 });
