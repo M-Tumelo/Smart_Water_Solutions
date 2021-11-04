@@ -1,11 +1,6 @@
 let express = require('express');
 const fileupload = require('express-fileupload');
-// <<<<<<< HEAD
-//Regionald
 
-// =======
-// const what = "mistake";
-// >>>>>>> f74d3e48b0f7b527a2017b79ddef35a7ddbbd23e
 let app = express();
 
 let fav = require('serve-favicon');
