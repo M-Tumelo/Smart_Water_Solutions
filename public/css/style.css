@@ -316,3 +316,13 @@ color: black;
   margin-top: 10em;
   }
 
+  #tabs input[type="radio"] {
+    display:inline-flex;
+    margin: auto;
+  }
+
+  #tabs{
+    display: inline-flex;
+  }
+
+ 
