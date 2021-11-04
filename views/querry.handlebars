@@ -1,0 +1,70 @@
+<body>
+
+    <div class="container headcenter">
+
+        <div class="row">
+            <div class="col-12 headcenter">
+                <h1><b><i>Perfect Pizza Cart</i></b></h1>
+            </div>
+        </div>
+
+        <div>
+            <p>Click the button to get your coordinates.</p>
+
+            <button onclick="getLocation()">Try It</button>
+
+            <p id="demo"></p>
+
+            <script>
+                var x = document.getElementById("demo");
+                function getLocation() {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.watchPosition(showPosition);
+                    } else {
+                        x.innerHTML = "Geolocation is not supported by this browser.";
+                    }
+                }
+                function showPosition(position) {
+                    x.innerHTML = "Latitude: " + position.coords.latitude +
+                        "<br>Longitude: " + position.coords.longitude;
+                }
+            </script>
+
+            <table class="center">
+
+                <h1>querries</h1>
+                <tr>
+                    <th>orderId</th>
+                    <th>smallQty</th>
+                    <th>mediumQty</th>
+                    <th>largeQty</th>
+                    <th>status</th>
+                    <th>Total</th>
+                </tr>
+                {{#each orders}}
+
+                <tr>
+
+                    <td>{{id}}</td>
+                    <td>{{smallQty}}</td>
+                    <td>{{mediumQty}}</td>
+                    <td>{{largeQty}}</td>
+                    <td>{{status}}</td>
+                    <td>R{{total}}</td>
+                    <td>
+                        <form action="/pay/{{id}}" method="post">
+                            <input type="number" step="0.01" name="amount" required>
+                            <input type="submit" name="pay" value="pay">
+                        </form>
+                    </td>
+
+                </tr>
+                {{/each}}
+
+            </table>
+
+        </div>
+
+
+    </div>
+</body>
