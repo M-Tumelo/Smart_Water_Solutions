@@ -1,5 +1,7 @@
 let express = require('express');
-const fileupload = require('express-fileupload');
+const fileUpload = require('express-fileupload');
+
+
 
 let app = express();
 
@@ -28,20 +30,22 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static('public'));
 
-// open({
-//   filename: './data.db',
-//   driver: sqlite3.Database
-// }).then(async function (db) {
+app.use(fileUpload());
+
+ open({
+   filename: './data.db',
+  driver: sqlite3.Database
+}).then(async function (db) {
 
   // run migrations
 
-  // await db.migrate();
+   await db.migrate();
 
   // only setup the routes once the database connection has been established
   app.get('', (req, res) => {
     res.render('image');
   });
-  app.post('', (req, res) => {
+  app.post('/user', (req, res) => {
     let sampleFile;
     let uploadPath;
   
@@ -49,11 +53,19 @@ app.use(express.static('public'));
       return res.status(400).send('No files were uploaded.');
     }
     sampleFile = req.files.sampleFile;
-    console.log(sampleFile);
+    uploadPath = __dirname + '/upload/' + sampleFile.name;
+    //console.log(sampleFile);
+
+sampleFile.mv(uploadPath, function (err) {
+if(err) return res.status(500).send(err);
+res.send('File uploaded');
+});
+
+
 
   });
 
-// });
+ });
 
 
 let PORT = process.env.PORT || 3001;
