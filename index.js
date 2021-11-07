@@ -49,9 +49,9 @@ open({
     res.render('image');
   });
 
-app.get('/', (req, res)=>{
+app.get('/', (req, res) => {
   res.render('home');
-})
+});
 
   app.post('/user', (req, res) => {
     let sampleFile;
@@ -80,8 +80,9 @@ app.get('/', (req, res)=>{
     else {
       res.redirect('/')
     }
-
   });
+
+
   app.post('/register', async (req, res) => {
     const { name, email, psw, psw1, user_type } = req.body;
 
