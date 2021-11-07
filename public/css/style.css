@@ -342,3 +342,13 @@ color: black;
   margin-top: 6em;
   }
 
+  #tabs input[type="radio"] {
+    display:inline-flex;
+    margin: auto;
+  }
+
+  #tabs{
+    display: inline-flex;
+  }
+
+ 
