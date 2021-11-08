@@ -1,7 +1,5 @@
 let express = require('express');
-const fileUpload = require('express-fileupload');
-
-
+const fileupload = require('express-fileupload');
 
 let app = express();
 
@@ -17,6 +15,8 @@ const path = require('path');
 //import sqlite modules
 const sqlite3 = require('sqlite3');
 const { open } = require('sqlite');
+var cors = require('cors');
+app.use(cors());
 
 //Configure the express-handlebars module
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
@@ -37,16 +37,14 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static('public'));
 
-app.use(fileUpload());
-
- open({
-   filename: './data.db',
+open({
+  filename: './data.db',
   driver: sqlite3.Database
 }).then(async function (db) {
 
   // run migrations
 
-   await db.migrate();
+  await db.migrate();
 
   // only setup the routes once the database connection has been established
   app.get('', (req, res) => {
@@ -54,26 +52,64 @@ app.use(fileUpload());
   });
 
   // list of querries 
+  app.get('/data', (req, res) => {
+    const geojson = {
+      type: 'FeatureCollection',
+      features: [
+        {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [28.2292712, -25.7478676]
+          },
+          properties: {
+            title: 'Mapbox',
+            description: 'Home'
+          }
+        },
+        {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [28.229271, -28.7478676]
+          },
+          properties: {
+            title: 'Mapbox',
+            description: 'this Is so Funny'
+          }
+        },
+        {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [28.229271, -26.7478676]
+          },
+          properties: {
+            title: 'Mapbox',
+            description: 'point number 3'
+          },
+        },
+        {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [29.229271, -26.7478676]
+          },
+          properties: {
+            title: 'Mapbox',
+            description: 'point number 4'
+          },
+        }
+      ]
+    };
+    res.json(geojson);
+  })
   app.get('/admin', (req, res) => {
 
-    var orders=[{lat: 'hhh',
-    long: 'dd',
-    name: 'pretoria'},
-    {lat: 'hhh',
-    long: 'dd',
-    name: 'joburg'},{lat: 'hhh',
-    long: 'dd',
-    name: 'bush'}
-    
-  ];
-
-    res.render('querry', {orders:orders});
+    res.render('querry');
   });
 
   app.post('', (req, res) => {
-
-  app.post('/user', (req, res) => {
-
     let sampleFile;
     let uploadPath;
 
@@ -81,15 +117,7 @@ app.use(fileUpload());
       return res.status(400).send('No files were uploaded.');
     }
     sampleFile = req.files.sampleFile;
-    uploadPath = __dirname + '/upload/' + sampleFile.name;
-    //console.log(sampleFile);
-
-sampleFile.mv(uploadPath, function (err) {
-if(err) return res.status(500).send(err);
-res.send('File uploaded');
-});
-
-
+    console.log(sampleFile);
 
     app.post('/login', async (req, res) => {
       req.session.email = req.body.email;
@@ -134,10 +162,7 @@ res.send('File uploaded');
       }
     });
 
-
-  })
- });
-
+  });
 
 
   let PORT = process.env.PORT || 3001;
