@@ -36,8 +36,6 @@ app.use(session({
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static('public'));
-
-
 app.use(fileUpload());
 
  open({
@@ -56,12 +54,7 @@ app.use(fileUpload());
     res.render('image');
   });
 
-<<<<<<< HEAD
 app.get('/', (req, res) => {
-=======
-
-app.get('/', (req, res)=>{
->>>>>>> 419b070b1fa904cb50dfa401d14368bb02c8962e
   res.render('home');
 });
 
@@ -99,8 +92,14 @@ app.get('/login', (req, res)=>{
       return res.status(400).send('No files were uploaded.');
     }
     sampleFile = req.files.sampleFile;
+    uploadPath = __dirname + '/upload/' + sampleFile.name;
+    //console.log(sampleFile);
 
-    console.log(sampleFile);
+    sampleFile.mv(uploadPath, function (err) {
+      if(err) return res.status(500).send(err);
+      res.send('File uploaded');
+      });
+      
   });
 
   app.post('/login', async (req, res) => {
@@ -120,7 +119,6 @@ app.get('/login', (req, res)=>{
       if(sql.type_of_user == 'user') res.redirect('/user');
       else res.redirect('/technician');
     }
-<<<<<<< HEAD
   });
 
 
@@ -137,28 +135,6 @@ app.get('/login', (req, res)=>{
       if (req.session.psw == psw1) {
         const insert_details = 'insert into signup (name, email, password, type_of_user) values (?, ?, ?, ?)';
         await db.run(insert_details, req.session.name, req.session.email, req.session.psw, req.session.user_type);
-=======
-console.log(sql.type_user)
-  });
- 
-    uploadPath = __dirname + '/upload/' + sampleFile.name;
-    //console.log(sampleFile);
-
-sampleFile.mv(uploadPath, function (err) {
-if(err) return res.status(500).send(err);
-res.send('File uploaded');
-});
-
-
-
-    app.post('/login', async (req, res) => {
-      req.session.email = req.body.email;
-      req.session.psw = req.body.psw;
-      let sql = await db.get('Select Email email, Password psw from signup where Email = ?', req.session.email);
-      console.log(sql)
-      if (sql == null) {
-        console.log('Incorrect Email or password');
->>>>>>> 419b070b1fa904cb50dfa401d14368bb02c8962e
         res.redirect('/');
       }
       if (sql.psw !== req.session.psw) {
@@ -168,7 +144,7 @@ res.send('File uploaded');
       else {
         res.redirect('/')
       }
-
+    }
     });
     app.post('/register', async (req, res) => {
       const { name, email, psw, psw1, user_type } = req.body;
