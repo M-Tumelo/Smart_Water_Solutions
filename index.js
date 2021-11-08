@@ -4,6 +4,7 @@ const fileupload = require('express-fileupload');
 let app = express();
 
 let fav = require('serve-favicon');
+const data1 = require('./data.js');
 
 var moment = require('moment');
 
@@ -15,6 +16,8 @@ const path = require('path');
 //import sqlite modules
 const sqlite3 = require('sqlite3');
 const { open } = require('sqlite');
+var cors = require('cors');
+app.use(cors());
 
 //Configure the express-handlebars module
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
@@ -48,21 +51,63 @@ open({
   app.get('', (req, res) => {
     res.render('image');
   });
+
   // list of querries 
+  app.get('/data', (req, res) => {
+    const geojson = {
+      type: 'FeatureCollection',
+      features: [
+        {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [28.2292712, -25.7478676]
+          },
+          properties: {
+            title: 'Mapbox',
+            description: 'Home'
+          }
+        },
+        {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [28.229271, -28.7478676]
+          },
+          properties: {
+            title: 'Mapbox',
+            description: 'this Is so Funny'
+          }
+        },
+        {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [28.229271, -26.7478676]
+          },
+          properties: {
+            title: 'Mapbox',
+            description: 'point number 3'
+          },
+        },
+        {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [29.229271, -26.7478676]
+          },
+          properties: {
+            title: 'Mapbox',
+            description: 'point number 4'
+          },
+        }
+      ]
+    };
+    res.json(geojson);
+  })
   app.get('/admin', (req, res) => {
 
-    var orders=[{lat: 'hhh',
-    long: 'dd',
-    name: 'pretoria'},
-    {lat: 'hhh',
-    long: 'dd',
-    name: 'joburg'},{lat: 'hhh',
-    long: 'dd',
-    name: 'bush'}
-    
-  ];
-
-    res.render('querry', {orders:orders});
+    res.render('querry');
   });
 
   app.post('', (req, res) => {
