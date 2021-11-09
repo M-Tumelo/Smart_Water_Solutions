@@ -7,3 +7,36 @@
   <input type="submit" class="btn btn-primary">
 </form>
 </div>
+
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>Allow Smart Water Solutions to get your coordinates.</p>
+
+<button onclick="getLocation()">Add location</button>
+
+<p id="demo"></p>
+
+<script>
+var x = document.getElementById("demo");
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else { 
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+function showPosition(position) {
+  x.innerHTML = "Latitude: " + position.coords.latitude + 
+  "<br>Longitude: " + position.coords.longitude;
+}
+</script>
+
+</body>
+</html>
+
+
