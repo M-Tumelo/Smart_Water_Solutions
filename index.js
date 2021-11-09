@@ -21,6 +21,7 @@ const { open } = require('sqlite');
 //Configure the express-handlebars module
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
+
 const session = require('express-session');
 const { compile } = require('handlebars');
 
@@ -37,7 +38,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static('public'));
 app.use(fileUpload());
-
+app.use(express.json({limit: '5mb' }));
  open({
    filename: './data.db',
   driver: sqlite3.Database
@@ -100,6 +101,16 @@ app.get('/login', (req, res)=>{
       res.send('File uploaded');
       });
       
+  });
+
+  app.post('/fetch', (req, res) => {
+    console.log(req.body);
+    const data = req.body;
+    res.json({
+      status: 'Success',
+      latitude: data.latitude,
+      longitude: data.longitude
+    });
   });
 
   app.post('/login', async (req, res) => {
