@@ -101,17 +101,18 @@ app.get('/login', (req, res)=>{
       res.send('File uploaded');
       });
       
+      
   });
 
-  app.post('/fetch', (req, res) => {
-    console.log(req.body);
-    const data = req.body;
-    res.json({
-      status: 'Success',
-      latitude: data.latitude,
-      longitude: data.longitude
-    });
-  });
+  // app.post('/fetch', (req, res) => {
+  //   console.log(req.body);
+  //   const position = req.body;
+  //   res.json({
+  //     status: 'Success',
+  //     latitude: position.latitude,
+  //     longitude: position.longitude
+  //   });
+  // });
 
   app.post('/login', async (req, res) => {
     req.session.email = req.body.email;
