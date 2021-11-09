@@ -351,4 +351,53 @@ color: black;
     display: inline-flex;
   }
 
- 
+  #carta{
+    margin: 0 auto;
+    padding: 25px;
+    font-size: 22px;
+    border-radius: 25px;
+    background-color: white;
+    box-shadow: 5px 5px 40px black;
+    text-align: center;
+    width: 400px;
+    
+  }
+  
+  /* img{
+    border-radius: 25px;
+    box-shadow: 5px 5px 4px gray;
+    transition: 1s;
+  }
+  
+  img:hover{
+    filter: invert(100%);
+  }
+  p{
+    text-align: justify;
+  }
+  
+  .boton{
+    text-decoration: none; 
+    margin: 20px;
+    padding: 2px 20px;
+    border-radius: 20px;
+    border: solid tomato 2px;
+    color: black;
+    box-shadow: 2px 2px 2px gray;
+    display: block;
+    transition: .5s;
+  }
+  
+  .boton:hover{
+    background-color: tomato;
+  }
+  
+  #cerrar{
+    text-decoration: none;
+    color: red;
+    border: solid red 1px;
+    padding: 5px;
+    border-radius: 8px;
+  }
+   */
+  

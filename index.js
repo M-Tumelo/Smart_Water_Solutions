@@ -36,9 +36,16 @@ app.use(session({
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static('public'));
+<<<<<<< HEAD
 
 open({
   filename: './data.db',
+=======
+app.use(fileUpload());
+
+ open({
+   filename: './data.db',
+>>>>>>> 54077174757f1e8e5bd3915873dfe1f77b0e8efd
   driver: sqlite3.Database
 }).then(async function (db) {
 
@@ -51,6 +58,21 @@ open({
     res.render('image');
   });
 
+<<<<<<< HEAD
+=======
+app.get('/', (req, res) => {
+  res.render('home');
+});
+
+app.get('/register', (req, res)=>{
+  res.render('home');
+})
+
+app.get('/login', (req, res)=>{
+  res.render('home');
+})
+
+>>>>>>> 54077174757f1e8e5bd3915873dfe1f77b0e8efd
   // list of querries 
   app.get('/data', (req, res) => {
     const geojson = {
@@ -117,6 +139,7 @@ open({
       return res.status(400).send('No files were uploaded.');
     }
     sampleFile = req.files.sampleFile;
+<<<<<<< HEAD
     console.log(sampleFile);
 
     app.post('/login', async (req, res) => {
@@ -137,6 +160,37 @@ open({
       }
 
     });
+=======
+    uploadPath = __dirname + '/upload/' + sampleFile.name;
+    //console.log(sampleFile);
+
+    sampleFile.mv(uploadPath, function (err) {
+      if(err) return res.status(500).send(err);
+      res.send('File uploaded');
+      });
+      
+  });
+
+  app.post('/login', async (req, res) => {
+    req.session.email = req.body.email;
+    req.session.psw = req.body.psw;
+    let sql = await db.get('Select * from signup where Email = ?', req.session.email);
+    console.log(sql)
+    if (sql == null) {
+      console.log('Incorrect Email or password');
+      res.redirect('/');
+    }
+    if (sql.password !== req.session.psw) {
+      console.log('Incorrect Email or password')
+      res.redirect('/')
+    }
+    else {
+      if(sql.type_of_user == 'user') res.redirect('/user');
+      else res.redirect('/technician');
+    }
+  });
+
+>>>>>>> 54077174757f1e8e5bd3915873dfe1f77b0e8efd
     app.post('/register', async (req, res) => {
       const { name, email, psw, psw1, user_type } = req.body;
 
