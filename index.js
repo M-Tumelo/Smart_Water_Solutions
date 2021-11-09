@@ -119,16 +119,6 @@ app.get('/login', (req, res)=>{
 console.log(sql.type_user)
   });
  
-    uploadPath = __dirname + '/upload/' + sampleFile.name;
-    //console.log(sampleFile);
-
-sampleFile.mv(uploadPath, function (err) {
-if(err) return res.status(500).send(err);
-res.send('File uploaded');
-});
-
-
-
     app.post('/login', async (req, res) => {
       req.session.email = req.body.email;
       req.session.psw = req.body.psw;
