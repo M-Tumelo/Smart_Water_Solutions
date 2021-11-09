@@ -8,8 +8,14 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.css' rel='stylesheet' />
+    <link rel="stylesheet"
+        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.css"
+        type="text/css" />
+    <script
+        src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js"></script>
+
     <style>
-        body {
+        <style>body {
             margin: 0;
             padding: 0;
         }
@@ -18,7 +24,7 @@
             position: absolute;
             top: 0;
             bottom: 0;
-            height: 500px;
+            height: 100%;
             width: 100%;
         }
 
@@ -47,7 +53,6 @@
     <div style="display: block;">
         <input type="text" name="" id="data" value="NAME 2">
     </div>
-    <p>{{{geojson.type}}}</p>
 
     <div id='map'></div>
 
@@ -61,42 +66,65 @@
             center: [28.034088, -26.195246],
             zoom: 15
         });
+        navigator.geolocation.getCurrentPosition((position) => {
+            console.log(position.coords.longitude, position.coords.latitude);
+        });
+
+        map.addControl(
+            new MapboxDirections({
+                accessToken: mapboxgl.accessToken
+            }),
+            'top-left'
+        );
+        map.addControl(
+            new mapboxgl.GeolocateControl({
+                positionOptions: {
+                    enableHighAccuracy: true
+                },
+                // When active the map will receive updates to the device's location as it changes.
+                trackUserLocation: true,
+                // Draw an arrow next to the location dot to indicate which direction the device is heading.
+                showUserHeading: true
+            })
+        );
+
+
         async function getQueries() {
 
-            let url='/data';
+            let url = '/data';
             try {
-                
-               let res= await fetch(url); 
-               const data=await res.json();
 
-               const geojson = data;
+                let res = await fetch(url);
+                const data = await res.json();
 
-        // add markers to map
-        for (const feature of geojson.features) {
-            // create a HTML element for each feature
-            const el = document.createElement('div');
-            el.className = 'marker';
+                const geojson = data;
 
-            // make a marker for each feature and add to the map
-            new mapboxgl.Marker(el)
-                .setLngLat(feature.geometry.coordinates)
-                .setPopup(
-                    new mapboxgl.Popup({ offset: 25 }) // add popups
-                        .setHTML(
-                            `<h3>${feature.properties.title}</h3><p>${feature.properties.description}</p>`
+                // add markers to map
+                for (const feature of geojson.features) {
+                    // create a HTML element for each feature
+                    const el = document.createElement('div');
+                    el.className = 'marker';
+
+                    // make a marker for each feature and add to the map
+                    new mapboxgl.Marker(el)
+                        .setLngLat(feature.geometry.coordinates)
+                        .setPopup(
+                            new mapboxgl.Popup({ offset: 25 }) // add popups
+                                .setHTML(
+                                    `<h3>${feature.properties.title}</h3><p>${feature.properties.description}</p>`
+                                )
                         )
-                )
-                .addTo(map);
-        }
+                        .addTo(map);
+                }
 
 
             }
-            catch(error){
+            catch (error) {
                 console.log(error)
-            }    
+            }
         };
-    
-    getQueries();
+
+        getQueries();
 
     </script>
 
