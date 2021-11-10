@@ -48,13 +48,12 @@ open({
   await db.migrate();
 
   // only setup the routes once the database connection has been established
-  app.get('', (req, res) => {
-    res.render('image');
-  });
-
-
 app.get('/', (req, res) => {
   res.render('home');
+});
+
+app.get('', (req, res) => {
+  res.render('image');
 });
 
 app.get('/register', (req, res)=>{
@@ -124,15 +123,43 @@ app.get('/login', (req, res)=>{
     res.render('querry');
   });
 
-  app.post('', (req, res) => {
-    let sampleFile;
-    let uploadPath;
+  // app.post('', (req, res) => {
+  //   let sampleFile;
+  //   let uploadPath;
 
-    if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).send('No files were uploaded.');
-    }
-    sampleFile = req.files.sampleFile;
-    console.log(sampleFile);
+  //   if (!req.files || Object.keys(req.files).length === 0) {
+  //     return res.status(400).send('No files were uploaded.');
+  //   }
+  //   sampleFile = req.files.sampleFile;
+  //   console.log(sampleFile);
+
+// upload image files to server
+app.post("/user", function(request, response) {
+  var images = new Array();
+  if(request.files) {
+      var arr;
+      if(Array.isArray(request.files.filesfld)) {
+          arr = request.files.filesfld;
+      }
+      else {
+          arr = new Array(1);
+          arr[0] = request.files.filesfld;
+      }
+      for(var i = 0; i < arr.length; i++) {
+          var file = arr[i];
+          if(file.mimetype.substring(0,5).toLowerCase() == "image") {
+              images[i] = "/" + file.name;
+              file.mv("./upload" + images[i], function (err) {
+                  if(err) {
+                      console.log(err);
+                  }
+              });
+          }
+      }
+  }
+  // give the server a second to write the files
+  setTimeout(function(){response.json(images);}, 1000);
+});
 
     app.post('/login', async (req, res) => {
       req.session.email = req.body.email;
@@ -185,4 +212,4 @@ app.get('/login', (req, res)=>{
   app.listen(PORT, function () {
     console.log('App starting on port', PORT);
   });
-});
+// });

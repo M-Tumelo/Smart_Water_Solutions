@@ -158,13 +158,14 @@ a, a:hover {
   margin-bottom: 15px;
 }
 
-.icon {
+.tabs .icon {
   padding: 10px;
   background: #00c6fb;
   color: white;
   min-width: 50px;
   text-align: center;
 }
+
 
 .input-field {
   width: 100%;
@@ -363,41 +364,47 @@ color: black;
     
   }
   
-  /* img{
-    border-radius: 25px;
-    box-shadow: 5px 5px 4px gray;
-    transition: 1s;
-  }
-  
-  img:hover{
-    filter: invert(100%);
-  }
-  p{
-    text-align: justify;
-  }
-  
-  .boton{
-    text-decoration: none; 
-    margin: 20px;
-    padding: 2px 20px;
-    border-radius: 20px;
-    border: solid tomato 2px;
-    color: black;
-    box-shadow: 2px 2px 2px gray;
-    display: block;
-    transition: .5s;
-  }
-  
-  .boton:hover{
-    background-color: tomato;
-  }
-  
-  #cerrar{
-    text-decoration: none;
-    color: red;
-    border: solid red 1px;
-    padding: 5px;
-    border-radius: 8px;
-  }
-   */
-  
+        #fileslbl {
+            max-width: 700px;
+            height: 500px;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-family: "Quicksand", sans-serif;
+            font-weight: 500;
+            font-size: 20px;
+            cursor: pointer;
+            color: #cccccc;
+            border: 4px dashed #009578;
+            border-radius: 10px;
+        }
+
+        #filesfld {
+            display: none;
+        }
+
+        #progress {
+            width: 0;
+            background-color: blue;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            line-height: 25px;
+            padding: 0 5px;
+        }
+
+        @keyframes dropbox {
+            0% {
+                background-image: repeating-linear-gradient(30deg, green 1%, green 3%, darkgreen 5%, darkgreen 5%);
+            }
+
+            50% {
+                background-image: repeating-linear-gradient(30deg, darkgreen 1%, darkgreen 3%, green 5%, green 5%);
+            }
+
+            100% {
+                background-image: repeating-linear-gradient(30deg, green 1%, green 3%, darkgreen 5%, darkgreen 5%);
+            }
+        }
