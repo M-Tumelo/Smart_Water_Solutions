@@ -17,10 +17,12 @@ const sqlite3 = require('sqlite3');
 const { open } = require('sqlite');
 var cors = require('cors');
 app.use(cors());
+let PORT = process.env.PORT || 3001;
 
 //Configure the express-handlebars module
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
+
 const session = require('express-session');
 const { compile } = require('handlebars');
 
@@ -38,8 +40,8 @@ app.use(bodyParser.json())
 app.use(express.static('public'));
 app.use(fileUpload());
 
- open({
-   filename: './data.db',
+open({
+  filename: './data.db',
   driver: sqlite3.Database
 }).then(async function (db) {
 
@@ -52,18 +54,17 @@ app.use(fileUpload());
     res.render('image');
   });
 
-app.get('/', (req, res) => {
-  res.render('home');
-});
+  app.get('/', (req, res) => {
+    res.render('home');
+  });
 
-app.get('/register', (req, res)=>{
-  res.render('home');
-})
+  app.get('/register', (req, res) => {
+    res.render('home');
+  });
 
-app.get('/login', (req, res)=>{
-  res.render('home');
-})
-
+  app.get('/login', (req, res) => {
+    res.render('home');
+  });
 
   // list of querries 
   app.get('/data', (req, res) => {
@@ -117,13 +118,14 @@ app.get('/login', (req, res)=>{
       ]
     };
     res.json(geojson);
-  })
+  });
+
   app.get('/admin', (req, res) => {
 
     res.render('querry');
   });
 
-  app.post('', (req, res) => {
+ app.post('', (req, res) => {
     let sampleFile;
     let uploadPath;
 
@@ -131,35 +133,26 @@ app.get('/login', (req, res)=>{
       return res.status(400).send('No files were uploaded.');
     }
     sampleFile = req.files.sampleFile;
-    uploadPath = __dirname + '/upload/' + sampleFile.name;
-    //console.log(sampleFile);
+    console.log(sampleFile);
 
-    sampleFile.mv(uploadPath, function (err) {
-      if(err) return res.status(500).send(err);
-      res.send('File uploaded');
-      });
-      
-  });
+    app.post('/login', async (req, res) => {
+      req.session.email = req.body.email;
+      req.session.psw = req.body.psw;
+      let sql = await db.get('Select Email email, Password psw from signup where Email = ?', req.session.email);
+      console.log(sql)
+      if (sql == null) {
+        console.log('Incorrect Email or password');
+        res.redirect('/');
+      }
+      if (sql.psw !== req.session.psw) {
+        console.log('Incorrect Email or password')
+        res.redirect('/')
+      }
+      else {
+        res.redirect('/')
+      }
 
-  app.post('/login', async (req, res) => {
-    req.session.email = req.body.email;
-    req.session.psw = req.body.psw;
-    let sql = await db.get('Select * from signup where Email = ?', req.session.email);
-    console.log(sql)
-    if (sql == null) {
-      console.log('Incorrect Email or password');
-      res.redirect('/');
-    }
-    if (sql.password !== req.session.psw) {
-      console.log('Incorrect Email or password')
-      res.redirect('/')
-    }
-    else {
-      if(sql.type_of_user == 'user') res.redirect('/user');
-      else res.redirect('/technician');
-    }
-  });
-
+    });
     app.post('/register', async (req, res) => {
       const { name, email, psw, psw1, user_type } = req.body;
 
@@ -186,10 +179,6 @@ app.get('/login', (req, res)=>{
     });
 
   });
-
-
-  let PORT = process.env.PORT || 3001;
-
-  app.listen(PORT, function () {
+ app.listen(PORT, function () {
     console.log('App starting on port', PORT);
-});
+  });})
