@@ -1,14 +1,3 @@
-
-<div class="water">
-
-<form action="/user" method="POST" encType="multipart/form-data">
-  <h3>Upload Water leak Image</h3>
-  <input type="file" name="sampleFile" accept="image/*" />
-  <input type="submit" class="btn btn-primary">
-</form>
-</div>
-
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -21,19 +10,98 @@
       integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
       crossorigin=""
     />
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script
       src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
       integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
       crossorigin=""
     ></script>
+    <script type="text/javascript">
+        function stopDefault(event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        function dragOver(label, text) {
+            /* ADD ALMOST ANY STYLING YOU LIKE */
+            label.style.animationName = "dropbox";
+            label.innerText = text;
+        }
+        function dragLeave(label) {
+            /* THIS SHOULD REMOVE ALL STYLING BY dragOver() */
+            var len = label.style.length;
+            for (var i = 0; i < len; i++) {
+                label.style[label.style[i]] = "";
+            }
+            label.innerText = "Click to choose images or Drop them here";
+        }
+        function addFilesAndSubmit(event) {
+            var files = event.target.files || event.dataTransfer.files;
+            document.getElementById("filesfld").files = files;
+            submitFilesForm(document.getElementById("filesfrm"));
+        }
+        function submitFilesForm(form) {
+            var label = document.getElementById("fileslbl");
+            dragOver(label, "Uploading images..."); // set the drop zone text and styling
+            var fd = new FormData();
+            for (var i = 0; i < form.filesfld.files.length; i++) {
+                var field = form.filesfld;
+                fd.append(field.name, field.files[i], field.files[i].name);
+            }
+            var progress = document.getElementById("progress");
+            var x = new XMLHttpRequest();
+            if (x.upload) {
+                x.upload.addEventListener("progress", function (event) {
+                    var percentage = parseInt(event.loaded / event.total * 100);
+                    progress.innerText = progress.style.width = percentage + "%";
+                });
+            }
+            x.onreadystatechange = function () {
+                if (x.readyState == 4) {
+                    progress.innerText = progress.style.width = "";
+                    form.filesfld.value = "";
+                    dragLeave(label); // this will reset the text and styling of the drop zone
+                    if (x.status == 200) {
+
+                    }
+                    else {
+                        // failed - TODO: Add code to handle server errors
+                    }
+                }
+            };
+            x.open("post", form.action, true);
+            x.send(fd);
+            return false;
+        }
+    </script>
     <style>
       #mymap {
         height: 180px;
       }
+     
     </style>
     <title>Document</title>
   </head>
   <body>
+
+
+<div class="water">
+
+ <form id="filesfrm" action="/user" method="post" onsubmit="return submitFilesForm(this);">
+        <input type="file" name="filesfld" id="filesfld" accept="image/*" onchange="submitFilesForm(this.form);"
+            multiple />
+        <label for="filesfld" id="fileslbl"
+            ondragover="stopDefault(event);dragOver(this, 'Drop the images to upload them.');"
+            ondragenter="stopDefault(event);dragOver(this, 'Drop the images to upload them.');"
+            ondragleave="stopDefault(event);dragLeave(this);"
+            ondrop="stopDefault(event);dragLeave(this);addFilesAndSubmit(event);"><div id="icon" class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+
+            Drop file here or click to upload</label>
+                </form>
+    <div style="text-align: left;">
+        <div id="progress"></div>
+    </div>
+</div>
+
     <h1>Smart Water Solutions</h1>
     <p>
       latitude: <span id="latitude"></span>&deg;<br />

@@ -13,9 +13,9 @@
         type="text/css" />
     <script
         src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js"></script>
-    <script src="https://api.mapbox.com/directions/v5/mapbox/cycling/-84.518641,39.134270;-84.512023,39.102779?geometries=geojson&access_token=pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q"></script>   
+    <script
+        src="https://api.mapbox.com/directions/v5/mapbox/cycling/-84.518641,39.134270;-84.512023,39.102779?geometries=geojson&access_token=pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q"></script>
     <style>
-        
         <style>body {
             margin: 0;
             padding: 0;
@@ -97,16 +97,13 @@
 
         async function getQueries() {
 
-                 let url = '/data';
-                  try {
+            let url = '/data';
+            try {
                 let res = await fetch(url);
                 const data = await res.json();
-                const geojson=data;
+                const geojson = data;
 
-                let res = await fetch(url);
-                const data = await res.json();
-                       const geojson = data;  
-                   // add markers to map
+                // add markers to map
                 for (const feature of geojson.features) {
                     // create a HTML element for each feature
                     const el = document.createElement('div');
