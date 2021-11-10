@@ -97,35 +97,12 @@
 
         async function getQueries() {
 
-                <h1>queries</h1>
-                <tr>
-                    <th>orderId</th>
-                    <th>smallQty</th>
-                    <th>mediumQty</th>
-                    <th>largeQty</th>
-                    <th>status</th>
-                    <th>Total</th>
-                </tr>
-                {{#each queries}}
+                
 
                 let res = await fetch(url);
                 const data = await res.json();
 
-                    <td>{{id}}</td>
-                    <td>{{smallQty}}</td>
-                    <td>{{mediumQty}}</td>
-                    <td>{{largeQty}}</td>
-                    <td>{{status}}</td>
-                    <td>R{{total}}</td>
-                    <td>
-                        <form action="/pay/{{id}}" method="post">
-                            <input type="number" step="0.01" name="amount" required>
-                            <input type="submit" name="pay" value="pay">
-                             <button onclick="getLocation()">view</button>
-                        </form>
-                    </td>
-
-                // add markers to map
+                   // add markers to map
                 for (const feature of geojson.features) {
                     // create a HTML element for each feature
                     const el = document.createElement('div');

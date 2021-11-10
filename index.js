@@ -17,6 +17,7 @@ const sqlite3 = require('sqlite3');
 const { open } = require('sqlite');
 var cors = require('cors');
 app.use(cors());
+let PORT = process.env.PORT || 3001;
 
 //Configure the express-handlebars module
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
@@ -37,6 +38,7 @@ app.use(session({
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static('public'));
+app.use(fileupload());
 
 open({
   filename: './data.db',
@@ -60,9 +62,12 @@ app.get('/register', (req, res)=>{
   res.render('home');
 })
 
-app.get('/login', (req, res)=>{
-  res.render('home');
-})
+
+
+
+
+
+
 
 
   // list of querries 
@@ -74,50 +79,51 @@ app.get('/login', (req, res)=>{
           type: 'Feature',
           geometry: {
             type: 'Point',
-            coordinates: [28.2292712, -25.7478676]
+            coordinates: [28.044088, -26.205246]
           },
           properties: {
             title: 'Mapbox',
-            description: 'Home'
+            description: 'picture'
           }
         },
         {
           type: 'Feature',
           geometry: {
             type: 'Point',
-            coordinates: [28.229271, -28.7478676]
+            coordinates: [28.049271, -26.2078676]
           },
           properties: {
             title: 'Mapbox',
-            description: 'this Is so Funny'
+            description: 'picture'
           }
         },
         {
           type: 'Feature',
           geometry: {
             type: 'Point',
-            coordinates: [28.229271, -26.7478676]
+            coordinates: [28.0428271, -26.2378676]
           },
           properties: {
             title: 'Mapbox',
-            description: 'point number 3'
+            description: 'picture'
           },
         },
         {
           type: 'Feature',
           geometry: {
             type: 'Point',
-            coordinates: [29.229271, -26.7478676]
+            coordinates: [28.0223241, -26.200886]
           },
           properties: {
             title: 'Mapbox',
-            description: 'point number 4'
+            description: 'picture'
           },
         }
       ]
     };
     res.json(geojson);
-  })
+  });
+
   app.get('/admin', (req, res) => {
 
     res.render('querry');
@@ -205,11 +211,7 @@ app.post("/user", function(request, response) {
     });
 
   });
-
-
-  let PORT = process.env.PORT || 3001;
-
-  app.listen(PORT, function () {
+ app.listen(PORT, function () {
     console.log('App starting on port', PORT);
   });
 // });
