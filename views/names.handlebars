@@ -1,0 +1,25 @@
+<h1>Names</h1>
+
+
+Name count: {{names.length}}
+
+{{code}}
+
+<table>
+	<tr>
+		<th>First name</th>
+		<th>Last name</th>
+	</tr>
+	
+	{{#each names}}
+	<tr>
+		<td>
+			{{firstName}}
+		</td>
+		<td>
+			{{lastName}}
+		</td>
+	</tr>
+	{{/each}}
+
+</table>

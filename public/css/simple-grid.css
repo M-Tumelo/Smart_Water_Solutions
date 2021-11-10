@@ -1,3 +1,54 @@
+/* 
+.container {
+	background-color: #34D1BF;
+	padding: 1em;
+	width: 80%;
+	margin: auto;
+	border-radius: 0.5em;
+} */
+/* 
+.section {
+	background-color: #F7DD72;
+	padding: 1em;
+	border-radius: 0.5em;
+	/* margin: 1em; */
+}
+
+.late {
+	color: #D1345B;
+} */
+
+input[type="text"] {
+	border-radius : 0.25em;
+	margin: 1em;
+	padding: 1em;
+}
+
+label {
+	width: 8em;
+	padding : 1em;
+	margin: 0em;
+	display: inline-block;
+}
+
+.bigger-button {
+	padding: 1em;
+	margin: 1em;
+	font-weight: bold;
+}
+
+.small-button {
+	padding: 0.25em;
+	margin: 0.25em;
+	font-weight:100;
+}
+
+.mt-1 {
+	margin-top: 1em;
+}
+
+
+
 /**
 *** SIMPLE GRID
 *** (C) ZACH COLE 2016

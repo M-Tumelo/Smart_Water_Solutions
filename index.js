@@ -54,9 +54,9 @@ app.get('/', (req, res) => {
   res.render('home');
 });
 
-app.get('/user', (req, res) => {
-  res.render('image');
-});
+// app.get('/user', (req, res) => {
+//   res.render('image');
+// });
 
 app.get('/register', (req, res)=>{
   res.render('home');
@@ -64,8 +64,77 @@ app.get('/register', (req, res)=>{
 
 
 
+app.get('/user', async function (req, res) {
+
+  const notifications = await db.all('select * from notifications');
+
+  res.render('image', {
+    notifications
+  });
+
+});
+
+app.post('/count', function (req, res) {
+  counter++;
+  res.redirect('/user')
+});
+
+app.post('/reminder', async function (req, res) {
+
+  // read more about destructoring here - https://exploringjs.com/impatient-js/ch_destructuring.html
+  const { firstName, dayCount, bookCount } = req.body;
+
+  if (!firstName && !dayCount) {
+    // nothing is added
+    return res.redirect('/user');
+  }
+
+  const insertNotificationSQL = 'insert into notifications (first_name, book_count, days_due_in) values (?, ?, ?)';
+  await db.run(insertNotificationSQL, firstName, bookCount, dayCount);
+
+  res.redirect('/user')
+
+});
 
 
+app.get('/reminder/:dayCount/days', function (req, res) {
+
+  // find me all the reminders for the current Day count
+  const filteredReminders = reminders.filter(function (reminder) {
+    return reminder.dayCount == Number(req.params.dayCount)
+  })
+
+  res.render('reminder', {
+    reminders: filteredReminders
+  });
+
+});
+
+app.post('/return/:id', async function(req, res){
+
+  const bookId = req.params.id;
+  const deleteNotificationSQL = 'delete from notifications where id = ?';
+  await db.run(deleteNotificationSQL, bookId);
+  res.redirect('/user');
+  
+});
+
+app.get('/edit/:id', function (req, res) {
+  res.render("edit");
+});
+
+
+
+// only setup the routes once the database connection has been established
+
+// })
+
+
+
+
+// we use global state to store data
+
+const reminders = [];
 
 
 
