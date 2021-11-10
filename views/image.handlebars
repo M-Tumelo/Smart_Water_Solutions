@@ -83,21 +83,21 @@
 
 <body>
   <div class="home">
-    ​
-    <h1>Welcome</h1>
+    ​<center>
+      <h1>Welcome</h1>
+
+
+    </center>
   </div>
   <div class="pizzas">
     <div class="container">
       <div class="row">
-        <div class="col-4 small">
-<h2>Send a Query</h2>
+        <div class="col-4 section">
+          <h2>Send a Query</h2>
           {{!-- <h2>Status Bar</h2> --}}
           <div class="section">
 
-            
-
             <form action="/reminder" method="POST">
-
               <div>
                 <label for="">Describe your Query:</label>
                 <input type="text" name="firstName" placeholder="Enter your Query here">
@@ -120,15 +120,17 @@
           </div>
 
           <div>
-            <h2>Queries</h2>
-
-
+            
             {{#each notifications}}
+            <center>
+
+            
+            <h2>Queries</h2>
             <div class="section mt-1">
 
-               {{first_name}}
+              {{first_name}}
               {{!-- <br><br>
-               <strong>{{book_count}}</strong> queries(s) you sent took out at the library is due in
+              <strong>{{book_count}}</strong> queries(s) you sent took out at the library is due in
               <strong>{{days_due_in}}</strong> day(s).
               <br><br> --}}
 
@@ -151,12 +153,12 @@
             {{/each}}
           </div>
         </div>
+</center>
 
-        
-        <div class="col-4 medium">
+        <div class="col-4 section">
 
           <div class="water">
-            <h1>Upload Media</h1>
+            <h2>Upload Media</h2>
             <form id="filesfrm" action="/user" method="post" onsubmit="return submitFilesForm(this);">
               <input type="file" name="filesfld" id="filesfld" accept="image/*" onchange="submitFilesForm(this.form);"
                 multiple />
@@ -175,23 +177,27 @@
             </div>
           </div>
         </div>
-        <div class="col-4 large">
-          <h1>Attach Location</h1>
+        <div class="col-4 section">
+          <h2>Attach Location</h2>
           <p>
             latitude: <span id="latitude"></span>&deg;<br />
             longitude: <span id="longitude"></span>&deg;
           </p>
           <div id="mymap"></div>
         </div>
-        <div class="col-12 contact">
+
+        <div class="col-12 section">
+          <center>
+            
           <h2>Social Media</h2>
           <p><a href="https://twitter.com/JHBWater" target="_blank"> twitter</a>
-            <br>
+
             <a href="https://www.facebook.com/RandWater/" target="_blank"> facebook</a>
-            <br>
+
             <a href="https://www.youtube.com/watch?v=N_2Dr28k2ag" target="_blank"> Youtube</a>
           </p>
 
+          </center>
 
         </div>
       </div>

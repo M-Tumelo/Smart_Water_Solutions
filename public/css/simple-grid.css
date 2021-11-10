@@ -1,22 +1,22 @@
-/* 
+
 .container {
-	background-color: #34D1BF;
+	background-color: #C9C9C9;
 	padding: 1em;
 	width: 80%;
 	margin: auto;
 	border-radius: 0.5em;
-} */
-/* 
+}
+
 .section {
-	background-color: #F7DD72;
+	background-color: #FFFBFC;
 	padding: 1em;
 	border-radius: 0.5em;
-	/* margin: 1em; */
+	 margin: 1em;
 }
 
 .late {
 	color: #D1345B;
-} */
+} 
 
 input[type="text"] {
 	border-radius : 0.25em;
