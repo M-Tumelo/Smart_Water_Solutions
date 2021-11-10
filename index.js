@@ -134,6 +134,7 @@ app.get('/login', (req, res)=>{
     sampleFile = req.files.sampleFile;
     console.log(sampleFile);
 
+<<<<<<< HEAD
     app.post('/login', async (req, res) => {
       req.session.email = req.body.email;
       req.session.psw = req.body.psw;
@@ -141,6 +142,51 @@ app.get('/login', (req, res)=>{
       console.log(sql)
       if (sql == null) {
         console.log('Incorrect Email or password');
+=======
+  app.post('/api', (req, res) => {
+    console.log(req.body);
+   const data = req.body;
+   res.json({
+     status: 'Success',
+    latitude: data.latitude,
+     longitude: data.longitude
+   });
+  });
+
+  app.post('/login', async (req, res) => {
+    req.session.email = req.body.email;
+    req.session.psw = req.body.psw;
+    let sql = await db.get('Select * from signup where Email = ?', req.session.email);
+    console.log(sql)
+    if (sql == null) {
+      console.log('Incorrect Email or password');
+      res.redirect('/');
+    }
+    if (sql.password !== req.session.psw) {
+      console.log('Incorrect Email or password')
+      res.redirect('/')
+    }
+    else {
+      if(sql.type_of_user == 'user') res.redirect('/user');
+      else res.redirect('/technician');
+    }
+  });
+
+
+  app.post('/register', async (req, res) => {
+    const { name, email, psw, psw1, user_type } = req.body;
+
+    req.session.name = name;
+    req.session.email = email;
+    req.session.psw = psw;
+    req.session.psw1 = psw1;
+    req.session.user_type = user_type;
+    let sql = await db.get('Select Email email, Password psw from signup where Email = ?', req.session.email);
+    if (sql == null) {
+      if (req.session.psw == psw1) {
+        const insert_details = 'insert into signup (name, email, password, type_of_user) values (?, ?, ?, ?)';
+        await db.run(insert_details, req.session.name, req.session.email, req.session.psw, req.session.user_type);
+>>>>>>> cktshukudu
         res.redirect('/');
       }
       if (sql.psw !== req.session.psw) {
