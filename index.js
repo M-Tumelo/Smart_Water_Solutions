@@ -59,6 +59,7 @@ app.use(fileUpload());
   });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 app.get('/', (req, res) => {
   res.render('home');
@@ -73,6 +74,8 @@ app.get('/login', (req, res)=>{
 })
 
 >>>>>>> 54077174757f1e8e5bd3915873dfe1f77b0e8efd
+=======
+>>>>>>> Reggy
   // list of querries 
   app.get('/data', (req, res) => {
     const geojson = {
@@ -82,44 +85,76 @@ app.get('/login', (req, res)=>{
           type: 'Feature',
           geometry: {
             type: 'Point',
+<<<<<<< HEAD
             coordinates: [28.2292712, -25.7478676]
           },
           properties: {
             title: 'Mapbox',
             description: 'Home'
+=======
+            coordinates: [28.044088, -26.205246]
+          },
+          properties: {
+            title: 'Mapbox',
+            description: 'picture'
+>>>>>>> Reggy
           }
         },
         {
           type: 'Feature',
           geometry: {
             type: 'Point',
+<<<<<<< HEAD
             coordinates: [28.229271, -28.7478676]
           },
           properties: {
             title: 'Mapbox',
             description: 'this Is so Funny'
+=======
+            coordinates: [28.049271, -26.2078676]
+          },
+          properties: {
+            title: 'Mapbox',
+            description: 'picture'
+>>>>>>> Reggy
           }
         },
         {
           type: 'Feature',
           geometry: {
             type: 'Point',
+<<<<<<< HEAD
             coordinates: [28.229271, -26.7478676]
           },
           properties: {
             title: 'Mapbox',
             description: 'point number 3'
+=======
+            coordinates: [28.0428271, -26.2378676]
+          },
+          properties: {
+            title: 'Mapbox',
+            description: 'picture'
+>>>>>>> Reggy
           },
         },
         {
           type: 'Feature',
           geometry: {
             type: 'Point',
+<<<<<<< HEAD
             coordinates: [29.229271, -26.7478676]
           },
           properties: {
             title: 'Mapbox',
             description: 'point number 4'
+=======
+            coordinates: [28.0223241, -26.200886]
+          },
+          properties: {
+            title: 'Mapbox',
+            description: 'picture'
+>>>>>>> Reggy
           },
         }
       ]
