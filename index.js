@@ -36,16 +36,9 @@ app.use(session({
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static('public'));
-<<<<<<< HEAD
 
 open({
   filename: './data.db',
-=======
-app.use(fileUpload());
-
- open({
-   filename: './data.db',
->>>>>>> 54077174757f1e8e5bd3915873dfe1f77b0e8efd
   driver: sqlite3.Database
 }).then(async function (db) {
 
@@ -58,9 +51,7 @@ app.use(fileUpload());
     res.render('image');
   });
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
+
 app.get('/', (req, res) => {
   res.render('home');
 });
@@ -73,9 +64,6 @@ app.get('/login', (req, res)=>{
   res.render('home');
 })
 
->>>>>>> 54077174757f1e8e5bd3915873dfe1f77b0e8efd
-=======
->>>>>>> Reggy
   // list of querries 
   app.get('/data', (req, res) => {
     const geojson = {
@@ -85,94 +73,69 @@ app.get('/login', (req, res)=>{
           type: 'Feature',
           geometry: {
             type: 'Point',
-<<<<<<< HEAD
-            coordinates: [28.0492712, -26.20778676]
-=======
-<<<<<<< HEAD
-            coordinates: [28.2292712, -25.7478676]
-          },
-          properties: {
-            title: 'Mapbox',
-            description: 'Home'
-=======
             coordinates: [28.044088, -26.205246]
->>>>>>> main
           },
           properties: {
             title: 'Mapbox',
             description: 'picture'
->>>>>>> Reggy
           }
         },
         {
           type: 'Feature',
           geometry: {
             type: 'Point',
-<<<<<<< HEAD
-            coordinates: [28.041278, -26.2270636]
-=======
-<<<<<<< HEAD
-            coordinates: [28.229271, -28.7478676]
-          },
-          properties: {
-            title: 'Mapbox',
-            description: 'this Is so Funny'
-=======
             coordinates: [28.049271, -26.2078676]
->>>>>>> main
           },
           properties: {
             title: 'Mapbox',
             description: 'picture'
->>>>>>> Reggy
           }
         },
         {
           type: 'Feature',
           geometry: {
             type: 'Point',
-<<<<<<< HEAD
-            coordinates: [28.043327, -26.268786]
-=======
-<<<<<<< HEAD
-            coordinates: [28.229271, -26.7478676]
-          },
-          properties: {
-            title: 'Mapbox',
-            description: 'point number 3'
-=======
             coordinates: [28.0428271, -26.2378676]
->>>>>>> main
           },
           properties: {
             title: 'Mapbox',
             description: 'picture'
->>>>>>> Reggy
           },
         },
         {
           type: 'Feature',
           geometry: {
             type: 'Point',
-<<<<<<< HEAD
-            coordinates: [28.029271, -26.21178676]
-=======
-<<<<<<< HEAD
-            coordinates: [29.229271, -26.7478676]
-          },
-          properties: {
-            title: 'Mapbox',
-            description: 'point number 4'
-=======
             coordinates: [28.0223241, -26.200886]
->>>>>>> main
           },
           properties: {
             title: 'Mapbox',
             description: 'picture'
->>>>>>> Reggy
+          },
+        },
+        {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [28.0223241, -26.281886]
+          },
+          properties: {
+            title: 'Mapbox',
+            description: 'picture'
+          },
+        },
+        {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [28.0271041, -26.231816]
+          },
+          properties: {
+            title: 'Mapbox',
+            description: 'picture'
           },
         }
+
       ]
     };
     res.json(geojson);
@@ -190,7 +153,6 @@ app.get('/login', (req, res)=>{
       return res.status(400).send('No files were uploaded.');
     }
     sampleFile = req.files.sampleFile;
-<<<<<<< HEAD
     console.log(sampleFile);
 
     app.post('/login', async (req, res) => {
@@ -211,37 +173,6 @@ app.get('/login', (req, res)=>{
       }
 
     });
-=======
-    uploadPath = __dirname + '/upload/' + sampleFile.name;
-    //console.log(sampleFile);
-
-    sampleFile.mv(uploadPath, function (err) {
-      if(err) return res.status(500).send(err);
-      res.send('File uploaded');
-      });
-      
-  });
-
-  app.post('/login', async (req, res) => {
-    req.session.email = req.body.email;
-    req.session.psw = req.body.psw;
-    let sql = await db.get('Select * from signup where Email = ?', req.session.email);
-    console.log(sql)
-    if (sql == null) {
-      console.log('Incorrect Email or password');
-      res.redirect('/');
-    }
-    if (sql.password !== req.session.psw) {
-      console.log('Incorrect Email or password')
-      res.redirect('/')
-    }
-    else {
-      if(sql.type_of_user == 'user') res.redirect('/user');
-      else res.redirect('/technician');
-    }
-  });
-
->>>>>>> 54077174757f1e8e5bd3915873dfe1f77b0e8efd
     app.post('/register', async (req, res) => {
       const { name, email, psw, psw1, user_type } = req.body;
 
