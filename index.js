@@ -60,7 +60,7 @@ open({
           type: 'Feature',
           geometry: {
             type: 'Point',
-            coordinates: [28.044088, -26.205246]
+            coordinates: [28.0492712, -26.20778676]
           },
           properties: {
             title: 'Mapbox',
@@ -71,7 +71,7 @@ open({
           type: 'Feature',
           geometry: {
             type: 'Point',
-            coordinates: [28.049271, -26.2078676]
+            coordinates: [28.041278, -26.2270636]
           },
           properties: {
             title: 'Mapbox',
@@ -82,7 +82,7 @@ open({
           type: 'Feature',
           geometry: {
             type: 'Point',
-            coordinates: [28.0428271, -26.2378676]
+            coordinates: [28.043327, -26.268786]
           },
           properties: {
             title: 'Mapbox',
@@ -93,7 +93,7 @@ open({
           type: 'Feature',
           geometry: {
             type: 'Point',
-            coordinates: [28.0223241, -26.200886]
+            coordinates: [28.029271, -26.21178676]
           },
           properties: {
             title: 'Mapbox',
