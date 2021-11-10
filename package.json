@@ -1,14 +1,10 @@
 {
-  "name": "sws",
+  "name": "smart_water_solutions",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -20,19 +16,5 @@
   "bugs": {
     "url": "https://github.com/M-Tumelo/Smart_Water_Solutions/issues"
   },
-  "homepage": "https://github.com/M-Tumelo/Smart_Water_Solutions#readme",
-  "dependencies": {
-    "@mapbox/mapbox-sdk": "^0.13.2",
-    "express": "^4.17.1",
-    "express-fileupload": "^1.2.1",
-    "express-handlebars": "^5.3.4",
-    "express-session": "^1.17.2",
-    "express-upload": "^0.1.0",
-    "moment": "^2.29.1",
-    "nodemon": "^2.0.14",
-    "serve-favicon": "^2.5.0",
-    "sqlite": "^4.0.23",
-    "sqlite3": "^5.0.2",
-    "webcam-easy": "^1.0.5"
-  }
+  "homepage": "https://github.com/M-Tumelo/Smart_Water_Solutions#readme"
 }
