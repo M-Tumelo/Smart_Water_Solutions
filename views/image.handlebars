@@ -1,12 +1,88 @@
+ <div class="home">
+        ​
+        <h1></h1>
+    </div>
+        <div class="pizzas">
+            <div class="container">
+                <div class="row">
+                    <div class="col-4 small">
 
-<div class="water">
+                        <h2>STATUS BAR</h2>
+                        <div class="section" >
+
+
+	<form action="/query" method="POST">
+
+		<div>
+			<label for="">Type in Query:</label>
+			<input type="text" name="query" placeholder="Enter your query">
+		</div>
+
+		<div>
+			<input type="submit" class="bigger-button" value="send query">
+		</div>
+	</form>
+
+</div>
+
+
+{{!-- {{#each reminders}}
+<div class="section">
+
+	Dear {{firstName}},
+	<br><br>
+	The <strong>{{bookCount}}</strong> book(s) you took out at the library is due in <strong>{{dayCount}}</strong> day(s).
+	<br><br>
+
+	{{#if notLate}}
+	Please return these books to us in the next <a href="/reminder/{{dayCount}}/days">{{dayCount}} days</a> .
+	{{else}}
+	<span class="late" > Please return your books <strong>urgently</strong></span>
+	{{/if}}
+
+	<div class="mt-1" >
+			<a href="/edit/1">Edit reminder</a>
+	</div>
+	<div class="return-book mt-1" >
+		<form method="POST" action="/delete" >
+			<input type="submit" class="small-button" value="Return book">
+		</form>
+	</div>
+</div>
+{{/each}} --}}
+                    </div>
+                    <div class="col-4 medium">
+                        <div class="water">
 
 <form action="/user" method="POST" encType="multipart/form-data">
-  <h3>Upload Water leak Image</h3>
+  <h3>Upload Media</h3>
   <input type="file" name="sampleFile" accept="image/*" />
   <input type="submit" class="btn btn-primary">
 </form>
 </div>
+                    </div>
+                    <div class="col-4 large">
+                        <h3>Maps</h3>
+    <p>
+      latitude: <span id="latitude"></span>&deg;<br />
+      longitude: <span id="longitude"></span>&deg;
+    </p>
+    <div id="mymap"></div>
+                    </div>
+                    <div class="col-12 contact">
+                        <h2>Social Media</h2>
+                        <p> <a href="https://twitter.com/JHBWater" target="_blank" alt="Twitter" >Twitter </a>
+                        <br>
+                        <a href="https://www.facebook.com/JohannesburgWater/" target="_blank" alt="Twitter" >Facebook </a>
+
+                      <br>
+                      <a href="https://www.youtube.com/watch?v=tU7rDBLQN34" target="_blank" alt="Twitter" >Youtube </a>
+                           </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
 
 <!DOCTYPE html>
@@ -34,12 +110,7 @@
     <title>Document</title>
   </head>
   <body>
-    <h1>Smart Water Solutions</h1>
-    <p>
-      latitude: <span id="latitude"></span>&deg;<br />
-      longitude: <span id="longitude"></span>&deg;
-    </p>
-    <div id="mymap"></div>
+    
     <script>
       if ('geolocation' in navigator) {
         console.log('geolocation available');

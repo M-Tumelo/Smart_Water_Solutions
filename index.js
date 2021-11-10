@@ -38,7 +38,7 @@ app.use(session({
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static('public'));
-app.use(fileUpload());
+app.use(fileupload());
 
 open({
   filename: './data.db',
@@ -65,6 +65,42 @@ open({
   app.get('/login', (req, res) => {
     res.render('home');
   });
+
+  app.get('/', function(req, res) {
+    res.render('index', {
+      reminders
+    });
+  });
+
+  const query = [];
+
+app.post('/query', function(req, res){
+
+	const Query = req.body;
+
+	// read more about destructoring here - https://exploringjs.com/impatient-js/ch_destructuring.html
+
+	const query= req.body;
+
+	if (!query){
+		// nothing is added
+		return res.redirect('/');
+	}
+
+
+
+	res.redirect('/')
+
+});
+
+
+
+
+
+
+
+
+
 
   // list of querries 
   app.get('/data', (req, res) => {
