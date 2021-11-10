@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -6,10 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart Water Solutions</title>
-</head>
+</head> --}}
 
-<body>
-<<<<<<< HEAD
+{{!-- <body> --}}
+  
+    
   <div class="menu-wrapper">
     <header class="header">
       <a href="/" class="logo"><img alt="Logo" src="/img/logo.jpg"></a>
@@ -22,14 +23,23 @@
       </ul>
     </header>
   </div>
+  
       <div class="away-from-margin column">
     <div class="tabs">
 
       <input type="radio" name="tabs" id="tabone" checked="checked">
       <label for="tabone">Login</label>
       <div class="tab">
-        <h1>Login</h1>
+<<<<<<< HEAD
+        <center>
+          <h1>Login</h1>
+        </center>
+        
         <form action="/login" style="margin:1em">
+=======
+        <h1>Login</h1>
+        <form action="/login" method="post" style="margin:1em">
+>>>>>>> 419b070b1fa904cb50dfa401d14368bb02c8962e
           <div class="input-container">
             <i class="fa fa-envelope icon"></i>
             <input class="input-field" type="text" required placeholder="Email" name="email">
@@ -48,8 +58,16 @@
       <input type="radio" name="tabs" id="tabtwo">
       <label for="tabtwo">Register</label>
       <div class="tab">
-        <h1>Register</h1>
+<<<<<<< HEAD
+        <center>
+           <h1>Register</h1>
+        </center>
+       
         <form action="/register" style="margin:1em">
+=======
+        <h1>Register</h1>
+        <form action="/register" method="post" style="margin:1em">
+>>>>>>> 419b070b1fa904cb50dfa401d14368bb02c8962e
           <div class="input-container">
             <i class="fa fa-user icon"></i>
             <input class="input-field" type="text" required placeholder="Name" name="name">
@@ -69,18 +87,18 @@
             <i class="fa fa-lock icon"></i>
             <input class="input-field" type="password" required placeholder="Retype Password" name="psw1">
           </div>
-          {{!-- <div class="input-container">
+          <div id="tabs">
           <p>Are you a Rand Water Technican?</p> 
-          <label>Yes</label> <input type="radio" name="user_type" class="none">
-          <label>No</label> <input type="radio" name="user_type" class="none">
-          </div> --}}
-          <button type="submit" class="btn">Register</button>
+          <input type="radio" name="user_type" checked value="user"><p>No</p>
+         <input type="radio" name="user_type" value="technician"><p>Yes</p>
+          </div>
+          <button style="margin-top: 5px;" type="submit" class="btn">Register</button>
         </form>
       </div>
     </div>
-=======
- {{{body}}}
->>>>>>> 8f0a50894f7100e6e1dafc28b457e4cd400162b6
-</body>
 
-</html>
+
+ 
+{{!-- </body>
+
+</html> --}}
