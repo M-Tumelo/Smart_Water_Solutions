@@ -4,7 +4,6 @@ const fileupload = require('express-fileupload');
 let app = express();
 
 let fav = require('serve-favicon');
-const data1 = require('./data.js');
 
 var moment = require('moment');
 
@@ -61,44 +60,44 @@ open({
           type: 'Feature',
           geometry: {
             type: 'Point',
-            coordinates: [28.2292712, -25.7478676]
+            coordinates: [28.044088, -26.205246]
           },
           properties: {
             title: 'Mapbox',
-            description: 'Home'
+            description: 'picture'
           }
         },
         {
           type: 'Feature',
           geometry: {
             type: 'Point',
-            coordinates: [28.229271, -28.7478676]
+            coordinates: [28.049271, -26.2078676]
           },
           properties: {
             title: 'Mapbox',
-            description: 'this Is so Funny'
+            description: 'picture'
           }
         },
         {
           type: 'Feature',
           geometry: {
             type: 'Point',
-            coordinates: [28.229271, -26.7478676]
+            coordinates: [28.0428271, -26.2378676]
           },
           properties: {
             title: 'Mapbox',
-            description: 'point number 3'
+            description: 'picture'
           },
         },
         {
           type: 'Feature',
           geometry: {
             type: 'Point',
-            coordinates: [29.229271, -26.7478676]
+            coordinates: [28.0223241, -26.200886]
           },
           properties: {
             title: 'Mapbox',
-            description: 'point number 4'
+            description: 'picture'
           },
         }
       ]
