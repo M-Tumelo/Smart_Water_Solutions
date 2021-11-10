@@ -1,38 +1,103 @@
+<<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.css' rel='stylesheet' />
+    <link rel="stylesheet"
+        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.css"
+        type="text/css" />
+    <script
+        src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js"></script>
+    <script src="https://api.mapbox.com/directions/v5/mapbox/cycling/-84.518641,39.134270;-84.512023,39.102779?geometries=geojson&access_token=pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q"></script>   
+    <style>
+        
+        <style>body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        .marker {
+            background-image: url('mapbox-icon.png');
+            background-size: cover;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .mapboxgl-popup {
+            max-width: 200px;
+        }
+
+        .mapboxgl-popup-content {
+            text-align: center;
+            font-family: 'Open Sans', sans-serif;
+        }
+    </style>
+    <title>locator</title>
+</head>
+
 <body>
+    <div style="display: block;">
+        <input type="text" name="" id="data" value="NAME 2">
+    </div>
 
-    <div class="container headcenter">
+    <div id='map'></div>
 
-        <div class="row">
-            <div class="col-12 headcenter">
-                <h1><b><i>Perfect Pizza Cart</i></b></h1>
-            </div>
-        </div>
+    <script>
 
-        <div>
-            <p>Click the button to get your coordinates.</p>
+        mapboxgl.accessToken = 'pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q';
 
-            <button onclick="getLocation()">Try It</button>
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/light-v10',
+            center: [28.034088, -26.195246],
+            zoom: 15
+        });
+        navigator.geolocation.getCurrentPosition((position) => {
+            console.log(position.coords.longitude, position.coords.latitude);
+        });
 
-            <p id="demo"></p>
+        map.addControl(
+            new MapboxDirections({
+                accessToken: mapboxgl.accessToken
+            }),
+            'top-left'
+        );
+        const geolocate = new mapboxgl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            // When active the map will receive updates to the device's location as it changes.
+            trackUserLocation: true,
+            // Draw an arrow next to the location dot to indicate which direction the device is heading.
+            showUserHeading: true
+        });
+        map.addControl(geolocate);
+        map.on('load', function () {
+            geolocate.trigger();
+        });
+        geolocate.on('trackuserlocationstart', () => {
+            console.log('A trackuserlocationstart event has occurred.');
+        });
 
-            <script>
-                var x = document.getElementById("demo");
-                function getLocation() {
-                    if (navigator.geolocation) {
-                        navigator.geolocation.watchPosition(showPosition);
-                    } else {
-                        x.innerHTML = "Geolocation is not supported by this browser.";
-                    }
-                }
-                function showPosition(position) {
-                    x.innerHTML = "Latitude: " + position.coords.latitude +
-                        "<br>Longitude: " + position.coords.longitude;
-                }
-            </script>
 
-            <table class="center">
+        async function getQueries() {
 
-                <h1>querries</h1>
+                <h1>queries</h1>
                 <tr>
                     <th>orderId</th>
                     <th>smallQty</th>
@@ -41,9 +106,10 @@
                     <th>status</th>
                     <th>Total</th>
                 </tr>
-                {{#each orders}}
+                {{#each queries}}
 
-                <tr>
+                let res = await fetch(url);
+                const data = await res.json();
 
                     <td>{{id}}</td>
                     <td>{{smallQty}}</td>
@@ -55,16 +121,39 @@
                         <form action="/pay/{{id}}" method="post">
                             <input type="number" step="0.01" name="amount" required>
                             <input type="submit" name="pay" value="pay">
+                             <button onclick="getLocation()">view</button>
                         </form>
                     </td>
 
-                </tr>
-                {{/each}}
+                // add markers to map
+                for (const feature of geojson.features) {
+                    // create a HTML element for each feature
+                    const el = document.createElement('div');
+                    el.className = 'marker';
 
-            </table>
+                    // make a marker for each feature and add to the map
+                    new mapboxgl.Marker(el)
+                        .setLngLat(feature.geometry.coordinates)
+                        .setPopup(
+                            new mapboxgl.Popup({ offset: 25 }) // add popups
+                                .setHTML(
+                                    `<h3>${feature.properties.title}</h3><p>${feature.properties.description}</p>`
+                                )
+                        )
+                        .addTo(map);
+                }
 
-        </div>
 
+            }
+            catch (error) {
+                console.log(error)
+            }
+        };
 
-    </div>
+        getQueries();
+
+    </script>
+
 </body>
+
+</html>
