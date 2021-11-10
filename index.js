@@ -104,15 +104,15 @@ app.get('/login', (req, res)=>{
       
   });
 
-  // app.post('/fetch', (req, res) => {
-  //   console.log(req.body);
-  //   const position = req.body;
-  //   res.json({
-  //     status: 'Success',
-  //     latitude: position.latitude,
-  //     longitude: po.longitude
-  //   });
-  // });
+  app.post('/api', (req, res) => {
+    console.log(req.body);
+   const data = req.body;
+   res.json({
+     status: 'Success',
+    latitude: data.latitude,
+     longitude: data.longitude
+   });
+  });
 
   app.post('/login', async (req, res) => {
     req.session.email = req.body.email;
