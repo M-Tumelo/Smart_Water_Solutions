@@ -1,5 +1,5 @@
 let express = require('express');
-const fileupload = require('express-fileupload');
+const fileUpload = require('express-fileupload');
 
 let app = express();
 
@@ -122,7 +122,7 @@ open({
 
   app.get('/admin', (req, res) => {
 
-    res.render('querry');
+    res.render('technician');
   });
 
  app.post('', (req, res) => {
