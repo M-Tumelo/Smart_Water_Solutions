@@ -207,9 +207,9 @@ section img{
 .clear{
 color: black;
 }
-.clear:hover{
+/* .clear:hover{
   color;
-}
+} */
 
 .none{
   all: initial;
