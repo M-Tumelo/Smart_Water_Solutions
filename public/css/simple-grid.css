@@ -18,11 +18,11 @@
 	color: #D1345B;
 } 
 
-input[type="text"] {
+/* input[type="text"] {
 	border-radius : 0.25em;
 	margin: 1em;
 	padding: 1em;
-}
+} */
 
 label {
 	width: 8em;

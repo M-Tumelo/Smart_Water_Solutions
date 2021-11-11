@@ -57,7 +57,8 @@
             {{/each}}
           </div>
         </div>
-      <div class="away-from-margin column">
+        <div style="margin-top: 6em;"></div>
+      <div class="center">
     <div class="tabs">
 
       <input type="radio" name="tabs" id="tabone" checked="checked">
@@ -70,7 +71,8 @@
         <form action="/login" method="post" style="margin:1em">
           <div class="input-container">
             <i class="fa fa-envelope icon"></i>
-            <input class="input-field" type="text" required placeholder="Email" name="email">
+            {{!-- Changed type from text to email --}}
+            <input class="input-field" type="email" required placeholder="Email" name="email"> 
           </div>
 
           <div class="input-container">
@@ -98,7 +100,7 @@
 
           <div class="input-container">
             <i class="fa fa-envelope icon"></i>
-            <input class="input-field" type="text" required placeholder="Email" name="email">
+            <input class="input-field" type="email" required placeholder="Email" name="email">
           </div>
 
           <div class="input-container">
@@ -110,10 +112,10 @@
             <i class="fa fa-lock icon"></i>
             <input class="input-field" type="password" required placeholder="Retype Password" name="psw1">
           </div>
-          <div id="tabs">
-          <p>Are you a Rand Water Technican?</p>&nbsp;&nbsp; 
-          <input type="radio" name="user_type" checked value="user"><p>No</p>&nbsp;&nbsp;
-         <input type="radio" name="user_type" value="technician"><p>Yes</p><br>&nbsp;
+          <div style="padding-bottom: 1em;">
+          <p>Are you a Rand Water Technican?</p>
+          <input id="padding" type="radio" name="user_type" checked value="user">No
+         <input id="padding" type="radio" name="user_type" value="technician">Yes
           </div>
           <button style="margin-top: 5px;" type="submit" class="btn">Register</button>
         </form>
