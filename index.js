@@ -54,21 +54,13 @@ app.get('/', (req, res) => {
   res.render('home');
 });
 
-app.get('', (req, res) => {
-  res.render('image');
-});
+// app.get('/', (req, res) => {
+//   res.render('image');
+// });
 
 app.get('/register', (req, res)=>{
   res.render('home');
 })
-
-
-
-
-
-
-
-
 
   // list of querries 
   app.get('/data', (req, res) => {
@@ -170,18 +162,20 @@ app.post("/user", function(request, response) {
     app.post('/login', async (req, res) => {
       req.session.email = req.body.email;
       req.session.psw = req.body.psw;
-      let sql = await db.get('Select Email email, Password psw from signup where Email = ?', req.session.email);
+      let sql = await db.get('Select * from signup where Email = ?', req.session.email);
       console.log(sql)
       if (sql == null) {
         console.log('Incorrect Email or password');
         res.redirect('/');
       }
-      if (sql.psw !== req.session.psw) {
-        console.log('Incorrect Email or password')
+      if (sql.password !== req.session.psw) {
+        console.log('Incorrect or password')
         res.redirect('/')
       }
       else {
-        res.redirect('/')
+        console.log('siright')
+        if(sql.type_of_user == 'user') res.render('image');
+        else  res.render('querry');
       }
 
     });
