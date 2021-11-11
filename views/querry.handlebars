@@ -51,10 +51,7 @@
 </head>
 
 <body>
-    <div style="display: block;">
-        <input type="text" name="" id="data" value="NAME 2">
-    </div>
-
+   
     <div id='map'></div>
 
     <script>
@@ -102,7 +99,6 @@
                 let res = await fetch(url);
                 const data = await res.json();
                 const geojson = data;
-
                 // add markers to map
                 for (const feature of geojson.features) {
                     // create a HTML element for each feature
