@@ -45,7 +45,7 @@ open({
   driver: sqlite3.Database
 }).then(async function (db) {
 
-  // run migrations
+  // run migration
 
   await db.migrate();
 
@@ -66,10 +66,10 @@ app.get('/register', (req, res)=>{
 
 app.get('/user', async function (req, res) {
 
-  const notifications = await db.all('select * from notifications');
+  const queryQ = await db.all('select * from notifications');
 
   res.render('image', {
-    notifications
+    queryQ
   });
 
 });
@@ -79,49 +79,49 @@ app.post('/count', function (req, res) {
   res.redirect('/user')
 });
 
-app.post('/reminder', async function (req, res) {
+app.post('/johnquery', async function (req, res) {
 
   // read more about destructoring here - https://exploringjs.com/impatient-js/ch_destructuring.html
-  const { firstName, dayCount, bookCount } = req.body;
+  const { Query, noDays, noQueries } = req.body;
 
-  if (!firstName && !dayCount) {
+  if (!Query && !noDays) {
     // nothing is added
     return res.redirect('/user');
   }
 
-  const insertNotificationSQL = 'insert into notifications (first_name, book_count, days_due_in) values (?, ?, ?)';
-  await db.run(insertNotificationSQL, firstName, bookCount, dayCount);
+  const insertQuerriesSQL = 'insert into notifications (first_name, book_count, days_due_in) values (?, ?, ?)';
+  await db.run(insertQuerriesSQL, Query, noQueries, noDays);
 
   res.redirect('/user')
 
 });
 
 
-app.get('/reminder/:dayCount/days', function (req, res) {
+// app.get('/reminder/:dayCount/days', function (req, res) {
 
-  // find me all the reminders for the current Day count
-  const filteredReminders = reminders.filter(function (reminder) {
-    return reminder.dayCount == Number(req.params.dayCount)
-  })
+//   // find me all the reminders for the current Day count
+//   const filteredReminders = reminders.filter(function (reminder) {
+//     return reminder.dayCount == Number(req.params.dayCount)
+//   })
 
-  res.render('reminder', {
-    reminders: filteredReminders
-  });
+//   res.render('reminder', {
+//     reminders: filteredReminders
+//   });
 
-});
+// });
 
-app.post('/return/:id', async function(req, res){
+app.post('/remove/:id', async function(req, res){
 
   const bookId = req.params.id;
-  const deleteNotificationSQL = 'delete from notifications where id = ?';
-  await db.run(deleteNotificationSQL, bookId);
+  const deleteQuerriesSQL = 'delete from notifications where id = ?';
+  await db.run(deleteQuerriesSQL, bookId);
   res.redirect('/user');
   
 });
 
-app.get('/edit/:id', function (req, res) {
-  res.render("edit");
-});
+// app.get('/edit/:id', function (req, res) {
+//   res.render("edit");
+// });
 
 
 
@@ -134,7 +134,7 @@ app.get('/edit/:id', function (req, res) {
 
 // we use global state to store data
 
-const reminders = [];
+// const reminders = [];
 
 
 

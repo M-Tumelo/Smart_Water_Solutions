@@ -1,4 +1,4 @@
-create table notifications(
+create table notifications (
 	id integer primary key AUTOINCREMENT,
 	first_name text not null,
 	book_count integer default 0,

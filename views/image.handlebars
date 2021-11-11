@@ -89,27 +89,32 @@
 
     </center>
   </div>
-  <div class="pizzas">
+  {{!-- <div class="pizzas"> --}}
     <div class="container">
       <div class="row">
         <div class="col-4 section">
           <h2>Send a Query</h2>
+
+          {{!-- <h1>
+
+            may you please add your query below
+          </h1> --}}
           {{!-- <h2>Status Bar</h2> --}}
           <div class="section">
 
-            <form action="/reminder" method="POST">
+            <form action="/johnquery" method="POST">
               <div>
                 <label for="">Describe your Query:</label>
-                <input type="text" name="firstName" placeholder="Enter your Query here">
+                <input type="text" name="Query" placeholder="Enter your Query here">
               </div>
               {{!-- <div>
                 <label for="">Days to query:</label>
-                <input type="text" name="bookCount" placeholder="Enter the number of days">
+                <input type="text" name="noQueries" placeholder="Enter the number of queries">
               </div>
               <div>
                 <label for="">Days due in:</label>
 
-                <input type="text" name="dayCount" placeholder="Enter the # of days">
+                <input type="text" name="noDays" placeholder="Enter the number of days">
               </div> --}}
 
               <div>
@@ -119,9 +124,10 @@
 
           </div>
 
-          <div>
+          
+<div>
             
-            {{#each notifications}}
+            {{#each queryQ}}
             <center>
 
             
@@ -144,8 +150,8 @@
               {{!-- <div class="mt-1">
                 <a href="/edit/{{id}}">Edit query</a>
               </div> --}}
-              <div class="return-book mt-1">
-                <form method="POST" action="/return/{{id}}">
+              <div class="remove-query mt-1">
+                <form method="POST" action="/remove/{{id}}">
                   <input type="submit" class="small-button" value="Remove Query">
                 </form>
               </div>
@@ -153,6 +159,7 @@
             {{/each}}
           </div>
         </div>
+           
 </center>
 
         <div class="col-4 section">
