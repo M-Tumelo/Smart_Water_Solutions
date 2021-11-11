@@ -54,14 +54,6 @@ app.get('/', (req, res) => {
   res.render('home');
 });
 
-// app.get('/', (req, res) => {
-//   res.render('image');
-// });
-
-app.get('/register', (req, res)=>{
-  res.render('home');
-})
-
   // list of querries 
   app.get('/data', (req, res) => {
     const geojson = {
