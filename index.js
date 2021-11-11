@@ -54,7 +54,6 @@ app.get('/', (req, res) => {
   res.render('home');
 });
 
-<<<<<<< HEAD
 // app.get('/user', (req, res) => {
 //   res.render('image');
 // });
@@ -140,8 +139,6 @@ app.post('/remove/:id', async function(req, res){
 
 
 
-=======
->>>>>>> 05baa43d0103608c153f37d32f5265abdcc1e8c8
   // list of querries 
   app.get('/data', (req, res) => {
     const geojson = {
