@@ -87,7 +87,7 @@ app.post('/johnquery', async function (req, res) {
   const insertQuerriesSQL = 'insert into query (query, date) values (?, ?)';
   await db.run(insertQuerriesSQL, Query, moment(new Date()).format('MMM D, YYYY'));
   const queryQ = await db.all('select * from query');
-console.log(queryQ)
+// console.log(queryQ)
   res.redirect('/user')
 
 });
@@ -248,7 +248,7 @@ app.post("/user", function(request, response) {
       else {
         // console.log('siright')
         if(sql.type_of_user == 'user') res.redirect('/user');
-        else  res.redirect('/querry');
+        else  res.redirect('/admin');
       }
 
     });
