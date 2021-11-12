@@ -3,7 +3,7 @@
 }
 body {
   background: black;
-  color: #222;
+  /* color: #222; */
   line-height: normal;
   font-size: 16px;
   font-family: sans-serif;
@@ -215,6 +215,10 @@ color: black;
   all: initial;
 }
 
+.remove-hover{
+  pointer-events: none;
+}
+
 /* Responsive */
 
 @media only screen and (max-width: 768px){
@@ -225,6 +229,10 @@ color: black;
     padding: 15px;
     border-bottom: 1px dotted #3B413C;
     background-color: #3B413C;
+  }
+
+  .hide{
+    display: none;
   }
 
 }
@@ -357,9 +365,14 @@ color: black;
     
   }
   
+  .avartar{
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+  }
         #fileslbl {
-            max-width: 700px;
-            height: 500px;
+            width: 100%;
+            height: 256px;
             padding: 25px;
             display: flex;
             align-items: center;
@@ -380,12 +393,13 @@ color: black;
 
         #progress {
             width: 0;
-            background-color: blue;
+            background-color: greenyellow;
             color: white;
             font-weight: bold;
             font-size: 14px;
             line-height: 25px;
-            padding: 0 5px;
+            /* padding: 0 20px; */
+            margin-top: 0.5em;
         }
 
         @keyframes dropbox {
@@ -402,3 +416,212 @@ color: black;
             }
           }
         
+/* Newsletter Styling */
+/* include the board in the center of the viewport */
+.board {
+  max-width: 90%;
+  width: 90vw;
+  height: 100%;
+  margin: 4rem auto;
+  /* display grid without specifying any structure, at least beyond the media query
+  this is mostly helpful for alignment purposes
+  */
+  display: grid;
+  border: 4px solid hsl(207, 79%, 21%);
+  background: #fff;
+  box-shadow: 0 2px 5px hsla(0, 0%, 0%, 0.3);
+  /* position relative to absolute position the pseudo element */
+  position: relative;
+}
+/* include a slightly rotated rectangle of the same size of the board, right behind it */
+.board:before {
+  position: absolute;
+  content: "";
+  background: #00c6fb;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-2deg) scale(1.02);
+  z-index: -5;
+}
+
+/* for the heading include a slightly darker background */
+.board__heading {
+  /* margin to have the heading overlap on the surrounding border */
+  margin: -4px;
+  margin-bottom: 1.75rem;
+  font-family: "Chivo", sans-serif;
+  font-size: 1.25rem;
+  color: #fff;
+  background: hsl(200, 100%, 10%);
+  padding: 0.75rem;
+  padding-left: 1.5rem;
+}
+
+
+/* for the section describing the news items, display the items in a single column layout */
+.board__news {
+  display: flex;
+  margin: 1rem 0 3rem;
+  flex-direction: column;
+  width: 80%;
+  justify-self: center;
+  /* dictate a maximum height to allow for vertical scroll */
+  max-height: 15em;
+  overflow-y: auto;
+}
+/* minor style changes for the scrollbar */
+.board__news::-webkit-scrollbar {
+  width: 0.25rem;
+}
+.board__news::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px hsla(200, 100%, 5%, 0.3);
+}
+.board__news::-webkit-scrollbar-thumb {
+  background: hsl(200, 100%, 10%);
+  border-radius: 5px;
+}
+
+/* remove the default properties of the anchor links describing the news items */
+.news--item {
+  text-decoration: none;
+  color: inherit;
+  margin: 1.25rem 0;
+  padding-left: 0.75rem;
+  border-left: 5px solid greenyellow;
+}
+/* on hover and when focused slightly decrease the weight of the anchor links */
+.news--item:hover,
+.news--item:focus {
+  color: hsl(0, 0%, 35%);
+}
+.news--item .date {
+  font-size: 0.8rem;
+}
+.news--item .brief {
+  font-size: 0.9rem;
+}
+
+/* on smaller viewports */
+@media (max-width: 700px) {
+  /* change the grid layout to have the heading atop the navigation and section elements */
+  .board {
+    grid-template-areas: "heading heading" "nav section";
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: auto 1fr;
+  }
+  .board__heading {
+    grid-area: heading;
+  }
+
+  /* slightly increase the height of the container to include a taller board */
+  .board__news {
+    grid-area: section;
+    width: 90%;
+    max-height: 380px;
+  }
+}
+
+/* Cols */
+.column {
+  width: 100%;
+}
+@media (min-width: 48em) {
+  .column {
+    float: left;
+    width: 25%;
+    /* border: 1px solid red; */
+    /* margin-left: 2em; */
+  }
+  /* Stops the float property from affecting content after the columns */
+  .columns:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+.containerr {
+   padding: 1em 2em;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+ul li {
+  list-style: none;
+}
+
+#contact a {
+  color: #a683e3;
+  margin: 5px;
+}
+
+#contact {
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 130px;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  background-color: #a683e3;
+}
+
+#icon {
+  background-color: #fff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 1s, box-shadow 0.5s;
+  box-shadow: 0 2px 3px rgb(0 0 0 / 12%), 0 2px 2px rgb(0 0 0 / 24%);
+}
+
+#icon-container {
+  display: flex;
+  justify-content: center;
+}
+
+#icon:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 3px 5px 5px rgb(0 0 0 / 12%), 0 3px 5px rgb(0 0 0 / 24%);
+}
+
+#contact p {
+  font-size: 14px;
+}
+
+@media screen and (max-width: 426px) {
+ #icon {
+   width: 30px;
+   height: 30px;
+  }
+  
+  ul li {
+    font-size: 12px;
+  }
+  
+  #contact p {
+    font-size: 10px;
+  }
+}
+
+@media screen and (min-width: 2560px) {
+ #icon {
+   width: 50px;
+   height: 50px;
+  }
+  
+  ul li {
+    font-size: 20px;
+  }
+  
+  #contact p {
+    font-size: 16px;
+  }
+}

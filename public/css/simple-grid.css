@@ -12,11 +12,17 @@
 	padding: 1em;
 	border-radius: 0.5em;
 	 margin: 1em;
+   max-height: 100%;
 }
 
 .late {
 	color: #D1345B;
 } 
+
+.home{
+  margin-top: 2em;
+  color: whitesmoke;
+}
 
 /* input[type="text"] {
 	border-radius : 0.25em;
@@ -24,16 +30,20 @@
 	padding: 1em;
 } */
 
-label {
+.label {
 	width: 8em;
 	padding : 1em;
 	margin: 0em;
 	display: inline-block;
 }
 
+textarea{
+  height: 13.9em;
+  width: 100%;
+}
+
 .bigger-button {
 	padding: 1em;
-	margin: 1em;
 	font-weight: bold;
 }
 
@@ -73,7 +83,7 @@ body {
 
 * {
   font-family: 'Lato', Helvetica, sans-serif;
-  color: #333447;
+  /* color: #333447; */
   line-height: 1.5;
 }
 

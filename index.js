@@ -50,29 +50,24 @@ open({
   await db.migrate();
 
   // only setup the routes once the database connection has been established
-app.get('/', (req, res) => {
+app.get('/',  (req, res) => {
   res.render('home');
 });
 
-// app.get('/user', (req, res) => {
-//   res.render('image');
-// });
+app.get('/user',async (req, res) => {
+  const queryQ = await db.all('select * from query');
+  const username = await db.all('select * from signup where email = ?', req.session.email);
+  console.log(username)
+    res.render('image', {
+      queryQ,
+      username
+    });
+});
 
 app.get('/register', (req, res)=>{
   res.render('home');
 })
 
-
-
-app.get('/user', async function (req, res) {
-
-  const queryQ = await db.all('select * from notifications');
-
-  res.render('image', {
-    queryQ
-  });
-
-});
 
 app.post('/count', function (req, res) {
   counter++;
@@ -82,16 +77,17 @@ app.post('/count', function (req, res) {
 app.post('/johnquery', async function (req, res) {
 
   // read more about destructoring here - https://exploringjs.com/impatient-js/ch_destructuring.html
-  const { Query, noDays, noQueries } = req.body;
+  const { Query } = req.body;
 
   if (!Query && !noDays) {
     // nothing is added
     return res.redirect('/user');
   }
 
-  const insertQuerriesSQL = 'insert into notifications (first_name, book_count, days_due_in) values (?, ?, ?)';
-  await db.run(insertQuerriesSQL, Query, noQueries, noDays);
-
+  const insertQuerriesSQL = 'insert into query (query, date) values (?, ?)';
+  await db.run(insertQuerriesSQL, Query, moment(new Date()).format('MMM D, YYYY'));
+  const queryQ = await db.all('select * from query');
+console.log(queryQ)
   res.redirect('/user')
 
 });
@@ -250,9 +246,9 @@ app.post("/user", function(request, response) {
         res.redirect('/')
       }
       else {
-        console.log('siright')
-        if(sql.type_of_user == 'user') res.render('image');
-        else  res.render('querry');
+        // console.log('siright')
+        if(sql.type_of_user == 'user') res.redirect('/user');
+        else  res.redirect('/querry');
       }
 
     });
