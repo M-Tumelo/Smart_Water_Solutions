@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/simple-grid.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.css' rel='stylesheet' />
@@ -13,43 +14,10 @@
         type="text/css" />
     <script
         src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js"></script>
-    <script src="https://api.mapbox.com/directions/v5/mapbox/cycling/-84.518641,39.134270;-84.512023,39.102779?geometries=geojson&access_token=pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q"></script>   
-    <style>
-        
-        <style>body {
-            margin: 0;
-            padding: 0;
-        }
-
-        #map {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            height: 100%;
-            width: 100%;
-        }
-
-        .marker {
-            background-image: url('mapbox-icon.png');
-            background-size: cover;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        .mapboxgl-popup {
-            max-width: 200px;
-        }
-
-        .mapboxgl-popup-content {
-            text-align: center;
-            font-family: 'Open Sans', sans-serif;
-        }
-    </style>
-    <title>locator</title>
+    <script
+        src="https://api.mapbox.com/directions/v5/mapbox/cycling/-84.518641,39.134270;-84.512023,39.102779?geometries=geojson&access_token=pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q"></script>
+    <title>Document</title>
 </head>
-
 <body>
     <div style="display: block;">
         <input type="text" name="" id="data" value="NAME 2">
@@ -97,13 +65,17 @@
 
         async function getQueries() {
 
-            let url = '/data';
             try {
+                const url = '/data';
 
                 let res = await fetch(url);
                 const data = await res.json();
+                console.log(data);
+                const geojson = {
+                    type: 'FeatureCollection',
+                    features: data
+                };
 
-                const geojson = data;
 
                 // add markers to map
                 for (const feature of geojson.features) {
@@ -133,7 +105,5 @@
         getQueries();
 
     </script>
-
 </body>
-
 </html>

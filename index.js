@@ -50,7 +50,7 @@ open({
   await db.migrate();
 
   // only setup the routes once the database connection has been established
-  app.get('', (req, res) => {
+  app.get('/user', (req, res) => {
     res.render('image');
   });
 
@@ -67,57 +67,25 @@ open({
   });
 
   // list of querries 
-  app.get('/data', (req, res) => {
-    const geojson = {
-      type: 'FeatureCollection',
-      features: [
-        {
+  app.get('/data',async (req, res) => {
+    
+    const querries = 'SELECT * from QUERiES';
+    const geos = await db.all(querries);
+    
+    const geoJson = geos.map(function (store){
+      return {
           type: 'Feature',
           geometry: {
-            type: 'Point',
-            coordinates: [28.044088, -26.205246]
+              type: 'Point',
+              coordinates: [store.long,store.lat]
           },
           properties: {
-            title: 'Mapbox',
-            description: 'picture'
+              title: 'Mapbox',
+              description: store.discript
           }
-        },
-        {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [28.049271, -26.2078676]
-          },
-          properties: {
-            title: 'Mapbox',
-            description: 'picture'
-          }
-        },
-        {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [28.0428271, -26.2378676]
-          },
-          properties: {
-            title: 'Mapbox',
-            description: 'picture'
-          },
-        },
-        {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [28.0223241, -26.200886]
-          },
-          properties: {
-            title: 'Mapbox',
-            description: 'picture'
-          },
-        }
-      ]
-    };
-    res.json(geojson);
+      }
+    });
+    res.json(geoJson);
   });
 
   app.get('/admin', (req, res) => {
@@ -125,7 +93,7 @@ open({
     res.render('technician');
   });
 
- app.post('', (req, res) => {
+  app.post('', (req, res) => {
     let sampleFile;
     let uploadPath;
 
@@ -179,6 +147,7 @@ open({
     });
 
   });
- app.listen(PORT, function () {
+  app.listen(PORT, function () {
     console.log('App starting on port', PORT);
-  });})
+  });
+})

@@ -13,9 +13,9 @@
         type="text/css" />
     <script
         src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js"></script>
-    <script src="https://api.mapbox.com/directions/v5/mapbox/cycling/-84.518641,39.134270;-84.512023,39.102779?geometries=geojson&access_token=pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q"></script>   
+    <script
+        src="https://api.mapbox.com/directions/v5/mapbox/cycling/-84.518641,39.134270;-84.512023,39.102779?geometries=geojson&access_token=pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q"></script>
     <style>
-        
         <style>body {
             margin: 0;
             padding: 0;
@@ -97,33 +97,17 @@
 
         async function getQueries() {
 
-                <h1>queries</h1>
-                <tr>
-                    <th>orderId</th>
-                    <th>smallQty</th>
-                    <th>mediumQty</th>
-                    <th>largeQty</th>
-                    <th>status</th>
-                    <th>Total</th>
-                </tr>
-                {{#each queries}}
+            try {
+                const url = '/data';
 
                 let res = await fetch(url);
                 const data = await res.json();
+                console.log(data);
+                const geojson = {
+                    type: 'FeatureCollection',
+                    features: data
+                };
 
-                    <td>{{id}}</td>
-                    <td>{{smallQty}}</td>
-                    <td>{{mediumQty}}</td>
-                    <td>{{largeQty}}</td>
-                    <td>{{status}}</td>
-                    <td>R{{total}}</td>
-                    <td>
-                        <form action="/pay/{{id}}" method="post">
-                            <input type="number" step="0.01" name="amount" required>
-                            <input type="submit" name="pay" value="pay">
-                             <button onclick="getLocation()">view</button>
-                        </form>
-                    </td>
 
                 // add markers to map
                 for (const feature of geojson.features) {
