@@ -1,5 +1,5 @@
 let express = require('express');
-const fileupload = require('express-fileupload');
+const fileUpload = require('express-fileupload');
 
 let app = express();
 
@@ -17,10 +17,12 @@ const sqlite3 = require('sqlite3');
 const { open } = require('sqlite');
 var cors = require('cors');
 app.use(cors());
+let PORT = process.env.PORT || 3001;
 
 //Configure the express-handlebars module
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
+
 const session = require('express-session');
 const { compile } = require('handlebars');
 
@@ -47,7 +49,7 @@ open({
   await db.migrate();
 
   // only setup the routes once the database connection has been established
-  app.get('', (req, res) => {
+  app.get('/user', (req, res) => {
     res.render('image');
   });
 
@@ -56,93 +58,39 @@ app.get('/', (req, res) => {
   res.render('home');
 });
 
-app.get('/register', (req, res)=>{
-  res.render('home');
-})
+  app.get('/register', (req, res) => {
+    res.render('home');
+  });
 
-app.get('/login', (req, res)=>{
-  res.render('home');
-})
+  app.get('/login', (req, res) => {
+    res.render('home');
+  });
 
   // list of querries 
-  app.get('/data', (req, res) => {
-    const geojson = {
-      type: 'FeatureCollection',
-      features: [
-        {
+  app.get('/data',async (req, res) => {
+    
+    const querries = 'SELECT * from QUERiES';
+    const geos = await db.all(querries);
+    
+    const geoJson = geos.map(function (store){
+      return {
           type: 'Feature',
           geometry: {
-            type: 'Point',
-            coordinates: [28.044088, -26.205246]
+              type: 'Point',
+              coordinates: [store.long,store.lat]
           },
           properties: {
-            title: 'Mapbox',
-            description: 'picture'
+              title: 'Mapbox',
+              description: store.discript
           }
-        },
-        {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [28.049271, -26.2078676]
-          },
-          properties: {
-            title: 'Mapbox',
-            description: 'picture'
-          }
-        },
-        {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [28.0428271, -26.2378676]
-          },
-          properties: {
-            title: 'Mapbox',
-            description: 'picture'
-          },
-        },
-        {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [28.0223241, -26.200886]
-          },
-          properties: {
-            title: 'Mapbox',
-            description: 'picture'
-          },
-        },
-        {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [28.0223241, -26.281886]
-          },
-          properties: {
-            title: 'Mapbox',
-            description: 'picture'
-          },
-        },
-        {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [28.0271041, -26.231816]
-          },
-          properties: {
-            title: 'Mapbox',
-            description: 'picture'
-          },
-        }
+      }
+    });
+    res.json(geoJson);
+  });
 
-      ]
-    };
-    res.json(geojson);
-  })
   app.get('/admin', (req, res) => {
 
-    res.render('querry');
+    res.render('technician');
   });
 
   app.post('', (req, res) => {
@@ -199,11 +147,7 @@ app.get('/login', (req, res)=>{
     });
 
   });
-
-
-  let PORT = process.env.PORT || 3001;
-
   app.listen(PORT, function () {
     console.log('App starting on port', PORT);
   });
-});
+})
