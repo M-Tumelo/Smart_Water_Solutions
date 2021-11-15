@@ -23,7 +23,7 @@
         } 
 
         #map {
-          height: 200px;
+          height: 400px;
         }
 
         .marker {
@@ -48,6 +48,37 @@
 </head>
 
 <body>
+<div class="column">
+         <div class="section">
+          <h2>Attach Location</h2>
+          <p>
+            latitude: <span id="latitude"></span>&deg;<br />
+            longitude: <span id="longitude"></span>&deg;
+          </p>
+          <div id="mymap"></div>
+        </div>
+        </div>
+        <div class="column">
+            <div style="margin-top: 1em;" class="board">
+                <h1 class="board__heading">
+                    Newsletter
+                </h1>
+                <section class="board__news">
+              {{#each queryQ}}     
+            <a class="news--item" href="#">
+                    <p class="date">
+                       {{date}}
+                    </p>
+                    <p class="title">
+                       {{query}}
+                    </p>
+                </a>
+
+                {{/each}}
+                </section>
+            </div>
+        </div>
+
 <div class="column">
      <div class="section">
     <div id='map'></div>
