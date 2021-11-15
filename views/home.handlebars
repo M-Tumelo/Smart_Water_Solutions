@@ -23,8 +23,42 @@
       </ul>
     </header>
   </div>
-  
-      <div class="away-from-margin column">
+  <div>
+            
+            {{#each queryQ}}
+            <center>
+
+            
+            <h2>Queries</h2>
+            <div class="section mt-1">
+
+              {{first_name}}
+              {{!-- <br><br>
+              <strong>{{book_count}}</strong> queries(s) you sent took out at the library is due in
+              <strong>{{days_due_in}}</strong> day(s).
+              <br><br> --}}
+
+              {{!-- {{#if notLate}}
+              Please return these books to us in the next <a href="/reminder/{{days_due_in}}/days">{{days_due_in}}
+                days</a> .
+              {{else}}
+              <span class="late"> Please return your books <strong>urgently</strong></span>
+              {{/if}} --}}
+
+              {{!-- <div class="mt-1">
+                <a href="/edit/{{id}}">Edit query</a>
+              </div> --}}
+              <div class="remove-query mt-1">
+                <form method="POST" action="/remove/{{id}}">
+                  <input type="submit" class="small-button" value="Remove Query">
+                </form>
+              </div>
+            </div>
+            {{/each}}
+          </div>
+        </div>
+        <div style="margin-top: 6em;"></div>
+      <div class="center">
     <div class="tabs">
 
       <input type="radio" name="tabs" id="tabone" checked="checked">
@@ -34,10 +68,11 @@
           <h1>Login</h1>
         </center>
         
-        <form action="/login" style="margin:1em">
+        <form action="/login" method="post" style="margin:1em">
           <div class="input-container">
             <i class="fa fa-envelope icon"></i>
-            <input class="input-field" type="text" required placeholder="Email" name="email">
+            {{!-- Changed type from text to email --}}
+            <input class="input-field" type="email" required placeholder="Email" name="email"> 
           </div>
 
           <div class="input-container">
@@ -57,7 +92,7 @@
            <h1>Register</h1>
         </center>
        
-        <form action="/register" style="margin:1em">
+        <form action="/register" method="post" style="margin:1em">
           <div class="input-container">
             <i class="fa fa-user icon"></i>
             <input class="input-field" type="text" required placeholder="Name" name="name">
@@ -65,7 +100,7 @@
 
           <div class="input-container">
             <i class="fa fa-envelope icon"></i>
-            <input class="input-field" type="text" required placeholder="Email" name="email">
+            <input class="input-field" type="email" required placeholder="Email" name="email">
           </div>
 
           <div class="input-container">
@@ -77,10 +112,10 @@
             <i class="fa fa-lock icon"></i>
             <input class="input-field" type="password" required placeholder="Retype Password" name="psw1">
           </div>
-          <div id="tabs">
-          <p>Are you a Rand Water Technican?</p>&nbsp;&nbsp; 
-          <input type="radio" name="user_type" checked value="user"><p>No</p>&nbsp;&nbsp;
-         <input type="radio" name="user_type" value="technician"><p>Yes</p><br>&nbsp;
+          <div style="padding-bottom: 1em;">
+          <p>Are you a Rand Water Technican?</p>
+          <input id="padding" type="radio" name="user_type" checked value="user">No
+         <input id="padding" type="radio" name="user_type" value="technician">Yes
           </div>
           <button style="margin-top: 5px;" type="submit" class="btn">Register</button>
         </form>

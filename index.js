@@ -1,7 +1,5 @@
 let express = require('express');
-const fileUpload = require('express-fileupload');
-
-
+const fileupload = require('express-fileupload');
 
 let app = express();
 
@@ -17,6 +15,9 @@ const path = require('path');
 //import sqlite modules
 const sqlite3 = require('sqlite3');
 const { open } = require('sqlite');
+var cors = require('cors');
+app.use(cors());
+let PORT = process.env.PORT || 3001;
 
 //Configure the express-handlebars module
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
@@ -37,126 +38,219 @@ app.use(session({
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static('public'));
-app.use(fileUpload());
-app.use(express.json({limit: '5mb' }));
- open({
-   filename: './data.db',
+app.use(fileupload());
+
+open({
+  filename: './data.db',
   driver: sqlite3.Database
 }).then(async function (db) {
 
-  // run migrations
-
+  // run migration
 
   await db.migrate();
 
-
   // only setup the routes once the database connection has been established
-  app.get('/user', (req, res) => {
-    res.render('image');
-  });
-
-app.get('/', (req, res) => {
+app.get('/',  (req, res) => {
   res.render('home');
+});
+
+app.get('/user',async (req, res) => {
+  const queryQ = await db.all('select * from query');
+  const username = await db.all('select * from signup where email = ?', req.session.email);
+  console.log(username)
+    res.render('image', {
+      queryQ,
+      username
+    });
 });
 
 app.get('/register', (req, res)=>{
   res.render('home');
 })
 
-app.get('/login', (req, res)=>{
-  res.render('home');
-})
+
+app.post('/count', function (req, res) {
+  counter++;
+  res.redirect('/user')
+});
+
+app.post('/johnquery', async function (req, res) {
+
+  // read more about destructoring here - https://exploringjs.com/impatient-js/ch_destructuring.html
+  const { Query } = req.body;
+
+  if (!Query && !noDays) {
+    // nothing is added
+    return res.redirect('/user');
+  }
+
+  const insertQuerriesSQL = 'insert into query (query, date) values (?, ?)';
+  await db.run(insertQuerriesSQL, Query, moment(new Date()).format('MMM D, YYYY'));
+  const queryQ = await db.all('select * from query');
+// console.log(queryQ)
+  res.redirect('/user')
+
+});
+
+
+// app.get('/reminder/:dayCount/days', function (req, res) {
+
+//   // find me all the reminders for the current Day count
+//   const filteredReminders = reminders.filter(function (reminder) {
+//     return reminder.dayCount == Number(req.params.dayCount)
+//   })
+
+//   res.render('reminder', {
+//     reminders: filteredReminders
+//   });
+
+// });
+
+app.post('/remove/:id', async function(req, res){
+
+  const bookId = req.params.id;
+  const deleteQuerriesSQL = 'delete from notifications where id = ?';
+  await db.run(deleteQuerriesSQL, bookId);
+  res.redirect('/user');
+  
+});
+
+// app.get('/edit/:id', function (req, res) {
+//   res.render("edit");
+// });
+
+
+
+// only setup the routes once the database connection has been established
+
+// })
+
+
+
+
+// we use global state to store data
+
+// const reminders = [];
+
+
+
 
   // list of querries 
+  app.get('/data', (req, res) => {
+    const geojson = {
+      type: 'FeatureCollection',
+      features: [
+        {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [28.044088, -26.205246]
+          },
+          properties: {
+            title: 'Mapbox',
+            description: 'picture'
+          }
+        },
+        {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [28.049271, -26.2078676]
+          },
+          properties: {
+            title: 'Mapbox',
+            description: 'picture'
+          }
+        },
+        {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [28.0428271, -26.2378676]
+          },
+          properties: {
+            title: 'Mapbox',
+            description: 'picture'
+          },
+        },
+        {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [28.0223241, -26.200886]
+          },
+          properties: {
+            title: 'Mapbox',
+            description: 'picture'
+          },
+        }
+      ]
+    };
+    res.json(geojson);
+  });
+
   app.get('/admin', (req, res) => {
 
-    var orders=[{lat: 'hhh',
-    long: 'dd',
-    name: 'pretoria'},
-    {lat: 'hhh',
-    long: 'dd',
-    name: 'joburg'},{lat: 'hhh',
-    long: 'dd',
-    name: 'bush'}
-    
-  ];
-
-    res.render('querry', {orders:orders});
+    res.render('querry');
   });
 
-  app.post('/user', (req, res) => {
+  // app.post('', (req, res) => {
+  //   let sampleFile;
+  //   let uploadPath;
 
-    let sampleFile;
-    let uploadPath;
+  //   if (!req.files || Object.keys(req.files).length === 0) {
+  //     return res.status(400).send('No files were uploaded.');
+  //   }
+  //   sampleFile = req.files.sampleFile;
+  //   console.log(sampleFile);
 
-    if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).send('No files were uploaded.');
-    }
-    sampleFile = req.files.sampleFile;
-    uploadPath = __dirname + '/upload/' + sampleFile.name;
-    //console.log(sampleFile);
+// upload image files to server
+app.post("/user", function(request, response) {
+  var images = new Array();
+  if(request.files) {
+      var arr;
+      if(Array.isArray(request.files.filesfld)) {
+          arr = request.files.filesfld;
+      }
+      else {
+          arr = new Array(1);
+          arr[0] = request.files.filesfld;
+      }
+      for(var i = 0; i < arr.length; i++) {
+          var file = arr[i];
+          if(file.mimetype.substring(0,5).toLowerCase() == "image") {
+              images[i] = "/" + file.name;
+              file.mv("./upload" + images[i], function (err) {
+                  if(err) {
+                      console.log(err);
+                  }
+              });
+          }
+      }
+  }
+  // give the server a second to write the files
+  setTimeout(function(){response.json(images);}, 1000);
+});
 
-    sampleFile.mv(uploadPath, function (err) {
-      if(err) return res.status(500).send(err);
-      res.send('File uploaded');
-      });
-      
-      
-  });
-
-  app.post('/api', (req, res) => {
-    console.log(req.body);
-   const data = req.body;
-   res.json({
-     status: 'Success',
-    latitude: data.latitude,
-     longitude: data.longitude
-   });
-  });
-
-  app.post('/login', async (req, res) => {
-    req.session.email = req.body.email;
-    req.session.psw = req.body.psw;
-    let sql = await db.get('Select * from signup where Email = ?', req.session.email);
-    console.log(sql)
-    if (sql == null) {
-      console.log('Incorrect Email or password');
-      res.redirect('/');
-    }
-    if (sql.password !== req.session.psw) {
-      console.log('Incorrect Email or password')
-      res.redirect('/')
-    }
-    else {
-      if(sql.type_of_user == 'user') res.redirect('/user');
-      else res.redirect('/technician');
-    }
-  });
-
-
-  app.post('/register', async (req, res) => {
-    const { name, email, psw, psw1, user_type } = req.body;
-
-    req.session.name = name;
-    req.session.email = email;
-    req.session.psw = psw;
-    req.session.psw1 = psw1;
-    req.session.user_type = user_type;
-    let sql = await db.get('Select Email email, Password psw from signup where Email = ?', req.session.email);
-    if (sql == null) {
-      if (req.session.psw == psw1) {
-        const insert_details = 'insert into signup (name, email, password, type_of_user) values (?, ?, ?, ?)';
-        await db.run(insert_details, req.session.name, req.session.email, req.session.psw, req.session.user_type);
+    app.post('/login', async (req, res) => {
+      req.session.email = req.body.email;
+      req.session.psw = req.body.psw;
+      let sql = await db.get('Select * from signup where Email = ?', req.session.email);
+      console.log(sql)
+      if (sql == null) {
+        console.log('Incorrect Email or password');
         res.redirect('/');
       }
-      if (sql.psw !== req.session.psw) {
-        console.log('Incorrect Email or password')
+      if (sql.password !== req.session.psw) {
+        console.log('Incorrect or password')
         res.redirect('/')
       }
       else {
-        res.redirect('/')
+        // console.log('siright')
+        if(sql.type_of_user == 'user') res.redirect('/user');
+        else  res.redirect('/admin');
       }
-    }
+
     });
     app.post('/register', async (req, res) => {
       const { name, email, psw, psw1, user_type } = req.body;
@@ -182,10 +276,9 @@ app.get('/login', (req, res)=>{
         res.redirect('/')
       }
     });
+
   });
-
-  let PORT = process.env.PORT || 3001;
-
-  app.listen(PORT, function () {
+ app.listen(PORT, function () {
     console.log('App starting on port', PORT);
   });
+// });
