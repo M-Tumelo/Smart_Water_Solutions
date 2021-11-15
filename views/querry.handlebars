@@ -16,17 +16,14 @@
     <script
         src="https://api.mapbox.com/directions/v5/mapbox/cycling/-84.518641,39.134270;-84.512023,39.102779?geometries=geojson&access_token=pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q"></script>
     <style>
-        <style>body {
+        <style>
+            body {
             margin: 0;
             padding: 0;
-        }
+        } 
 
         #map {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            height: 50%;
-            width: 50%;
+          height: 200px;
         }
 
         .marker {
@@ -51,7 +48,8 @@
 </head>
 
 <body>
-   
+<div class="column">
+     <div class="section">
     <div id='map'></div>
 
     <script>
@@ -127,7 +125,8 @@
         getQueries();
 
     </script>
-
+</div>
+</div>
 </body>
 
 </html>

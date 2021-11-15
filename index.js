@@ -194,6 +194,16 @@ app.post('/remove/:id', async function(req, res){
     res.render('querry');
   });
 
+  app.post('/api', (request, response) => {
+    console.log(request.body);
+    const data =  request.body;
+    response.json({
+      status: 'Success',
+      latitude : data.lat,
+      longitude: data.lon
+    });
+  })
+
   // app.post('', (req, res) => {
   //   let sampleFile;
   //   let uploadPath;
