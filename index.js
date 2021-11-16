@@ -54,9 +54,9 @@ open({
   });
 
 
-app.get('/', (req, res) => {
-  res.render('home');
-});
+  app.get('/', (req, res) => {
+    res.render('home');
+  });
 
   app.get('/register', (req, res) => {
     res.render('home');
@@ -67,22 +67,22 @@ app.get('/', (req, res) => {
   });
 
   // list of querries 
-  app.get('/data',async (req, res) => {
-    
+  app.get('/data', async (req, res) => {
+
     const querries = 'SELECT * from QUERiES';
     const geos = await db.all(querries);
-    
-    const geoJson = geos.map(function (store){
+
+    const geoJson = geos.map(function (store) {
       return {
-          type: 'Feature',
-          geometry: {
-              type: 'Point',
-              coordinates: [store.long,store.lat]
-          },
-          properties: {
-              title: 'Mapbox',
-              description: store.discript
-          }
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [store.long, store.lat]
+        },
+        properties: {
+          title: 'Mapbox',
+          description: store.discript
+        }
       }
     });
     res.json(geoJson);
@@ -91,6 +91,17 @@ app.get('/', (req, res) => {
   app.get('/admin', (req, res) => {
 
     res.render('technician');
+  });
+
+  app.get('/sense', (req, res) => {
+
+    res.render('sense');
+  });
+
+  app.post('/sense',async (req, res) => {
+    console.log(req.body.discript);
+    const insertData = ('INSERT INTO QUERiES (long,lat,discript)  VALUES (?,?,?)');
+    await db.run(insertData, req.body.long, req.body.lat, req.body.Descript);
   });
 
   app.post('', (req, res) => {
