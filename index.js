@@ -25,6 +25,7 @@ app.set('view engine', 'handlebars');
 
 const session = require('express-session');
 const { compile } = require('handlebars');
+const { query } = require('express');
 
 //Set-up middleware
 
@@ -92,6 +93,19 @@ app.post('/johnquery', async function (req, res) {
 
 });
 
+app.post('uQuerry', async (req,res) => {
+  const {name, picture} = req.files.upload;
+  const insertList = 'insert into query(name,longitude,lattitude,picture) values(?,?,?,?)';
+  await db.run(insertList, name,longitude,lattitude,picture);
+  const qlist = await db.all('select * from query');
+  console.log(qlist);
+
+  res.redirect('/user')
+}); 
+
+  app.get('/uQuerry', (req, res) => {
+    res.render('user');
+  });
 
 // app.get('/reminder/:dayCount/days', function (req, res) {
 
@@ -194,6 +208,9 @@ app.post('/remove/:id', async function(req, res){
     res.render('querry');
   });
 
+
+
+  
   // app.post('', (req, res) => {
   //   let sampleFile;
   //   let uploadPath;
