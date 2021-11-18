@@ -38,7 +38,7 @@ app.use(session({
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static('public'));
-app.use(fileupload());
+app.use(fileUpload());
 
 open({
   filename: './data.db',
@@ -50,87 +50,87 @@ open({
   await db.migrate();
 
   // only setup the routes once the database connection has been established
-app.get('/',  (req, res) => {
-  res.render('home');
-});
+  app.get('/', (req, res) => {
+    res.render('home');
+  });
 
-app.get('/user',async (req, res) => {
-  const queryQ = await db.all('select * from query');
-  const username = await db.all('select * from signup where email = ?', req.session.email);
-  console.log(username)
+  app.get('/user', async (req, res) => {
+    const queryQ = await db.all('select * from query');
+    const username = await db.all('select * from signup where email = ?', req.session.email);
+    console.log(username)
     res.render('image', {
       queryQ,
       username
     });
-});
+  });
 
-app.get('/register', (req, res)=>{
-  res.render('home');
-})
-
-
-app.post('/count', function (req, res) {
-  counter++;
-  res.redirect('/user')
-});
-
-app.post('/johnquery', async function (req, res) {
-
-  // read more about destructoring here - https://exploringjs.com/impatient-js/ch_destructuring.html
-  const { Query } = req.body;
-
-  if (!Query && !noDays) {
-    // nothing is added
-    return res.redirect('/user');
-  }
-
-  const insertQuerriesSQL = 'insert into query (query, date) values (?, ?)';
-  await db.run(insertQuerriesSQL, Query, moment(new Date()).format('MMM D, YYYY'));
-  const queryQ = await db.all('select * from query');
-// console.log(queryQ)
-  res.redirect('/user')
-
-});
+  app.get('/register', (req, res) => {
+    res.render('home');
+  })
 
 
-// app.get('/reminder/:dayCount/days', function (req, res) {
+  app.post('/count', function (req, res) {
+    counter++;
+    res.redirect('/user')
+  });
 
-//   // find me all the reminders for the current Day count
-//   const filteredReminders = reminders.filter(function (reminder) {
-//     return reminder.dayCount == Number(req.params.dayCount)
-//   })
+  app.post('/johnquery', async function (req, res) {
 
-//   res.render('reminder', {
-//     reminders: filteredReminders
-//   });
+    // read more about destructoring here - https://exploringjs.com/impatient-js/ch_destructuring.html
+    const { Query } = req.body;
 
-// });
+    if (!Query && !noDays) {
+      // nothing is added
+      return res.redirect('/user');
+    }
 
-app.post('/remove/:id', async function(req, res){
+    const insertQuerriesSQL = 'insert into query (query, date) values (?, ?)';
+    await db.run(insertQuerriesSQL, Query, moment(new Date()).format('MMM D, YYYY'));
+    const queryQ = await db.all('select * from query');
+    // console.log(queryQ)
+    res.redirect('/user')
 
-  const bookId = req.params.id;
-  const deleteQuerriesSQL = 'delete from notifications where id = ?';
-  await db.run(deleteQuerriesSQL, bookId);
-  res.redirect('/user');
-  
-});
-
-// app.get('/edit/:id', function (req, res) {
-//   res.render("edit");
-// });
+  });
 
 
+  // app.get('/reminder/:dayCount/days', function (req, res) {
 
-// only setup the routes once the database connection has been established
+  //   // find me all the reminders for the current Day count
+  //   const filteredReminders = reminders.filter(function (reminder) {
+  //     return reminder.dayCount == Number(req.params.dayCount)
+  //   })
 
-// })
+  //   res.render('reminder', {
+  //     reminders: filteredReminders
+  //   });
+
+  // });
+
+  app.post('/remove/:id', async function (req, res) {
+
+    const bookId = req.params.id;
+    const deleteQuerriesSQL = 'delete from notifications where id = ?';
+    await db.run(deleteQuerriesSQL, bookId);
+    res.redirect('/user');
+
+  });
+
+  // app.get('/edit/:id', function (req, res) {
+  //   res.render("edit");
+  // });
 
 
 
+  // only setup the routes once the database connection has been established
 
-// we use global state to store data
+  // })
 
-// const reminders = [];
+
+
+
+  // we use global state to store data
+
+  // const reminders = [];
 
 
 
@@ -167,63 +167,72 @@ app.post('/remove/:id', async function(req, res){
     res.render('sense');
   });
 
-  app.post('/sense',async (req, res) => {
+  app.post('/sense', async (req, res) => {
 
-    console.log(req.body.discript);
-    const insertData = ('INSERT INTO QUERiES (long,lat,discript)  VALUES (?,?,?)');
-    await db.run(insertData, req.body.long, req.body.lat, req.body.Descript);
+
+
+    const dataSet = ('SELECT * FROM QUERiES WHERE long=? AND lat=?');
+    const dataQuery = await db.get(dataSet, req.body.long, req.body.lat);
+    if (dataQuery != undefined) {
+      console.log('the entry exists');
+    } else {
+      const insertData = ('INSERT INTO QUERiES (long,lat,discript)  VALUES (?,?,?)');
+      await db.run(insertData, req.body.long, req.body.lat, req.body.Descript);
+      console.log('new entry')
+    }
+
   });
 
   app.post('', (req, res) => {
     let sampleFile;
     let uploadPath;
-  app.post('/api', (request, response) => {
-    console.log(request.body);
-    const data =  request.body;
-    response.json({
-      status: 'Success',
-      latitude : data.lat,
-      longitude: data.lon
-    });
-  })
+    app.post('/api', (request, response) => {
+      console.log(request.body);
+      const data = request.body;
+      response.json({
+        status: 'Success',
+        latitude: data.lat,
+        longitude: data.lon
+      });
+    })
 
-  // app.post('', (req, res) => {
-  //   let sampleFile;
-  //   let uploadPath;
+    // app.post('', (req, res) => {
+    //   let sampleFile;
+    //   let uploadPath;
 
-  //   if (!req.files || Object.keys(req.files).length === 0) {
-  //     return res.status(400).send('No files were uploaded.');
-  //   }
-  //   sampleFile = req.files.sampleFile;
-  //   console.log(sampleFile);
+    //   if (!req.files || Object.keys(req.files).length === 0) {
+    //     return res.status(400).send('No files were uploaded.');
+    //   }
+    //   sampleFile = req.files.sampleFile;
+    //   console.log(sampleFile);
 
-// upload image files to server
-app.post("/user", function(request, response) {
-  var images = new Array();
-  if(request.files) {
-      var arr;
-      if(Array.isArray(request.files.filesfld)) {
+    // upload image files to server
+    app.post("/user", function (request, response) {
+      var images = new Array();
+      if (request.files) {
+        var arr;
+        if (Array.isArray(request.files.filesfld)) {
           arr = request.files.filesfld;
-      }
-      else {
+        }
+        else {
           arr = new Array(1);
           arr[0] = request.files.filesfld;
-      }
-      for(var i = 0; i < arr.length; i++) {
+        }
+        for (var i = 0; i < arr.length; i++) {
           var file = arr[i];
-          if(file.mimetype.substring(0,5).toLowerCase() == "image") {
-              images[i] = "/" + file.name;
-              file.mv("./upload" + images[i], function (err) {
-                  if(err) {
-                      console.log(err);
-                  }
-              });
+          if (file.mimetype.substring(0, 5).toLowerCase() == "image") {
+            images[i] = "/" + file.name;
+            file.mv("./upload" + images[i], function (err) {
+              if (err) {
+                console.log(err);
+              }
+            });
           }
+        }
       }
-  }
-  // give the server a second to write the files
-  setTimeout(function(){response.json(images);}, 1000);
-});
+      // give the server a second to write the files
+      setTimeout(function () { response.json(images); }, 1000);
+    });
 
     app.post('/login', async (req, res) => {
       req.session.email = req.body.email;
@@ -240,8 +249,8 @@ app.post("/user", function(request, response) {
       }
       else {
         // console.log('siright')
-        if(sql.type_of_user == 'user') res.redirect('/user');
-        else  res.redirect('/admin');
+        if (sql.type_of_user == 'user') res.redirect('/user');
+        else res.redirect('/admin');
       }
 
     });
