@@ -43,27 +43,28 @@ border-bottom: 2px solid #009879;
 </head>
 <body>
 
-<form action="/uQuerry" method="post">
+<form action="/uQuerry" method="POST">
 <table class="table">
 
-<h2 style="text-align:center">Customer Query list</h2>
+<h2 style="text-align:center">Query list</h2>
 <tr>
-	<th>Customer Number:</th>
+	<th>Query Number:</th>
   <th>Coordinates:</th>
-  <th>Customer Name:</th>
+  <th>Description:</th>
 	<th>Leak Image:</th>
-	<th></th>
 </tr>
-<tr>
- {{#each querries}}
+
+ {{#each queryQ}}
+ <tr>
 	<td>{{id}}</td>
 	<td>{{long}} :{{lat}}</td>
 	<td>{{discript}}</td>
   <td>{{image}}</td>
+  </tr>
 	{{!-- <td><button type="submit" value="submit">Submit</td> --}}
 	{{/each}}
-                        </form></td>
-
+                        </form>
+ 
 
     {{!-- <div class="menu-wrapper">
     <header class="header">
