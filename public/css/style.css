@@ -209,15 +209,14 @@ section img{
 .clear{
 color: black;
 }
-/* .clear:hover{
-  color;
-} */
+.clear:hover{
+  color: #00c6fb;
+}
 
 .none{
   all: initial;
 }
 
-<<<<<<< HEAD
 /*START OF THE MAP*/
 #map {
   position: absolute;
@@ -246,12 +245,6 @@ color: black;
 }
 /*END OF THE MAP*/
 
-=======
-.remove-hover{
-  pointer-events: none;
-}
-
->>>>>>> ad4e17bb3d798e2d6c24968a2ae942bd1814ea10
 /* Responsive */
 
 @media only screen and (max-width: 768px){
@@ -270,7 +263,7 @@ color: black;
 
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 770px) {
 
   /* .away-from-margin{
     margin-left: 30em;
@@ -282,9 +275,6 @@ color: black;
         height: 55px; */
         line-height: 2;
     }
-   .cart-container{
-     width: 480px;
-   }
   .header li {
     float: left;
     border-right: 1px solid #bbb;
@@ -310,6 +300,7 @@ color: black;
     display: none;
   }
 }
+/* Have to fix it */
 .tabs {
   display: flex;
   flex-wrap: wrap;
@@ -561,9 +552,18 @@ color: black;
 @media (min-width: 48em) {
   .column {
     float: left;
-    width: 25%;
+    width: 33.33%;
     /* border: 1px solid red; */
     /* margin-left: 2em; */
+  }
+  #col .column {
+    float: left;
+    width: 30%;
+  }
+
+  #cont .column{
+    float: left;
+    width: 45%;
   }
   /* Stops the float property from affecting content after the columns */
   .columns:after {
@@ -575,6 +575,7 @@ color: black;
 
 .containerr {
    padding: 1em 2em;
+   height: 100%;
 }
 
 ul {
@@ -598,6 +599,9 @@ ul li {
   justify-content: center;
   align-items: center;
   height: 130px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
   background-color: #a683e3;
@@ -657,4 +661,83 @@ ul li {
   #contact p {
     font-size: 16px;
   }
+}
+
+/* Query page */
+.head-notification {
+  background-color: #54B3FF;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+}
+/*****
+      queryyS
+*****/
+.body-notification {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: #474747;
+}
+.line {
+  position: absolute;
+  right: 15px;
+  height: 100%;
+  width: 3px;
+  background-color: lightgray;
+}
+.queryy {
+  position: relative;
+  padding-left: 0px;
+  padding-top: 20px;
+  z-index: 2;
+}
+.circle {
+  background-color: #fff;
+  color: #4071a3;
+  position: absolute;
+right: 10px;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  border: 2px #4071a3 solid;
+  /*adding white space around circle*/
+  box-shadow: 0 0 0 3px #fff;
+}
+.queryy p {
+  margin-top: 0;
+margin-right: 1.5em;
+  padding: 0 15px;
+}
+.time {
+  left: 16px;
+  position: relative;
+  font-size: 12px;
+  display: block;
+  line-height: 1;
+}
+.mains{
+position:relative;
+width: 100%;
+}
+
+.button2 {
+  display:block; 
+  margin:auto; 
+  margin-top:5em;
+  background-color: #3B413C; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  width: 50%;
+}
+.button2:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 }

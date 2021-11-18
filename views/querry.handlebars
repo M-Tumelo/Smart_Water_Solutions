@@ -20,10 +20,14 @@
             body {
             margin: 0;
             padding: 0;
-        } 
+        }
 
         #map {
-          height: 400px;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            height: 50%;
+            width: 50%;
         }
 
         .marker {
@@ -47,41 +51,69 @@
     <title>locator</title>
 </head>
 
-<body>
-<div class="column">
-         <div class="section">
-          <h2>Attach Location</h2>
-          <p>
-            latitude: <span id="latitude"></span>&deg;<br />
-            longitude: <span id="longitude"></span>&deg;
-          </p>
-          <div id="mymap"></div>
-        </div>
-        </div>
-        <div class="column">
-            <div style="margin-top: 1em;" class="board">
-                <h1 class="board__heading">
-                    Newsletter
-                </h1>
-                <section class="board__news">
-              {{#each queryQ}}     
-            <a class="news--item" href="#">
-                    <p class="date">
-                       {{date}}
-                    </p>
-                    <p class="title">
-                       {{query}}
-                    </p>
-                </a>
-
-                {{/each}}
-                </section>
+<body style="background-color: whitesmoke;">
+    <div class="menu-wrapper">
+        <header class="header">
+            <a href="/" class="logo"><img alt="Logo" src="/img/logo.jpg"></a>
+            <input class="menu-btn" type="checkbox" id="menu-btn" />
+            <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
+            <ul class="menu">
+                <li class="hide"><a href="#" class="remove-hover">{{#each username}}<span
+                            style="color: whitesmoke; vertical-align: 12px;">Welcome
+                            {{name}}</span>{{/each}}&nbsp;&nbsp;<i
+                            style="color: whitesmoke; font-size:44px; margin-top:-11px;" class="fa fa-user-circle-o"
+                            aria-hidden="true"></i></a></li>
+                {{!-- <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact Us</a></li> --}}
+            </ul>
+        </header>
+    </div>
+    <div style="margin-top: 5em;">Welcome</div>
+    <div class="containerr">
+        <div class="columns" id="col">
+            <div class="column">
+<section class="mains">
+            <div class="head-notification">
+                <p>Queries</p>
             </div>
-        </div>
+            <div class="body-notification">
+                <div class="line"></div>
+                {{#each queryQ}} 
+               <a href="/ds/{{id}}" id={{id}}><div class="queryy">
+                    <div class="circle"></div>
+                    <span class="time">{{date}}</span>
+                    <p>{{query}}</p>
+                </div></a>
+               {{/each}} 
+            </div>
+    </section>
+            </div>
+            <div class="column">
+<div style="margin-top: 1em;" class="board">
+          <h1 class="board__heading">
+            Newsletter
+          </h1>
+          <section class="board__news">
+            {{#each queryQ}}
+            <a class="news--item" href="#">
+              <p class="date">
+                {{date}}
+              </p>
+              <p class="title">
+                {{query}}
+              </p>
+            </a>
 
-<div class="column">
-     <div class="section">
-    <div id='map'></div>
+            {{/each}}
+          </section>
+        </div>
+            </div>
+            {{!-- <div class="column">
+Name 3
+            </div> --}}
+        </div>
+    </div>
+    {{!-- <div id='map'></div> --}}
 
     <script>
 
@@ -156,8 +188,7 @@
         getQueries();
 
     </script>
-</div>
-</div>
+
 </body>
 
 </html>

@@ -1,5 +1,6 @@
 let express = require('express');
 const fileUpload = require('express-fileupload');
+const FileType = require('file-type');
 
 let app = express();
 
@@ -40,6 +41,8 @@ app.use(bodyParser.json())
 app.use(express.static('public'));
 app.use(fileUpload());
 
+
+
 open({
   filename: './data.db',
   driver: sqlite3.Database
@@ -49,15 +52,24 @@ open({
 
   await db.migrate();
 
+  const knex = require('knex')({
+    client: 'sqlite3',
+    connection: {
+      filename: "./data.db"
+    },
+    useNullAsDefault: true
+  });
   // only setup the routes once the database connection has been established
+
+  //getting queries data and name of the user from the database
+  const queryQ = await db.all('select * from query');
+  var upload;
   app.get('/', (req, res) => {
     res.render('home');
   });
 
   app.get('/user', async (req, res) => {
-    const queryQ = await db.all('select * from query');
     const username = await db.all('select * from signup where email = ?', req.session.email);
-    console.log(username)
     res.render('image', {
       queryQ,
       username
@@ -79,16 +91,17 @@ open({
     // read more about destructoring here - https://exploringjs.com/impatient-js/ch_destructuring.html
     const { Query } = req.body;
 
-    if (!Query && !noDays) {
+    if (!Query) {
       // nothing is added
+      console.log("Test")
       return res.redirect('/user');
     }
-
-    const insertQuerriesSQL = 'insert into query (query, date) values (?, ?)';
-    await db.run(insertQuerriesSQL, Query, moment(new Date()).format('MMM D, YYYY'));
-    const queryQ = await db.all('select * from query');
-    // console.log(queryQ)
+else{
+    const insertQuerriesSQL = 'insert into query (name, query, date, picture, status) values (?, ?, ?, ?, ?)';
+    await db.run(insertQuerriesSQL, "res.session.name", Query, moment(new Date()).format('MMM D, YYYY'), upload, 'new');
+    // console.log(Query)
     res.redirect('/user')
+  }
 
   });
 
@@ -157,130 +170,107 @@ open({
     res.json(geoJson);
   });
 
-  app.get('/admin', (req, res) => {
-
-    res.render('querry');
+  app.get('/admin', async (req, res) => {
+    const username = await db.all('select * from signup where email = ?', req.session.email);
+    res.render('querry', {
+      queryQ,
+      username
+    });
   });
 
-  app.get('/sense', (req, res) => {
+  app.get('/ds/:id', async (req, res) => {
+    const getQuery = await db.get('select * from query where id = ?', req.params.id);
+    // console.log(getQuery);
+    res.redirect('/admin')
+  })
 
-    res.render('sense');
+  // app.post('', (req, res) => {
+  //   let sampleFile;
+  //   let uploadPath;
+
+  //   if (!req.files || Object.keys(req.files).length === 0) {
+  //     return res.status(400).send('No files were uploaded.');
+  //   }
+  //   sampleFile = req.files.sampleFile;
+  //   console.log(sampleFile);
+
+  // upload image files to server
+  app.post("/user", async function (req, response) {
+    var images = new Array();
+    if (req.files) {
+      var arr;
+      if (Array.isArray(req.files.filesfld)) {
+        arr = req.files.filesfld;
+      }
+      else {
+        arr = new Array(1);
+        arr[0] = req.files.filesfld;
+      }
+      for (var i = 0; i < arr.length; i++) {
+        var file = arr[i];
+        if (file.mimetype.substring(0, 5).toLowerCase() == "image") {
+          images[i] = "/" + file.name;
+          upload = "./upload" + images[i]
+          // await db.run('insert into query (picture) values (?)', upload)
+          file.mv(upload, function (err) {
+            if (err) {
+              console.log(err);
+            }
+          });
+        }
+      }
+    }
+    // give the server a second to write the files
+    setTimeout(function () { response.json(images); }, 1000);
   });
 
-  app.post('/sense', async (req, res) => {
-
-
-
-    const dataSet = ('SELECT * FROM QUERiES WHERE long=? AND lat=?');
-    const dataQuery = await db.get(dataSet, req.body.long, req.body.lat);
-    if (dataQuery != undefined) {
-      console.log('the entry exists');
-    } else {
-      const insertData = ('INSERT INTO QUERiES (long,lat,discript)  VALUES (?,?,?)');
-      await db.run(insertData, req.body.long, req.body.lat, req.body.Descript);
-      console.log('new entry')
+  app.post('/login', async (req, res) => {
+    req.session.email = req.body.email;
+    req.session.psw = req.body.psw;
+    let sql = await db.get('Select * from signup where Email = ?', req.session.email);
+    // console.log(sql)
+    if (sql == null) {
+      console.log('Incorrect Email or password');
+      res.redirect('/');
+    }
+    if (sql.password !== req.session.psw) {
+      console.log('Incorrect or password')
+      res.redirect('/')
+    }
+    else {
+      // console.log('siright')
+      if (sql.type_of_user == 'user') res.redirect('/user');
+      else res.redirect('/admin');
     }
 
   });
+  app.post('/register', async (req, res) => {
+    const { name, email, psw, psw1, user_type } = req.body;
 
-  app.post('', (req, res) => {
-    let sampleFile;
-    let uploadPath;
-    app.post('/api', (request, response) => {
-      console.log(request.body);
-      const data = request.body;
-      response.json({
-        status: 'Success',
-        latitude: data.lat,
-        longitude: data.lon
-      });
-    })
-
-    // app.post('', (req, res) => {
-    //   let sampleFile;
-    //   let uploadPath;
-
-    //   if (!req.files || Object.keys(req.files).length === 0) {
-    //     return res.status(400).send('No files were uploaded.');
-    //   }
-    //   sampleFile = req.files.sampleFile;
-    //   console.log(sampleFile);
-
-    // upload image files to server
-    app.post("/user", function (request, response) {
-      var images = new Array();
-      if (request.files) {
-        var arr;
-        if (Array.isArray(request.files.filesfld)) {
-          arr = request.files.filesfld;
-        }
-        else {
-          arr = new Array(1);
-          arr[0] = request.files.filesfld;
-        }
-        for (var i = 0; i < arr.length; i++) {
-          var file = arr[i];
-          if (file.mimetype.substring(0, 5).toLowerCase() == "image") {
-            images[i] = "/" + file.name;
-            file.mv("./upload" + images[i], function (err) {
-              if (err) {
-                console.log(err);
-              }
-            });
-          }
-        }
-      }
-      // give the server a second to write the files
-      setTimeout(function () { response.json(images); }, 1000);
-    });
-
-    app.post('/login', async (req, res) => {
-      req.session.email = req.body.email;
-      req.session.psw = req.body.psw;
-      let sql = await db.get('Select * from signup where Email = ?', req.session.email);
-      console.log(sql)
-      if (sql == null) {
-        console.log('Incorrect Email or password');
+    req.session.name = name;
+    req.session.email = email;
+    req.session.psw = psw;
+    req.session.psw1 = psw1;
+    req.session.user_type = user_type;
+    let sql = await db.get('Select Email email, Password psw from signup where Email = ?', req.session.email);
+    if (sql == null) {
+      if (req.session.psw == psw1) {
+        const insert_details = 'insert into signup (name, email, password, type_of_user) values (?, ?, ?, ?)';
+        await db.run(insert_details, req.session.name, req.session.email, req.session.psw, req.session.user_type);
         res.redirect('/');
       }
-      if (sql.password !== req.session.psw) {
-        console.log('Incorrect or password')
+      else {
         res.redirect('/')
       }
-      else {
-        // console.log('siright')
-        if (sql.type_of_user == 'user') res.redirect('/user');
-        else res.redirect('/admin');
-      }
-
-    });
-    app.post('/register', async (req, res) => {
-      const { name, email, psw, psw1, user_type } = req.body;
-
-      req.session.name = name;
-      req.session.email = email;
-      req.session.psw = psw;
-      req.session.psw1 = psw1;
-      req.session.user_type = user_type;
-      let sql = await db.get('Select Email email, Password psw from signup where Email = ?', req.session.email);
-      if (sql == null) {
-        if (req.session.psw == psw1) {
-          const insert_details = 'insert into signup (name, email, password, type_of_user) values (?, ?, ?, ?)';
-          await db.run(insert_details, req.session.name, req.session.email, req.session.psw, req.session.user_type);
-          res.redirect('/');
-        }
-        else {
-          res.redirect('/')
-        }
-      }
-      else {
-        //Write a message to alert the user that the email they using is already in the system
-        res.redirect('/')
-      }
-    });
-
+    }
+    else {
+      //Write a message to alert the user that the email they using is already in the system
+      res.redirect('/')
+    }
   });
-  app.listen(PORT, function () {
-    console.log('App starting on port', PORT);
-  });
-})
+
+});
+app.listen(PORT, function () {
+  console.log('App starting on port', PORT);
+});
+// });
