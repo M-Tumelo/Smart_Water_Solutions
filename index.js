@@ -88,23 +88,35 @@ app.post('/johnquery', async function (req, res) {
   const insertQuerriesSQL = 'insert into query (query, date) values (?, ?)';
   await db.run(insertQuerriesSQL, Query, moment(new Date()).format('MMM D, YYYY'));
   const queryQ = await db.all('select * from query');
-// console.log(queryQ)
+//console.log(queryQ)
   res.redirect('/user')
-
 });
 
-app.post('uQuerry', async (req,res) => {
-  const {name, picture} = req.files.upload;
-  const insertList = 'insert into query(name,longitude,lattitude,picture) values(?,?,?,?)';
-  await db.run(insertList, name,longitude,lattitude,picture);
-  const qlist = await db.all('select * from query');
-  console.log(qlist);
-
-  res.redirect('/user')
+app.post('/uQuerry', async (req,res) => {
+  console.log(req.body.discript);
+  const insertData = ('INSERT INTO QUERiES (long,lat,discript,image)  VALUES (?,?,?,?)');
+  await db.run(insertData, req.body.long, req.body.lat, req.body.Descript, req.body.image);
+ //res.redirect('/user')
 }); 
+  app.get('/uQuerry', async (req, res) => {
 
-  app.get('/uQuerry', (req, res) => {
-    res.render('user');
+    const querries = 'SELECT * from QUERiES';
+    const geos = await db.all(querries);
+    const geoJson = geos.map(function (store) {
+      return {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [store.long, store.lat]
+        },
+        properties: {
+          title: 'Mapbox',
+          description: store.discript
+        }
+      }
+    });
+    //res.json(geoJson);
+  res.render('user', {querries})
   });
 
 // app.get('/reminder/:dayCount/days', function (req, res) {
