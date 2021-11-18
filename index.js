@@ -38,33 +38,102 @@ app.use(session({
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static('public'));
+app.use(fileupload());
 
 open({
   filename: './data.db',
   driver: sqlite3.Database
 }).then(async function (db) {
 
-  // run migrations
+  // run migration
 
   await db.migrate();
 
   // only setup the routes once the database connection has been established
-  app.get('/user', (req, res) => {
-    res.render('image');
-  });
+app.get('/',  (req, res) => {
+  res.render('home');
+});
+
+app.get('/user',async (req, res) => {
+  const queryQ = await db.all('select * from query');
+  const username = await db.all('select * from signup where email = ?', req.session.email);
+  console.log(username)
+    res.render('image', {
+      queryQ,
+      username
+    });
+});
+
+app.get('/register', (req, res)=>{
+  res.render('home');
+})
 
 
-  app.get('/', (req, res) => {
-    res.render('home');
-  });
+app.post('/count', function (req, res) {
+  counter++;
+  res.redirect('/user')
+});
 
-  app.get('/register', (req, res) => {
-    res.render('home');
-  });
+app.post('/johnquery', async function (req, res) {
 
-  app.get('/login', (req, res) => {
-    res.render('home');
-  });
+  // read more about destructoring here - https://exploringjs.com/impatient-js/ch_destructuring.html
+  const { Query } = req.body;
+
+  if (!Query && !noDays) {
+    // nothing is added
+    return res.redirect('/user');
+  }
+
+  const insertQuerriesSQL = 'insert into query (query, date) values (?, ?)';
+  await db.run(insertQuerriesSQL, Query, moment(new Date()).format('MMM D, YYYY'));
+  const queryQ = await db.all('select * from query');
+// console.log(queryQ)
+  res.redirect('/user')
+
+});
+
+
+// app.get('/reminder/:dayCount/days', function (req, res) {
+
+//   // find me all the reminders for the current Day count
+//   const filteredReminders = reminders.filter(function (reminder) {
+//     return reminder.dayCount == Number(req.params.dayCount)
+//   })
+
+//   res.render('reminder', {
+//     reminders: filteredReminders
+//   });
+
+// });
+
+app.post('/remove/:id', async function(req, res){
+
+  const bookId = req.params.id;
+  const deleteQuerriesSQL = 'delete from notifications where id = ?';
+  await db.run(deleteQuerriesSQL, bookId);
+  res.redirect('/user');
+  
+});
+
+// app.get('/edit/:id', function (req, res) {
+//   res.render("edit");
+// });
+
+
+
+// only setup the routes once the database connection has been established
+
+// })
+
+
+
+
+// we use global state to store data
+
+// const reminders = [];
+
+
+
 
   // list of querries 
   app.get('/data', async (req, res) => {
@@ -108,28 +177,71 @@ open({
   app.post('', (req, res) => {
     let sampleFile;
     let uploadPath;
+  app.post('/api', (request, response) => {
+    console.log(request.body);
+    const data =  request.body;
+    response.json({
+      status: 'Success',
+      latitude : data.lat,
+      longitude: data.lon
+    });
+  })
 
-    if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).send('No files were uploaded.');
-    }
-    sampleFile = req.files.sampleFile;
-    console.log(sampleFile);
+  // app.post('', (req, res) => {
+  //   let sampleFile;
+  //   let uploadPath;
+
+  //   if (!req.files || Object.keys(req.files).length === 0) {
+  //     return res.status(400).send('No files were uploaded.');
+  //   }
+  //   sampleFile = req.files.sampleFile;
+  //   console.log(sampleFile);
+
+// upload image files to server
+app.post("/user", function(request, response) {
+  var images = new Array();
+  if(request.files) {
+      var arr;
+      if(Array.isArray(request.files.filesfld)) {
+          arr = request.files.filesfld;
+      }
+      else {
+          arr = new Array(1);
+          arr[0] = request.files.filesfld;
+      }
+      for(var i = 0; i < arr.length; i++) {
+          var file = arr[i];
+          if(file.mimetype.substring(0,5).toLowerCase() == "image") {
+              images[i] = "/" + file.name;
+              file.mv("./upload" + images[i], function (err) {
+                  if(err) {
+                      console.log(err);
+                  }
+              });
+          }
+      }
+  }
+  // give the server a second to write the files
+  setTimeout(function(){response.json(images);}, 1000);
+});
 
     app.post('/login', async (req, res) => {
       req.session.email = req.body.email;
       req.session.psw = req.body.psw;
-      let sql = await db.get('Select Email email, Password psw from signup where Email = ?', req.session.email);
+      let sql = await db.get('Select * from signup where Email = ?', req.session.email);
       console.log(sql)
       if (sql == null) {
         console.log('Incorrect Email or password');
         res.redirect('/');
       }
-      if (sql.psw !== req.session.psw) {
-        console.log('Incorrect Email or password')
+      if (sql.password !== req.session.psw) {
+        console.log('Incorrect or password')
         res.redirect('/')
       }
       else {
-        res.redirect('/')
+        // console.log('siright')
+        if(sql.type_of_user == 'user') res.redirect('/user');
+        else  res.redirect('/admin');
       }
 
     });

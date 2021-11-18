@@ -1,13 +1,9 @@
 * {
   box-sizing: border-box;
 }
-.col-1 {
-  width: 4.33%;
-}
-
 body {
-  background:white;
-  color: #222;
+  background: black;
+  /* color: #222; */
   line-height: normal;
   font-size: 16px;
   font-family: sans-serif;
@@ -19,8 +15,7 @@ a, a:hover {
   
 }
 .header img{
-  max-height: 63px;
-  margin: 0.5em
+  max-height: 75px;
 }
 
 /* header */
@@ -28,15 +23,15 @@ a, a:hover {
 .header {
   /* background-color: #fff; */
   box-shadow: 0 0px 9px 4px rgba(61, 60, 60, 0.1), 0 -5px 2px 2px rgba(0, 0, 0, .1);
-  position:absolute;
+  position: fixed;
   left: 0;
   right: 0;
   top: 0;
-  height: 85px;
-  background: #000001;
+  height: 75px;
+  background: black;
   box-shadow: 0 0px 9px 4px rgba(151, 147, 147, 0.1), 0 -5px 2px 2px rgba(114, 111, 111, 0.1);
   z-index: 3;
-  min-width: 480px;
+  min-width: 580px;
 }
 
 .header ul {
@@ -51,7 +46,6 @@ a, a:hover {
  color: #fff;
   padding: 20px 20px;
   text-decoration: none;
-
 }
 
 /* .header li a:hover,
@@ -153,6 +147,7 @@ a, a:hover {
   top: 0;
 }
 
+
 /* Signn-Up and Registration Form */
 .input-container {
   display: flex;
@@ -160,12 +155,17 @@ a, a:hover {
   margin-bottom: 15px;
 }
 
-.icon {
+.tabs .icon {
   padding: 10px;
   background: #00c6fb;
   color: white;
   min-width: 50px;
   text-align: center;
+}
+
+#padding{
+  display: inline-block;
+ padding-left: 2em;
 }
 
 .input-field {
@@ -217,6 +217,7 @@ color: black;
   all: initial;
 }
 
+<<<<<<< HEAD
 /*START OF THE MAP*/
 #map {
   position: absolute;
@@ -245,6 +246,12 @@ color: black;
 }
 /*END OF THE MAP*/
 
+=======
+.remove-hover{
+  pointer-events: none;
+}
+
+>>>>>>> ad4e17bb3d798e2d6c24968a2ae942bd1814ea10
 /* Responsive */
 
 @media only screen and (max-width: 768px){
@@ -257,14 +264,18 @@ color: black;
     background-color: #3B413C;
   }
 
+  .hide{
+    display: none;
+  }
+
 }
 
 @media only screen and (min-width: 768px) {
 
-  .away-from-margin{
+  /* .away-from-margin{
     margin-left: 30em;
     margin-top: 6em;
-    }
+    } */
   
     .menu-wrapper{
         /* background: #fff;
@@ -298,18 +309,7 @@ color: black;
   .header .menu-icon {
     display: none;
   }
-
-  .tabs {
-    display: flex;
-    flex-wrap: wrap;
-    height: 100%;
-    width: 500px;
-  }
-   
-
-
 }
-
 .tabs {
   display: flex;
   flex-wrap: wrap;
@@ -329,7 +329,12 @@ color: black;
   font-weight: bold;
   transition: background ease 0.3s;
 }
- 
+.center {
+  margin-left: auto;
+  margin-right: auto;
+  display: table;
+}
+
 .tabs .tab {
   order: 9;
   flex-grow: 1;
@@ -393,41 +398,263 @@ color: black;
     
   }
   
-  /* img{
-    border-radius: 25px;
-    box-shadow: 5px 5px 4px gray;
-    transition: 1s;
+  .avartar{
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+  }
+        #fileslbl {
+            width: 100%;
+            height: 256px;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-family: "Quicksand", sans-serif;
+            font-weight: 500;
+            font-size: 20px;
+            cursor: pointer;
+            color: #cccccc;
+            border: 4px dashed #009578;
+            border-radius: 10px;
+        }
+
+        #filesfld {
+            display: none;
+        }
+
+        #progress {
+            width: 0;
+            background-color: greenyellow;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            line-height: 25px;
+            /* padding: 0 20px; */
+            margin-top: 0.5em;
+        }
+
+        @keyframes dropbox {
+            0% {
+                background-image: repeating-linear-gradient(30deg, green 1%, green 3%, darkgreen 5%, darkgreen 5%);
+            }
+
+            50% {
+                background-image: repeating-linear-gradient(30deg, darkgreen 1%, darkgreen 3%, green 5%, green 5%);
+            }
+
+            100% {
+                background-image: repeating-linear-gradient(30deg, green 1%, green 3%, darkgreen 5%, darkgreen 5%);
+            }
+          }
+        
+/* Newsletter Styling */
+/* include the board in the center of the viewport */
+.board {
+  max-width: 90%;
+  width: 90vw;
+  height: 100%;
+  margin: 4rem auto;
+  /* display grid without specifying any structure, at least beyond the media query
+  this is mostly helpful for alignment purposes
+  */
+  display: grid;
+  border: 4px solid hsl(207, 79%, 21%);
+  background: #fff;
+  box-shadow: 0 2px 5px hsla(0, 0%, 0%, 0.3);
+  /* position relative to absolute position the pseudo element */
+  position: relative;
+}
+/* include a slightly rotated rectangle of the same size of the board, right behind it */
+.board:before {
+  position: absolute;
+  content: "";
+  background: #00c6fb;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-2deg) scale(1.02);
+  z-index: -5;
+}
+
+/* for the heading include a slightly darker background */
+.board__heading {
+  /* margin to have the heading overlap on the surrounding border */
+  margin: -4px;
+  margin-bottom: 1.75rem;
+  font-family: "Chivo", sans-serif;
+  font-size: 1.25rem;
+  color: #fff;
+  background: hsl(200, 100%, 10%);
+  padding: 0.75rem;
+  padding-left: 1.5rem;
+}
+
+
+/* for the section describing the news items, display the items in a single column layout */
+.board__news {
+  display: flex;
+  margin: 1rem 0 3rem;
+  flex-direction: column;
+  width: 80%;
+  justify-self: center;
+  /* dictate a maximum height to allow for vertical scroll */
+  max-height: 15em;
+  overflow-y: auto;
+}
+/* minor style changes for the scrollbar */
+.board__news::-webkit-scrollbar {
+  width: 0.25rem;
+}
+.board__news::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px hsla(200, 100%, 5%, 0.3);
+}
+.board__news::-webkit-scrollbar-thumb {
+  background: hsl(200, 100%, 10%);
+  border-radius: 5px;
+}
+
+/* remove the default properties of the anchor links describing the news items */
+.news--item {
+  text-decoration: none;
+  color: inherit;
+  margin: 1.25rem 0;
+  padding-left: 0.75rem;
+  border-left: 5px solid greenyellow;
+}
+/* on hover and when focused slightly decrease the weight of the anchor links */
+.news--item:hover,
+.news--item:focus {
+  color: hsl(0, 0%, 35%);
+}
+.news--item .date {
+  font-size: 0.8rem;
+}
+.news--item .brief {
+  font-size: 0.9rem;
+}
+
+/* on smaller viewports */
+@media (max-width: 700px) {
+  /* change the grid layout to have the heading atop the navigation and section elements */
+  .board {
+    grid-template-areas: "heading heading" "nav section";
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: auto 1fr;
+  }
+  .board__heading {
+    grid-area: heading;
+  }
+
+  /* slightly increase the height of the container to include a taller board */
+  .board__news {
+    grid-area: section;
+    width: 90%;
+    max-height: 380px;
+  }
+}
+
+/* Cols */
+.column {
+  width: 100%;
+}
+@media (min-width: 48em) {
+  .column {
+    float: left;
+    width: 25%;
+    /* border: 1px solid red; */
+    /* margin-left: 2em; */
+  }
+  /* Stops the float property from affecting content after the columns */
+  .columns:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+.containerr {
+   padding: 1em 2em;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+ul li {
+  list-style: none;
+}
+
+#contact a {
+  color: #a683e3;
+  margin: 5px;
+}
+
+#contact {
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 130px;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  background-color: #a683e3;
+}
+
+#icon {
+  background-color: #fff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 1s, box-shadow 0.5s;
+  box-shadow: 0 2px 3px rgb(0 0 0 / 12%), 0 2px 2px rgb(0 0 0 / 24%);
+}
+
+#icon-container {
+  display: flex;
+  justify-content: center;
+}
+
+#icon:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 3px 5px 5px rgb(0 0 0 / 12%), 0 3px 5px rgb(0 0 0 / 24%);
+}
+
+#contact p {
+  font-size: 14px;
+}
+
+@media screen and (max-width: 426px) {
+ #icon {
+   width: 30px;
+   height: 30px;
   }
   
-  img:hover{
-    filter: invert(100%);
-  }
-  p{
-    text-align: justify;
+  ul li {
+    font-size: 12px;
   }
   
-  .boton{
-    text-decoration: none; 
-    margin: 20px;
-    padding: 2px 20px;
-    border-radius: 20px;
-    border: solid tomato 2px;
-    color: black;
-    box-shadow: 2px 2px 2px gray;
-    display: block;
-    transition: .5s;
+  #contact p {
+    font-size: 10px;
+  }
+}
+
+@media screen and (min-width: 2560px) {
+ #icon {
+   width: 50px;
+   height: 50px;
   }
   
-  .boton:hover{
-    background-color: tomato;
+  ul li {
+    font-size: 20px;
   }
   
-  #cerrar{
-    text-decoration: none;
-    color: red;
-    border: solid red 1px;
-    padding: 5px;
-    border-radius: 8px;
+  #contact p {
+    font-size: 16px;
   }
-   */
-  
+}
