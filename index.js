@@ -64,6 +64,8 @@ open({
   //getting queries data and name of the user from the database
   const queryQ = await db.all('select * from query');
   var upload;
+  var lattitude;
+  var lattitude;
   app.get('/', (req, res) => {
     res.render('home');
   });
@@ -87,21 +89,20 @@ open({
   });
 
   app.post('/johnquery', async function (req, res) {
-
     // read more about destructoring here - https://exploringjs.com/impatient-js/ch_destructuring.html
     const { Query } = req.body;
 
-    if (!Query) {
+    if (Query == null) {
       // nothing is added
       console.log("Test")
       return res.redirect('/user');
     }
-else{
-    const insertQuerriesSQL = 'insert into query (name, query, date, picture, status) values (?, ?, ?, ?, ?)';
-    await db.run(insertQuerriesSQL, "res.session.name", Query, moment(new Date()).format('MMM D, YYYY'), upload, 'new');
-    // console.log(Query)
-    res.redirect('/user')
-  }
+    else {
+      const insertQuerriesSQL = 'insert into query (name, longitude, lattitude query, date, picture, status) values (?, ?, ?, ?, ?, ?, ?)';
+      await db.run(insertQuerriesSQL, res.session.name, longitude, lattitude, Query, moment(new Date()).format('MMM D, YYYY'), upload, 'new');
+      console.log(Query)
+      res.redirect('/user')
+    }
 
   });
 
@@ -172,7 +173,7 @@ else{
 
   app.get('/admin', async (req, res) => {
     const username = await db.all('select * from signup where email = ?', req.session.email);
-    res.render('querry', {
+    res.render('technician', {
       queryQ,
       username
     });
@@ -224,6 +225,7 @@ else{
     setTimeout(function () { response.json(images); }, 1000);
   });
 
+  
   app.post('/login', async (req, res) => {
     req.session.email = req.body.email;
     req.session.psw = req.body.psw;
