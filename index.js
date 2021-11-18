@@ -39,7 +39,7 @@ app.use(session({
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static('public'));
-app.use(fileupload());
+app.use(fileUpload());
 
 
 
@@ -149,57 +149,25 @@ else{
 
 
   // list of querries 
-  app.get('/data', (req, res) => {
-    const geojson = {
-      type: 'FeatureCollection',
-      features: [
-        {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [28.044088, -26.205246]
-          },
-          properties: {
-            title: 'Mapbox',
-            description: 'picture'
-          }
+  app.get('/data', async (req, res) => {
+
+    const querries = 'SELECT * from QUERiES';
+    const geos = await db.all(querries);
+
+    const geoJson = geos.map(function (store) {
+      return {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [store.long, store.lat]
         },
-        {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [28.049271, -26.2078676]
-          },
-          properties: {
-            title: 'Mapbox',
-            description: 'picture'
-          }
-        },
-        {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [28.0428271, -26.2378676]
-          },
-          properties: {
-            title: 'Mapbox',
-            description: 'picture'
-          },
-        },
-        {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [28.0223241, -26.200886]
-          },
-          properties: {
-            title: 'Mapbox',
-            description: 'picture'
-          },
+        properties: {
+          title: 'Mapbox',
+          description: store.discript
         }
-      ]
-    };
-    res.json(geojson);
+      }
+    });
+    res.json(geoJson);
   });
 
   app.get('/admin', async (req, res) => {
