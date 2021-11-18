@@ -90,7 +90,7 @@ open({
 
   app.get('/admin', (req, res) => {
 
-    res.render('technician');
+    res.render('querry');
   });
 
   app.get('/sense', (req, res) => {
@@ -99,6 +99,7 @@ open({
   });
 
   app.post('/sense',async (req, res) => {
+
     console.log(req.body.discript);
     const insertData = ('INSERT INTO QUERiES (long,lat,discript)  VALUES (?,?,?)');
     await db.run(insertData, req.body.long, req.body.lat, req.body.Descript);
