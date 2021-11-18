@@ -1,5 +1,5 @@
 let express = require('express');
-const fileupload = require('express-fileupload');
+const fileUpload = require('express-fileupload');
 const FileType = require('file-type');
 
 let app = express();
