@@ -26,6 +26,7 @@ app.set('view engine', 'handlebars');
 
 const session = require('express-session');
 const { compile } = require('handlebars');
+const { query } = require('express');
 
 //Set-up middleware
 
@@ -44,6 +45,9 @@ app.use(express.static('modelAI'));
 
 
 
+app.use(express.static('modelAI'))
+
+
 open({
   filename: './data.db',
   driver: sqlite3.Database
@@ -53,13 +57,13 @@ open({
 
   await db.migrate();
 
-  const knex = require('knex')({
-    client: 'sqlite3',
-    connection: {
-      filename: "./data.db"
-    },
-    useNullAsDefault: true
-  });
+  // const knex = require('knex')({
+  //   client: 'sqlite3',
+  //   connection: {
+  //     filename: "./data.db"
+  //   },
+  //   useNullAsDefault: true
+  // });
   // only setup the routes once the database connection has been established
 
   //getting queries data and name of the user from the database
@@ -108,19 +112,44 @@ open({
       res.redirect('/user')
     }
 
+
+    app.post('/johnquery', async function (req, res) {
+
+    });
+
+    if (!Query) {
+      // nothing is added
+      return res.redirect('/user');
+    }
+
+    const insertQuerriesSQL = 'insert into query (query, date) values (?, ?)';
+    await db.run(insertQuerriesSQL, Query, moment(new Date()).format('MMM D, YYYY'));
+    const queryQ = await db.all('select * from query');
+    //console.log(queryQ)
+    res.redirect('/user')
   });
 
+  app.post('/uQuerry', async (req, res) => {
+    const { Query } = req.body;
 
-  // app.get('/reminder/:dayCount/days', function (req, res) {
+    if (!Query) {
+      // nothing is added
+      return res.redirect('/user');
+    }
+    console.log(req.body.discript);
+    const insertData = ('INSERT INTO QUERiES (long,lat,discript,image)  VALUES (?,?,?)');
+    await db.run(insertData, req.body.long, req.body.lat, req.body.descript, req.body.image);
 
-  //   // find me all the reminders for the current Day count
-  //   const filteredReminders = reminders.filter(function (reminder) {
-  //     return reminder.dayCount == Number(req.params.dayCount)
-  //   })
+    // const insertQuerriesSQL = 'insert into query (query, date) values (?, ?)';
+    // await db.run(insertQuerriesSQL, Query, moment(new Date()).format('MMM D, YYYY'));
+    // const queryQ = await db.all('select * from query');;
+    //res.redirect('/user')
+  });
+  app.get('/uQuerry', async (req, res) => {
 
-  //   res.render('reminder', {
-  //     reminders: filteredReminders
-  //   });
+    const queryQ = await db.all('select * from QUERiES');
+    res.render('user', { queryQ })
+  });
 
   // });
 
@@ -152,27 +181,14 @@ open({
 
 
 
-
-  // list of querries 
-  app.get('/data', async (req, res) => {
-
-    const querries = 'SELECT * from QUERiES';
-    const geos = await db.all(querries);
-
-    const geoJson = geos.map(function (store) {
-      return {
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: [store.long, store.lat]
-        },
-        properties: {
-          title: 'Mapbox',
-          description: store.discript
-        }
-      }
+  app.post('/api', (request, response) => {
+    console.log(request.body);
+    const data = request.body;
+    response.json({
+      status: 'Success',
+      latitude: data.lat,
+      longitude: data.lon
     });
-    res.json(geoJson);
   });
 
   app.get('/admin', async (req, res) => {
@@ -293,8 +309,8 @@ open({
     }
   });
 
-});
-app.listen(PORT, function () {
-  console.log('App starting on port', PORT);
-});
-// });
+  //});
+  app.listen(PORT, function () {
+    console.log('App starting on port', PORT);
+  });
+})

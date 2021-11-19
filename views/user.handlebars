@@ -6,9 +6,67 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart Water Solutions</title>
+<style>
+
+.table {
+border-collapse: separate;
+margin: 5px 0;
+font-size: 0.9em;
+font-family: sans-serif;
+margin-left: auto;
+margin-right: auto;
+
+box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+.table thead tr {
+background-color: #009879;
+color: #ffffff;
+
+}
+.table th,
+.table td {
+padding: 12px 15px;
+}
+.table tbody td {
+border-bottom: 1px solid #dddddd;
+}
+
+.table tbody tr:nth-of-type(even) {
+background-color: #f3f3f3;
+}
+.table tbody tr:last-of-type {
+border-bottom: 2px solid #009879;
+}
+
+ </style> 
+
 </head>
 <body>
-    <div class="menu-wrapper">
+
+<form action="/uQuerry" method="POST">
+<table class="table">
+
+<h2 style="text-align:center">Query list</h2>
+<tr>
+	<th>Query Number:</th>
+  <th>Coordinates:</th>
+  <th>Description:</th>
+	<th>Leak Image:</th>
+</tr>
+
+ {{#each queryQ}}
+ <tr>
+	<td>{{id}}</td>
+	<td>{{long}} :{{lat}}</td>
+	<td>{{discript}}</td>
+  <td>{{image}}</td>
+  </tr>
+	{{!-- <td><button type="submit" value="submit">Submit</td> --}}
+	{{/each}}
+                        </form>
+ 
+
+    {{!-- <div class="menu-wrapper">
     <header class="header">
       <a href="/" class="logo"><img alt="Logo" src="/img/logo.jpg"></a>
       <input class="menu-btn" type="checkbox" id="menu-btn" />
@@ -17,8 +75,8 @@
         <li><a href="#">Home</a></li>
         <li><a href="#">About Us</a></li>
         <li><a href="#">Contact Us</a></li>
-      </ul>
-    </header>
+      </ul> --}}
+  </table>
   </div>
   <div style="margin-top: 20em;"></div>
 
