@@ -67,18 +67,21 @@
             </ul>
         </header>
     </div>
-    <div style="margin-top: 5em;">Welcome</div>
+
+    <div style="margin-top: 5em;">Welcome {{username}}</div>
+
     <div class="container">
         <div class="row">
 
             <div class="col-12">
                 <p>Queries</p>
             </div>
+        </div>
+        <div class="line"></div>
+        {{#each querries}}
+        <div class="row" style="background-color: blue;">
             <br>
             <div class="col-12">
-                <div class="line"></div>
-                {{#each queryQ}}
-
                 <a href="/ds/{{id}}" id={{id}}>
                     <div class="queryy">
 
@@ -89,7 +92,7 @@
                         <script>
                             var long = {{ longitude }};
                             var lat = {{ lattitude }};
-                            document.getElementById("last").innerHTML=long;
+                            document.getElementById("last").innerHTML = long;
                             navigator.geolocation.getCurrentPosition((position) => {
 
                                 const userLong = position.coords.longitude;
@@ -104,8 +107,8 @@
                                         var time = data.routes[0].duration;
                                         var distance = data.routes[0].distance;
                                         var streetName = data.waypoints[1].name;
-                                        var street=Handlebars.compile(streetName); 
-                
+                                        var street = Handlebars.compile(streetName);
+
                                     }
                                     catch (error) {
                                         console.log(error)
@@ -115,88 +118,12 @@
                         </script 
                         <h1 id="last"></h1>      
                     </div>
-
                 </a>
-
-                {{/each}}
-            </div>
-
-        </div>
-
-        <script>
-
-            mapboxgl.accessToken = 'pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q';
-
-            const map = new mapboxgl.Map({
-                container: 'map',
-                style: 'mapbox://styles/mapbox/light-v10',
-                center: [28.034088, -26.195246],
-                zoom: 15
-            });
-            navigator.geolocation.getCurrentPosition((position) => {
-                console.log(position.coords.longitude, position.coords.latitude);
-            });
-
-            map.addControl(
-                new MapboxDirections({
-                    accessToken: mapboxgl.accessToken
-                }),
-                'top-left'
-            );
-            const geolocate = new mapboxgl.GeolocateControl({
-                positionOptions: {
-                    enableHighAccuracy: true
-                },
-                // When active the map will receive updates to the device's location as it changes.
-                trackUserLocation: true,
-                // Draw an arrow next to the location dot to indicate which direction the device is heading.
-                showUserHeading: true
-            });
-            map.addControl(geolocate);
-            map.on('load', function () {
-                geolocate.trigger();
-            });
-            geolocate.on('trackuserlocationstart', () => {
-                console.log('A trackuserlocationstart event has occurred.');
-            });
-
-
-            async function getQueries() {
-
-                let url = '/data';
-                try {
-                    let res = await fetch(url);
-                    const data = await res.json();
-                    const geojson = data;
-                    // add markers to map
-                    for (const feature of geojson.features) {
-                        // create a HTML element for each feature
-                        const el = document.createElement('div');
-                        el.className = 'marker';
-
-                        // make a marker for each feature and add to the map
-                        new mapboxgl.Marker(el)
-                            .setLngLat(feature.geometry.coordinates)
-                            .setPopup(
-                                new mapboxgl.Popup({ offset: 25 }) // add popups
-                                    .setHTML(
-                                        `<h3>${feature.properties.title}</h3><p>${feature.properties.description}</p>`
-                                    )
-                            )
-                            .addTo(map);
-                    }
-
-
-                }
-                catch (error) {
-                    console.log(error)
-                }
-            };
-
-            getQueries();
-
-        </script>
-
+                </div>
+              </div>
+              <br>
+       {{/each}}     
+    </div>
 </body>
 
 </html>

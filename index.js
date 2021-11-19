@@ -1,47 +1,31 @@
-let express = require('express');
+const express = require('express');
 const fileUpload = require('express-fileupload');
-const FileType = require('file-type');
-
-let app = express();
-
+const app = express();
 let fav = require('serve-favicon');
-
 var moment = require('moment');
-
 const exphbs = require('express-handlebars');
-
-const bodyParser = require('body-parser');
-const path = require('path');
-
-//import sqlite modules
+const session = require('express-session');
+const { compile } = require('handlebars');
 const sqlite3 = require('sqlite3');
 const { open } = require('sqlite');
 var cors = require('cors');
-app.use(cors());
+
 let PORT = process.env.PORT || 3001;
 
 //Configure the express-handlebars module
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
-
-const session = require('express-session');
-const { compile } = require('handlebars');
+app.use(cors());
 
 //Set-up middleware
 
-app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true
-}))
+app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: true }))
 
 //app.use(fav(path.join(__dirname, 'public', 'img/favicon.ico')))
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(express.urlencoded({ extended: false }))
+app.use(express.json())
 app.use(express.static('public'));
 app.use(fileUpload());
-
-
 
 open({
   filename: './data.db',
@@ -52,16 +36,6 @@ open({
 
   await db.migrate();
 
-  const knex = require('knex')({
-    client: 'sqlite3',
-    connection: {
-      filename: "./data.db"
-    },
-    useNullAsDefault: true
-  });
-  // only setup the routes once the database connection has been established
-
-  //getting queries data and name of the user from the database
   const queryQ = await db.all('select * from query');
   var upload;
   app.get('/', (req, res) => {
@@ -96,28 +70,15 @@ open({
       console.log("Test")
       return res.redirect('/user');
     }
-else{
-    const insertQuerriesSQL = 'insert into query (name, query, date, picture, status) values (?, ?, ?, ?, ?)';
-    await db.run(insertQuerriesSQL, "res.session.name", Query, moment(new Date()).format('MMM D, YYYY'), upload, 'new');
-    // console.log(Query)
-    res.redirect('/user')
-  }
+    else {
+      const insertQuerriesSQL = 'insert into query (name, query, date, picture, status) values (?, ?, ?, ?, ?)';
+      await db.run(insertQuerriesSQL, "res.session.name", Query, moment(new Date()).format('MMM D, YYYY'), upload, 'new');
+      // console.log(Query)
+      res.redirect('/user')
+    }
 
   });
 
-
-  // app.get('/reminder/:dayCount/days', function (req, res) {
-
-  //   // find me all the reminders for the current Day count
-  //   const filteredReminders = reminders.filter(function (reminder) {
-  //     return reminder.dayCount == Number(req.params.dayCount)
-  //   })
-
-  //   res.render('reminder', {
-  //     reminders: filteredReminders
-  //   });
-
-  // });
 
   app.post('/remove/:id', async function (req, res) {
 
@@ -128,27 +89,6 @@ else{
 
   });
 
-  // app.get('/edit/:id', function (req, res) {
-  //   res.render("edit");
-  // });
-
-
-
-  // only setup the routes once the database connection has been established
-
-  // })
-
-
-
-
-  // we use global state to store data
-
-  // const reminders = [];
-
-
-
-
-  // list of querries 
   app.get('/data', async (req, res) => {
 
     const querries = 'SELECT * from QUERiES';
@@ -172,10 +112,7 @@ else{
 
   app.get('/admin', async (req, res) => {
     const username = await db.all('select * from signup where email = ?', req.session.email);
-    res.render('querry', {
-      queryQ,
-      username
-    });
+    res.render('querry', { queryQ, username });
   });
 
   app.get('/sense', (req, res) => {
@@ -183,17 +120,16 @@ else{
     res.render('sense');
   });
 
-  app.post('/sense',async (req, res) => {
+  app.post('/sense', async (req, res) => {
     const insertData = ('INSERT INTO QUERY (name,longitude,lattitude,query,date)  VALUES (?,?,?,?,?)');
-    await db.run(insertData,'Sense', req.body.long, req.body.lat, req.body.Descript,moment(new Date()).format('MMM D, YYYY'));
+    await db.run(insertData, 'Sense', req.body.long, req.body.lat, req.body.Descript, moment(new Date()).format('MMM D, YYYY'));
   });
 
   app.get('/ad', async (req, res) => {
+    const querries = await db.all('select * from query');
     const username = await db.all('select * from signup where email = ?', req.session.email);
-    res.render('admin', {
-      queryQ,
-      username
-    });
+
+    res.render('admin', { querries, username});
   });
 
   app.get('/ds/:id', async (req, res) => {
@@ -202,17 +138,6 @@ else{
     res.redirect('/admin')
   })
 
-  // app.post('', (req, res) => {
-  //   let sampleFile;
-  //   let uploadPath;
-
-  //   if (!req.files || Object.keys(req.files).length === 0) {
-  //     return res.status(400).send('No files were uploaded.');
-  //   }
-  //   sampleFile = req.files.sampleFile;
-  //   console.log(sampleFile);
-
-  // upload image files to server
   app.post("/user", async function (req, response) {
     var images = new Array();
     if (req.files) {
