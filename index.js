@@ -205,7 +205,7 @@ app.post('/api', (request, response) => {
       }
     });
     res.json(geoJson);
-  });
+  //});
 
   app.get('/admin', async (req, res) => {
     const username = await db.all('select * from signup where email = ?', req.session.email);
@@ -327,7 +327,7 @@ app.post('/api', (request, response) => {
     }
   });
 
-});
+//});
 app.listen(PORT, function () {
   console.log('App starting on port', PORT);
 });
