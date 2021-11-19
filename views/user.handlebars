@@ -78,5 +78,37 @@ border-bottom: 2px solid #009879;
       </ul> --}}
   </table>
   </div>
-  
+  <div style="margin-top: 20em;"></div>
+
+ <div class="containerr">
+        <div class="columns" id="cont">
+            <div class="column">
+<div class="section" style="height: 500px; width:400px">
+  <button class="button2"><a style="color: white;" href="/user">Send Query</a></button>
+   <button class="button2">Pending</button>
+   <button class="button2">Attended</button>
+</div>
+            </div>
+            <div class="column">
+<div style="margin-top: 1em;" class="board">
+          <h1 class="board__heading">
+            Newsletter
+          </h1>
+          <section class="board__news">
+            {{#each queryQ}}
+            <a class="news--item" href="#">
+              <p class="date">
+                {{date}}
+              </p>
+              <p class="title">
+                {{query}}
+              </p>
+            </a>
+
+            {{/each}}
+          </section>
+        </div>
+            </div>
+        </div>
+    </div>
 </body>
