@@ -178,6 +178,24 @@ else{
     });
   });
 
+  app.get('/sense', (req, res) => {
+
+    res.render('sense');
+  });
+
+  app.post('/sense',async (req, res) => {
+    const insertData = ('INSERT INTO QUERY (name,longitude,lattitude,query,date)  VALUES (?,?,?,?,?)');
+    await db.run(insertData,'Sense', req.body.long, req.body.lat, req.body.Descript,moment(new Date()).format('MMM D, YYYY'));
+  });
+
+  app.get('/ad', async (req, res) => {
+    const username = await db.all('select * from signup where email = ?', req.session.email);
+    res.render('admin', {
+      queryQ,
+      username
+    });
+  });
+
   app.get('/ds/:id', async (req, res) => {
     const getQuery = await db.get('select * from query where id = ?', req.params.id);
     // console.log(getQuery);
@@ -240,7 +258,7 @@ else{
     else {
       // console.log('siright')
       if (sql.type_of_user == 'user') res.redirect('/user');
-      else res.redirect('/admin');
+      else res.redirect('/ad');
     }
 
   });
