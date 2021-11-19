@@ -233,6 +233,7 @@ open({
   //   console.log(sampleFile);
 
   // upload image files to server
+  
   app.post("/user", async function (req, response) {
     var images = new Array();
     lat = req.body.lat;
