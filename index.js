@@ -17,7 +17,7 @@ const sqlite3 = require('sqlite3');
 const { open } = require('sqlite');
 var cors = require('cors');
 app.use(cors());
-let PORT = process.env.PORT || 3001;
+let PORT = process.env.PORT || 30021;
 
 //Configure the express-handlebars module
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
@@ -25,6 +25,7 @@ app.set('view engine', 'handlebars');
 
 const session = require('express-session');
 const { compile } = require('handlebars');
+const { query } = require('express');
 
 //Set-up middleware
 
@@ -39,6 +40,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static('public'));
 app.use(fileupload());
+
+app.use(express.static('modelAI'))
+
 
 open({
   filename: './data.db',
@@ -74,12 +78,24 @@ app.post('/count', function (req, res) {
   res.redirect('/user')
 });
 
+app.get('/al', (req, res)=>{
+  res.render('al');
+})
+
+
+app.post('/al', function (req, res) {
+ // counter++;
+  res.redirect('/al')
+});
+
+
+
 app.post('/johnquery', async function (req, res) {
 
   // read more about destructoring here - https://exploringjs.com/impatient-js/ch_destructuring.html
   const { Query } = req.body;
 
-  if (!Query && !noDays) {
+  if (!Query) {
     // nothing is added
     return res.redirect('/user');
   }
@@ -87,11 +103,31 @@ app.post('/johnquery', async function (req, res) {
   const insertQuerriesSQL = 'insert into query (query, date) values (?, ?)';
   await db.run(insertQuerriesSQL, Query, moment(new Date()).format('MMM D, YYYY'));
   const queryQ = await db.all('select * from query');
-// console.log(queryQ)
+//console.log(queryQ)
   res.redirect('/user')
-
 });
 
+app.post('/uQuerry', async (req,res) => {
+  const { Query } = req.body;
+
+  if (!Query) {
+    // nothing is added
+    return res.redirect('/user');
+  }
+  console.log(req.body.discript);
+  const insertData = ('INSERT INTO QUERiES (long,lat,discript,image)  VALUES (?,?,?)');
+  await db.run(insertData, req.body.long, req.body.lat, req.body.descript, req.body.image);
+
+  // const insertQuerriesSQL = 'insert into query (query, date) values (?, ?)';
+  // await db.run(insertQuerriesSQL, Query, moment(new Date()).format('MMM D, YYYY'));
+  // const queryQ = await db.all('select * from query');;
+ //res.redirect('/user')
+}); 
+  app.get('/uQuerry', async (req, res) => {
+
+  const queryQ = await db.all('select * from QUERiES');
+ res.render('user', {queryQ})
+  });
 
 // app.get('/reminder/:dayCount/days', function (req, res) {
 
@@ -132,7 +168,15 @@ app.post('/remove/:id', async function(req, res){
 
 // const reminders = [];
 
-
+app.post('/api', (request, response) => {
+  console.log(request.body);
+  const data =  request.body;
+  response.json({
+    status: 'Success',
+    latitude : data.lat,
+    longitude: data.lon
+  });
+})
 
 
   // list of querries 

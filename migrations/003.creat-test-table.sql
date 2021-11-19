@@ -1,7 +1,7 @@
--- CREATE TABLE QUERY(
--- 	id integer primary key AUTOINCREMENT,
---     name  text not null,
--- 	Email text not null,
---     type_of_user text not null,
---     Password text not null
--- );
+CREATE TABLE QUERiES (
+	id integer primary key AUTOINCREMENT,
+    long integer DEFAULT 0,
+    lat integer DEFAULT 0,
+    discript varchar(230) DEFAULT 'picture',
+    image blob
+);
