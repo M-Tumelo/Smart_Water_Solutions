@@ -40,8 +40,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static('public'));
 app.use(fileUpload());
-
-
+app.use(express.static('modelAI'));
 
 
 
@@ -68,6 +67,7 @@ open({
   var upload;
   var lon;
   var lat;
+
   app.get('/', (req, res) => {
     res.render('home');
   });
@@ -91,18 +91,20 @@ open({
   });
 
   app.post('/johnquery', async function (req, res) {
+
     // read more about destructoring here - https://exploringjs.com/impatient-js/ch_destructuring.html
     const { Query } = req.body;
+    console.log(req.body);
 
-    if (Query == null) {
+    if (!Query) {
       // nothing is added
       console.log("Test")
       return res.redirect('/user');
     }
     else {
-      const insertQuerriesSQL = 'insert into query (name, longitude, lattitude query, date, picture, status) values (?, ?, ?, ?, ?, ?, ?)';
-      await db.run(insertQuerriesSQL, res.session.name, longitude, lattitude, Query, moment(new Date()).format('MMM D, YYYY'), upload, 'new');
-      console.log(Query)
+      const insertQuerriesSQL = 'insert into query (name,longitude,lattitude,query, date, picture, status) values (?, ?, ?, ?, ?,?,?)';
+      await db.run(insertQuerriesSQL, "User", lon, lat, Query, moment(new Date()).format('MMM D, YYYY'), upload, 'new');
+      // console.log(Query)
       res.redirect('/user')
     }
 
@@ -141,18 +143,14 @@ open({
 
   // })
 
-  // only setup the routes once the database connection has been established
 
-  // })
 
 
   // we use global state to store data
 
   // const reminders = [];
 
-  // we use global state to store data
 
-  // const reminders = [];
 
 
   // list of querries 
@@ -179,10 +177,7 @@ open({
 
   app.get('/admin', async (req, res) => {
     const username = await db.all('select * from signup where email = ?', req.session.email);
-    res.render('technician', {
-      queryQ,
-      username
-    });
+    res.render('querry');
   });
 
   app.get('/sense', (req, res) => {
@@ -190,9 +185,11 @@ open({
     res.render('sense');
   });
 
-  app.post('/sense',async (req, res) => {
+  app.post('/sense', async (req, res) => {
+
+
     const insertData = ('INSERT INTO QUERY (name,longitude,lattitude,query,date)  VALUES (?,?,?,?,?)');
-    await db.run(insertData,'Sense', req.body.long, req.body.lat, req.body.Descript,moment(new Date()).format('MMM D, YYYY'));
+    await db.run(insertData, 'Sense', req.body.long, req.body.lat, req.body.Descript, moment(new Date()).format('MMM D, YYYY'));
   });
 
   app.get('/ad', async (req, res) => {
@@ -251,7 +248,6 @@ open({
     setTimeout(function () { response.json(images); }, 1000);
   });
 
-  
   app.post('/login', async (req, res) => {
     req.session.email = req.body.email;
     req.session.psw = req.body.psw;
@@ -267,13 +263,8 @@ open({
     }
     else {
       // console.log('siright')
-<<<<<<< HEAD
       if (sql.type_of_user == 'user') res.redirect('/user');
-      else res.redirect('/ad');
-=======
-      if (sql.type_of_user == 'user') res.render('user');
       else res.redirect('/admin');
->>>>>>> bcd745c4e4fe39ee3b8aab3b9581ccf4c5fa9bf5
     }
 
   });
