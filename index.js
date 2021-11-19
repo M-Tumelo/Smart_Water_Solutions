@@ -43,6 +43,8 @@ app.use(fileUpload());
 
 
 
+
+
 open({
   filename: './data.db',
   driver: sqlite3.Database
@@ -64,6 +66,8 @@ open({
   //getting queries data and name of the user from the database
   const queryQ = await db.all('select * from query');
   var upload;
+  var lon;
+  var lat;
   app.get('/', (req, res) => {
     res.render('home');
   });
@@ -87,21 +91,20 @@ open({
   });
 
   app.post('/johnquery', async function (req, res) {
-
     // read more about destructoring here - https://exploringjs.com/impatient-js/ch_destructuring.html
     const { Query } = req.body;
 
-    if (!Query) {
+    if (Query == null) {
       // nothing is added
       console.log("Test")
       return res.redirect('/user');
     }
-else{
-    const insertQuerriesSQL = 'insert into query (name, query, date, picture, status) values (?, ?, ?, ?, ?)';
-    await db.run(insertQuerriesSQL, "res.session.name", Query, moment(new Date()).format('MMM D, YYYY'), upload, 'new');
-    // console.log(Query)
-    res.redirect('/user')
-  }
+    else {
+      const insertQuerriesSQL = 'insert into query (name, longitude, lattitude query, date, picture, status) values (?, ?, ?, ?, ?, ?, ?)';
+      await db.run(insertQuerriesSQL, res.session.name, longitude, lattitude, Query, moment(new Date()).format('MMM D, YYYY'), upload, 'new');
+      console.log(Query)
+      res.redirect('/user')
+    }
 
   });
 
@@ -138,14 +141,18 @@ else{
 
   // })
 
+  // only setup the routes once the database connection has been established
 
+  // })
 
 
   // we use global state to store data
 
   // const reminders = [];
 
+  // we use global state to store data
 
+  // const reminders = [];
 
 
   // list of querries 
@@ -172,7 +179,7 @@ else{
 
   app.get('/admin', async (req, res) => {
     const username = await db.all('select * from signup where email = ?', req.session.email);
-    res.render('querry', {
+    res.render('technician', {
       queryQ,
       username
     });
@@ -215,6 +222,8 @@ else{
   // upload image files to server
   app.post("/user", async function (req, response) {
     var images = new Array();
+    lat = req.body.lat;
+    lon = req.body.lon;
     if (req.files) {
       var arr;
       if (Array.isArray(req.files.filesfld)) {
@@ -242,6 +251,7 @@ else{
     setTimeout(function () { response.json(images); }, 1000);
   });
 
+  
   app.post('/login', async (req, res) => {
     req.session.email = req.body.email;
     req.session.psw = req.body.psw;
@@ -257,8 +267,13 @@ else{
     }
     else {
       // console.log('siright')
+<<<<<<< HEAD
       if (sql.type_of_user == 'user') res.redirect('/user');
       else res.redirect('/ad');
+=======
+      if (sql.type_of_user == 'user') res.render('user');
+      else res.redirect('/admin');
+>>>>>>> bcd745c4e4fe39ee3b8aab3b9581ccf4c5fa9bf5
     }
 
   });

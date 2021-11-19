@@ -133,7 +133,7 @@
   <div class="containerr">
     <div class="columns">
       <form action="/johnquery" method="POST">
-      <div class="section">
+        <div class="section">
           <div class="column">
             <div class="section">
               <h2>Send a Query</h2>
@@ -243,9 +243,9 @@
           <div>
             <input type="submit" class="bigger-button" value="Send Your Query">
           </div>
-        </form>
-      </div>
+      </form>
     </div>
+  </div>
   </div>
   <footer id="contact">
     <ul>
@@ -295,11 +295,15 @@
         const options = {
           method: 'POST',
           headers: {
+            'Accept': 'application/json',
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(data)
+          body: JSON.stringify({
+            lon: lon,
+            lat: lat
+          })
         }
-        const response = await fetch('/api', options);
+        const response = await fetch('/user', options);
         const json = await response.json();
         await db.run('insert into query (longitude, lattitude) values (?, ?)', lon, lat)
       });
@@ -307,7 +311,7 @@
       console.log('geolocation not available');
     }
   </script>
-  
+
 </body>
 
 </html>
