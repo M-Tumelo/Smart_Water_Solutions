@@ -267,13 +267,8 @@ open({
     }
     else {
       // console.log('siright')
-<<<<<<< HEAD
-      if (sql.type_of_user == 'user') res.redirect('/user');
-      else res.redirect('/ad');
-=======
       if (sql.type_of_user == 'user') res.render('user');
       else res.redirect('/admin');
->>>>>>> bcd745c4e4fe39ee3b8aab3b9581ccf4c5fa9bf5
     }
 
   });
