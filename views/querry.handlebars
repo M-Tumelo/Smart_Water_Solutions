@@ -16,7 +16,8 @@
     <script
         src="https://api.mapbox.com/directions/v5/mapbox/cycling/-84.518641,39.134270;-84.512023,39.102779?geometries=geojson&access_token=pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q"></script>
     <style>
-        <style>body {
+        <style>
+            body {
             margin: 0;
             padding: 0;
         }
@@ -50,9 +51,69 @@
     <title>locator</title>
 </head>
 
-<body>
-   
-    <div id='map'></div>
+<body style="background-color: black;">
+    <div class="menu-wrapper">
+        <header class="header">
+            <a href="/" class="logo"><img alt="Logo" src="/img/logo.jpg"></a>
+            <input class="menu-btn" type="checkbox" id="menu-btn" />
+            <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
+            <ul class="menu">
+                <li class="hide"><a href="#" class="remove-hover">{{#each username}}<span
+                            style="color: whitesmoke; vertical-align: 12px;">Welcome
+                            {{name}}</span>{{/each}}&nbsp;&nbsp;<i
+                            style="color: whitesmoke; font-size:44px; margin-top:-11px;" class="fa fa-user-circle-o"
+                            aria-hidden="true"></i></a></li>
+                {{!-- <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact Us</a></li> --}}
+            </ul>
+        </header>
+    </div>
+    <div style="margin-top: 5em;">Welcome</div>
+    <div class="containerr">
+        <div>
+            <div class="column">
+<section class="mains">
+            <div class="head-notification">
+                <p>Queries</p>
+            </div>
+            <div class="body-notification">
+                <div class="line"></div>
+                {{#each queryQ}} 
+               <a href="/ds/{{id}}" id={{id}}><div class="queryy">
+                    <div class="circle"></div>
+                    <span class="time">{{date}}</span>
+                    <p>{{query}}</p>
+                </div></a>
+               {{/each}} 
+            </div>
+    </section>
+            </div>
+            {{!-- <div class="column">
+<div style="margin-top: 1em;" class="board">
+          <h1 class="board__heading">
+            Newsletter
+          </h1>
+          <section class="board__news">
+            {{#each queryQ}}
+            <a class="news--item" href="#">
+              <p class="date">
+                {{date}}
+              </p>
+              <p class="title">
+                {{query}}
+              </p>
+            </a>
+
+            {{/each}}
+          </section>
+        </div>
+            </div> --}}
+            {{!-- <div class="column">
+Name 3
+            </div> --}}
+        </div>
+    </div>
+    {{!-- <div id='map'></div> --}}
 
     <script>
 

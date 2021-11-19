@@ -1,10 +1,10 @@
 create table query(
 	id integer primary key AUTOINCREMENT,
-    -- name  text not null,
-	-- longitude text not null,
-    -- lattitude text not null,
+    name  text not null,
+	 longitude text,
+     lattitude text,
     query text,
     date text,
-    picture none,
+    picture text,
     status text  ---new query, pending, attended
 );
