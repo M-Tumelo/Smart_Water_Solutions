@@ -17,7 +17,7 @@ const sqlite3 = require('sqlite3');
 const { open } = require('sqlite');
 var cors = require('cors');
 app.use(cors());
-let PORT = process.env.PORT || 3001;
+let PORT = process.env.PORT || 30021;
 
 //Configure the express-handlebars module
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
@@ -40,6 +40,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static('public'));
 app.use(fileupload());
+
+app.use(express.static('modelAI'))
+
 
 open({
   filename: './data.db',
@@ -75,6 +78,18 @@ app.post('/count', function (req, res) {
   res.redirect('/user')
 });
 
+app.get('/al', (req, res)=>{
+  res.render('al');
+})
+
+
+app.post('/al', function (req, res) {
+ // counter++;
+  res.redirect('/al')
+});
+
+
+
 app.post('/johnquery', async function (req, res) {
 
   // read more about destructoring here - https://exploringjs.com/impatient-js/ch_destructuring.html
@@ -100,8 +115,8 @@ app.post('/uQuerry', async (req,res) => {
     return res.redirect('/user');
   }
   console.log(req.body.discript);
-  const insertData = ('INSERT INTO QUERiES (long,lat,discript)  VALUES (?,?,?)');
-  await db.run(insertData, req.body.long, req.body.lat, req.body.Descript);
+  const insertData = ('INSERT INTO QUERiES (long,lat,discript,image)  VALUES (?,?,?)');
+  await db.run(insertData, req.body.long, req.body.lat, req.body.descript, req.body.image);
 
   // const insertQuerriesSQL = 'insert into query (query, date) values (?, ?)';
   // await db.run(insertQuerriesSQL, Query, moment(new Date()).format('MMM D, YYYY'));
