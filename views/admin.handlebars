@@ -51,6 +51,34 @@
 </head>
 
 <body style="background-color: whitesmoke;">
+
+    <script>
+
+        navigator.geolocation.getCurrentPosition((position) => {
+
+                        const long = position.coords.longitude;
+                        const lat = position.coords.latitude;
+                        console.log("long " + long, "lat " + lat);
+
+                        async function postData() {
+                            const send = await fetch('/ad', {
+                                method: 'POST',
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    Descript: 'Techinician',
+                                    long: long,
+                                    lat: lat
+                                })
+                            })
+                            const content = await send.json();
+                        }
+                        postData();
+                    });
+    </script>
+
     <div class="menu-wrapper">
         <header class="header">
             <a href="/" class="logo"><img alt="Logo" src="/img/logo.jpg"></a>
@@ -79,49 +107,68 @@
         </div>
         <div class="line"></div>
         {{#each querries}}
-        <div class="row" style="background-color: blue;">
-            <br>
-            <div class="col-12">
-                <a href="/ds/{{id}}" id={{id}}>
-                    <div class="queryy">
+        <br>
+        <a href="/ds/{{id}}" id={{id}}>
+            <div class="row" style="background-color: green;">
 
-                        <div class="circle"></div>
-                        <span class="time">{{date}}</span>
-                        <p>{{query}}</p>
-                        <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"> </script>
-                        <script>
-                            var long = {{ longitude }};
-                            var lat = {{ lattitude }};
-                            document.getElementById("last").innerHTML = long;
-                            navigator.geolocation.getCurrentPosition((position) => {
+                <div class="col-4">6 Davies street</div>
+                <div class="col-2">30 min</div>
+                <div class="col-2">12 km</div>
+                <div class="col-2">{{date}}</div>
+            </div>
 
-                                const userLong = position.coords.longitude;
-                                const userLat = position.coords.latitude;
-                                getQueries();
-                                async function getQueries() {
-                                    try {
-                                        const url2 = `https://api.mapbox.com/directions/v5/mapbox/driving/${userLong},${userLat};${long},${lat}?geometries=geojson&access_token=pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q`;
-                                        const url = 'https://api.mapbox.com/directions/v5/mapbox/driving/28.02214,-26.20153;28.04396,-26.20497?geometries=geojson&access_token=pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q';
-                                        let res = await fetch(url2);
-                                        const data = await res.json();
-                                        var time = data.routes[0].duration;
-                                        var distance = data.routes[0].distance;
-                                        var streetName = data.waypoints[1].name;
-                                        var street = Handlebars.compile(streetName);
+            <div class="row" style="background-color: green;">
 
-                                    }
-                                    catch (error) {
-                                        console.log(error)
-                                    }
-                                };
-                            });
-                        </script 
-                        <h1 id="last"></h1>      
-                    </div>
-                </a>
+                <div class="col-8">{{query}}</div>
+
+                <div class="col-4">
+                    <div class="circle"></div>
                 </div>
-              </div>
-              <br>
+
+            </div>
+            <div class="row" style="background-color: green;">
+
+                <div class="col-8">{{picture}}</div>
+                <div class="col-4">more...</div>
+
+            </div>
+
+            <div class="row" style="background-color: green;">
+
+                <div class="col-12">
+                    <img src="{{picture}}" alt="leak" width="93%" height="300px">
+                </div>
+
+            </div>
+
+            <script>
+                var long = {{ longitude }};
+                var lat = {{ lattitude }};
+                document.getElementById("last").innerHTML = long;
+                navigator.geolocation.getCurrentPosition((position) => {
+
+                    const userLong = position.coords.longitude;
+                    const userLat = position.coords.latitude;
+                    getQueries();
+                    async function getQueries() {
+                        try {
+                            const url2 = `https://api.mapbox.com/directions/v5/mapbox/driving/${userLong},${userLat};${long},${lat}?geometries=geojson&access_token=pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q`;
+                            const url = 'https://api.mapbox.com/directions/v5/mapbox/driving/28.02214,-26.20153;28.04396,-26.20497?geometries=geojson&access_token=pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q';
+                            let res = await fetch(url2);
+                            const data = await res.json();
+                            var time = data.routes[0].duration;
+                            var distance = data.routes[0].distance;
+                            var streetName = data.waypoints[1].name;
+                            var street = Handlebars.compile(streetName);
+
+                        }
+                        catch (error) {
+                            console.log(error)
+                        }
+                    };
+                });
+            </script             
+        </a>
        {{/each}}     
     </div>
 </body>

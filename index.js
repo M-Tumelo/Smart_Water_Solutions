@@ -9,6 +9,8 @@ const { compile } = require('handlebars');
 const sqlite3 = require('sqlite3');
 const { open } = require('sqlite');
 var cors = require('cors');
+const fetch = require('node-fetch');
+const { Promise } = require('node-fetch');
 
 let PORT = process.env.PORT || 3001;
 
@@ -25,6 +27,7 @@ app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: true
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 app.use(express.static('public'));
+app.use(express.static('upload'));
 app.use(fileUpload());
 
 open({
@@ -93,21 +96,7 @@ open({
 
     const querries = 'SELECT * from QUERiES';
     const geos = await db.all(querries);
-
-    const geoJson = geos.map(function (store) {
-      return {
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: [store.long, store.lat]
-        },
-        properties: {
-          title: 'Mapbox',
-          description: store.discript
-        }
-      }
-    });
-    res.json(geoJson);
+    res.json(geos);
   });
 
   app.get('/admin', async (req, res) => {
@@ -121,16 +110,62 @@ open({
   });
 
   app.post('/sense', async (req, res) => {
-    const insertData = ('INSERT INTO QUERY (name,longitude,lattitude,query,date)  VALUES (?,?,?,?,?)');
-    await db.run(insertData, 'Sense', req.body.long, req.body.lat, req.body.Descript, moment(new Date()).format('MMM D, YYYY'));
+    const insertData = ('INSERT INTO QUERY (name,longitude,lattitude,query,date,picture)  VALUES (?,?,?,?,?,?)');
+    await db.run(insertData, 'Sense', req.body.long, req.body.lat, req.body.Descript, moment(new Date()).format('MMM D, YYYY'), 'leak.PNG');
   });
 
   app.get('/ad', async (req, res) => {
+
     const querries = await db.all('select * from query');
     const username = await db.all('select * from signup where email = ?', req.session.email);
+    console.log(req.session.techLong, req.session.techLat);
 
-    res.render('admin', { querries, username});
+    const mapToken = 'pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q';
+    
+    const geojson=await Promise.all (
+
+     querries.map(async function (colunmn) {
+
+      const url = `https://api.mapbox.com/directions/v5/mapbox/driving/28.02214,-26.20153;28.04396,-26.20497?geometries=geojson&access_token=${mapToken}`;
+      const adressUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/28.04396,-26.20497.json?access_token=${mapToken}`;
+ 
+      //Direction API MAPBOX
+      const mapBoxdata = await fetch(url);
+      const data = await mapBoxdata.json();
+      const time = await data.routes[0].duration;
+      const distance =await data.routes[0].distance;
+
+      //REVERSE GEOLOCATOR API MAPBOX
+      const adrress = await fetch(adressUrl);
+      const location = await adrress.json();
+      const standNo =await location.features[0].address;
+      const streetName =await location.features[0].text;
+
+      
+      // console.log(time, distance);
+
+      return {
+        id: colunmn.id,
+        time: time,
+        distance:distance,
+        picture:colunmn.picture,
+        standNo:standNo,
+        streetName:streetName
+      }
+    }
+
+    ))
+
+    console.log(geojson)
+    res.render('admin', { querries });
   });
+
+  app.post('/ad', (req, res) => {
+
+    req.session.techLong = req.body.long;
+    req.session.techLat = req.body.lat;
+    res.redirect('/ad');
+  })
 
   app.get('/ds/:id', async (req, res) => {
     const getQuery = await db.get('select * from query where id = ?', req.params.id);

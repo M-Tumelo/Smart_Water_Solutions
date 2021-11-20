@@ -29,6 +29,7 @@
     "install": "^0.13.0",
     "knex": "^0.95.14",
     "moment": "^2.29.1",
+    "node-fetch": "^2.6.6",
     "nodemon": "^2.0.15",
     "serve-favicon": "^2.5.0",
     "sqlite": "^4.0.23",
