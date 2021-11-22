@@ -1,6 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.css' rel='stylesheet' />
+    <title>locator</title>
+    <style>
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .marker {
+            background-image: url('mapbox-icon.png');
+            background-size: cover;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+</head>
 <body>
-    
+
     <div id='map'></div>
     <script>
         mapboxgl.accessToken = 'pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q'
@@ -12,78 +39,78 @@
         })
 
         const bounds = [[27.537, -26.563], [28.542, -25.834]];
-        {{!-- map.setMaxBounds(bounds); --}}
+        { { !--map.setMaxBounds(bounds); --} }
 
-        const start = [{{endLong}},{{endLat}}];
-        const streetName="{{standNo}}"+" "+"{{streetName}}";
-        var discript="{{message}}";
-    
-        
+        const start = [{{ endLong }}, { { endLat } }];
+        const streetName = "{{standNo}}" + " " + "{{streetName}}";
+        var discript = "{{message}}";
+
+
         async function getRoute(end) {
-            
 
-            const route = {{route}};
-            const geojson = {
-                type: 'Feature',
-                properties: {},
-                geometry: {
-                    type: 'LineString',
-                    coordinates: route
-                }
-            };
 
-            if (map.getSource('route')) {
-                map.getSource('route').setData(geojson);
+        const route = {{ route }};
+        const geojson = {
+            type: 'Feature',
+            properties: {},
+            geometry: {
+                type: 'LineString',
+                coordinates: route
             }
-            else {
-                map.addLayer({
-                    id: 'route',
-                    type: 'line',
-                    source: {
-                        type: 'geojson',
-                        data: geojson
-                    },
-                    layout: {
-                        'line-join': 'round',
-                        'line-cap': 'round'
-                    },
-                    paint: {
-                        'line-color': '#FFFF00',
-                        'line-width': 5,
-                        'line-opacity': 0.75
-                    }
-                });
-            };
+        };
 
-            const el = document.createElement('div');
-            el.className = 'marker';
-            new mapboxgl.Marker(el)
-                .setLngLat(end)
-                .setPopup(
-                    new mapboxgl.Popup({ offset: 25 }) // add popups
-                        .setHTML(
-                            `<h3>${streetName}</h3><p>${discript}</p>`
-                        )
-                )
-                .addTo(map);
+        if (map.getSource('route')) {
+            map.getSource('route').setData(geojson);
+        }
+        else {
+            map.addLayer({
+                id: 'route',
+                type: 'line',
+                source: {
+                    type: 'geojson',
+                    data: geojson
+                },
+                layout: {
+                    'line-join': 'round',
+                    'line-cap': 'round'
+                },
+                paint: {
+                    'line-color': '#FFFF00',
+                    'line-width': 5,
+                    'line-opacity': 0.75
+                }
+            });
+        };
+
+        const el = document.createElement('div');
+        el.className = 'marker';
+        new mapboxgl.Marker(el)
+            .setLngLat(end)
+            .setPopup(
+                new mapboxgl.Popup({ offset: 25 }) // add popups
+                    .setHTML(
+                        `<h3>${streetName}</h3><p>${discript}</p>`
+                    )
+            )
+            .addTo(map);
 
 
-            const ele = document.createElement('div');
-            ele.className = 'motor';
-           const marker= new mapboxgl.Marker(ele)
-                .setLngLat(start)
-                .setPopup(
-                    new mapboxgl.Popup({ offset: 25 }) // add popups
-                        .setHTML(
-                            `<h3>${"Starting point"}</h3><p>${"good luck"}</p>`
-                        )
-                )
-                .addTo(map);
+        const ele = document.createElement('div');
+        ele.className = 'motor';
+        const marker = new mapboxgl.Marker(ele)
+            .setLngLat(start)
+            .setPopup(
+                new mapboxgl.Popup({ offset: 25 }) // add popups
+                    .setHTML(
+                        `<h3>${"Starting point"}</h3><p>${"good luck"}</p>`
+                    )
+            )
+            .addTo(map);
 
         }
-        
-        const end = [{{startLong}},{{startLat}}];
-    
+
+        const end = [{{ startLong }}, { { startLat } }];
+
         map.on('load', () => {
             // make an initial directions request that
             // starts and ends at the same location
@@ -114,3 +141,5 @@
         });
     </script>
 </body>
+
+</html>

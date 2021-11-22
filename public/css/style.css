@@ -33,6 +33,39 @@ a, a:hover {
   z-index: 3;
   min-width: 580px;
 }
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.marker {
+  background-image: url('mapbox-icon.png');
+  background-size: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.motor {
+  background-image: url('motor.jpg');
+  background-size: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.mapboxgl-popup {
+  max-width: 200px;
+}
+
+.mapboxgl-popup-content {
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+}
 
 .header ul {
   margin: 0;
@@ -79,7 +112,6 @@ a, a:hover {
 .header .menu-icon {
   cursor: pointer;
   display: inline-block;
-  float: right;
   padding: 28px 20px;
   position: relative;
   user-select: none;
@@ -90,7 +122,6 @@ a, a:hover {
   display: block;
   height: 2px;
   position: relative;
-  transition: background .2s ease-out;
   width: 18px;
 }
 
@@ -318,7 +349,6 @@ color: black;
   cursor: pointer;
   background-color: #00c6fb;
   font-weight: bold;
-  transition: background ease 0.3s;
 }
 .center {
   margin-left: auto;
@@ -698,6 +728,42 @@ ul li {
 .circle {
   background-color: #fff;
   color: #4071a3;
+  position: absolute;
+right: 10px;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  border: 2px #4071a3 solid;
+  /*adding white space around circle*/
+  box-shadow: 0 0 0 3px #fff;
+}
+.new {
+  background-color: red;
+  color:#4071a3;
+  position: absolute;
+  right: 10px;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  border: 2px #4071a3 solid;
+  /*adding white space around circle*/
+  box-shadow: 0 0 0 3px #fff;
+}
+.pending {
+  background-color:yellow;
+  color: yellow;
+  position: absolute;
+right: 10px;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  border: 2px #4071a3 solid;
+  /*adding white space around circle*/
+  box-shadow: 0 0 0 3px #fff;
+}
+.attended {
+  background-color:green;
+  color:green;
   position: absolute;
 right: 10px;
   height: 12px;
