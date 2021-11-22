@@ -110,8 +110,8 @@ open({
   });
 
   app.post('/sense', async (req, res) => {
-    const insertData = ('INSERT INTO QUERY (name,longitude,lattitude,query,date,picture)  VALUES (?,?,?,?,?,?)');
-    await db.run(insertData, 'Sense', req.body.long, req.body.lat, req.body.Descript, moment(new Date()).format('MMM D, YYYY'), 'leak.PNG');
+    const insertData = ('INSERT INTO QUERY (name,longitude,lattitude,query,date,picture,status)  VALUES (?,?,?,?,?,?,?)');
+    await db.run(insertData, 'Sense', req.body.long, req.body.lat, req.body.Descript, moment(new Date()).format('MMM D, YYYY'), 'leak.PNG','new');
   });
 
   app.get('/ad', async (req, res) => {
@@ -216,7 +216,9 @@ open({
 
   app.get('/directions/:id/:message/:userLong/:userLat/:standNo/:streetName/:techLong/:techLat', async (req, res) => {
 
-
+    req.session.idno = req.params.id;
+    const update = 'UPDATE query set status=? where id=?'
+    await db.all(update, 'pending', req.session.idno);
     req.session.mapMessage = req.params.message;
 
     req.session.startLong = req.params.userLong;
@@ -237,6 +239,7 @@ open({
     const directRoad = JSON.stringify(route);
 
     res.render('directions', {
+      idno:req.session.idno,
       message: req.session.mapMessage,
       standNo: req.session.mapsandNo,
       streetName: req.session.mapstreetName,
@@ -246,6 +249,14 @@ open({
       endLat: req.session.endLat,
       route: directRoad
     });
+  });
+  app.get('/complete/:attendedId',async (req,res)=>{
+
+   req.session.attendId=req.params.attendedId;
+   const updateAttended = 'UPDATE query set status=? where id=?'
+  await db.all(updateAttended,'attended',req.session.attendId);
+    res.redirect('/ad');
+
   });
 
   app.post("/user", async function (req, response) {
