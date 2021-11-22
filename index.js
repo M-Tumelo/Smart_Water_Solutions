@@ -1,6 +1,7 @@
 let express = require('express');
 const fileUpload = require('express-fileupload');
 const FileType = require('file-type');
+const nodemailer = require('nodemailer');
 
 let app = express();
 
@@ -152,6 +153,60 @@ open({
   });
 
   // });
+
+
+  app.get('/contact', async (req, res) => {
+    res.render('contact')
+  });
+
+  app.post('/contact', (req, res) => {
+    const output = `
+      <p>You have a new contact request</p>
+      <h3>Contact Details</h3>
+      <ul>  
+        <li>Name: ${req.body.name}</li>
+        <li>Company: ${req.body.company}</li>
+        <li>Email: ${req.body.email}</li>
+        <li>Phone: ${req.body.phone}</li>
+      </ul>
+      <h3>Message</h3>
+      <p>${req.body.message}</p>
+    `;
+  
+    let transporter = nodemailer.createTransport({
+      host: 'smtp.ethereal.email',
+      port: 587,
+      secure: false, 
+      auth: {
+          user: 'kaylah.pfeffer26@ethereal.email', 
+          pass: 'kdrPZj4eMzK32pADj3'  
+      },
+      tls:{
+        rejectUnauthorized:false
+      }
+    });
+  
+    let mailOptions = {
+        from: '"Nodemailer Contact" <kaylah.pfeffer26@ethereal.emai>', // sender address
+        to: 'cktshukudu@gmail.com', // list of receivers
+        subject: 'Water Leaks', // Subject line
+        text: 'Hello world?', // plain text body
+        html: output // html body
+    };
+  
+ 
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return console.log(error);
+        }
+        console.log('Message sent: %s', info.messageId);   
+        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+  
+        res.render('contact', {msg:'Email has been sent'});
+    });
+    });
+
+
 
   app.post('/remove/:id', async function (req, res) {
 
