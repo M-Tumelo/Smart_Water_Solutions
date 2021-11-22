@@ -119,59 +119,134 @@ open({
     const querries = await db.all('select * from query');
     const username = await db.all('select * from signup where email = ?', req.session.email);
     console.log(req.session.techLong, req.session.techLat);
-
     const mapToken = 'pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q';
-    
-    const geojson=await Promise.all (
 
-     querries.map(async function (colunmn) {
+    if (req.session.techLong == undefined && req.session.techLat == undefined) {
 
-      const url = `https://api.mapbox.com/directions/v5/mapbox/driving/28.02214,-26.20153;28.04396,-26.20497?geometries=geojson&access_token=${mapToken}`;
-      const adressUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/28.04396,-26.20497.json?access_token=${mapToken}`;
- 
-      //Direction API MAPBOX
-      const mapBoxdata = await fetch(url);
-      const data = await mapBoxdata.json();
-      const time = await data.routes[0].duration;
-      const distance =await data.routes[0].distance;
+      const geojson = await Promise.all(
 
-      //REVERSE GEOLOCATOR API MAPBOX
-      const adrress = await fetch(adressUrl);
-      const location = await adrress.json();
-      const standNo =await location.features[0].address;
-      const streetName =await location.features[0].text;
+        querries.map(async function (column) {
 
-      
-      // console.log(time, distance);
+          const adressUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${column.longitude},${column.lattitude}.json?access_token=${mapToken}`;
 
-      return {
-        id: colunmn.id,
-        time: time,
-        distance:distance,
-        picture:colunmn.picture,
-        standNo:standNo,
-        streetName:streetName
-      }
+
+          //REVERSE GEOLOCATOR API MAPBOX
+          const adrress = await fetch(adressUrl);
+          const location = await adrress.json();
+          const standNo = await location.features[0].address;
+          const streetName = await location.features[0].text;
+
+          return {
+            id: column.id,
+            picture: column.picture,
+            standNo: standNo,
+            streetName: streetName,
+            name: column.name,
+            longitude: column.longitude,
+            lattitude: column.lattitude,
+            query: column.query,
+            date: column.date,
+            status: column.status
+          }
+        }
+
+        ))
+      res.render('admin');
     }
 
-    ))
+    else {
+      const geojson = await Promise.all(
 
-    console.log(geojson)
-    res.render('admin', { querries });
+        querries.map(async function (column) {
+
+          const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${column.longitude},${column.lattitude};${req.session.techLong},${req.session.techLat}?geometries=geojson&access_token=${mapToken}`;
+          const adressUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${column.longitude},${column.lattitude}.json?access_token=${mapToken}`;
+
+          //Direction API MAPBOX
+          const mapBoxdata = await fetch(url);
+          const data = await mapBoxdata.json();
+          const time = await data.routes[0].duration / 60;
+          const distance = await data.routes[0].distance / 1000;
+
+          //REVERSE GEOLOCATOR API MAPBOX
+          const adrress = await fetch(adressUrl);
+          const location = await adrress.json();
+          const standNo = await location.features[0].address;
+          const streetName = await location.features[0].text;
+
+
+          // console.log(time, distance);
+
+          return {
+            id: column.id,
+            techlong: req.session.techLong,
+            techLat: req.session.techLat,
+            picture: column.picture,
+            standNo: standNo,
+            streetName: streetName,
+            name: column.name,
+            longitude: column.longitude,
+            lattitude: column.lattitude,
+            query: column.query,
+            date: column.date,
+            status: column.status,
+            time: time.toFixed(2),
+            distance: distance.toFixed(2)
+          }
+        }
+
+        ))
+
+      res.render('admin', { geojson });
+    }
   });
 
   app.post('/ad', (req, res) => {
 
     req.session.techLong = req.body.long;
     req.session.techLat = req.body.lat;
-    res.redirect('/ad');
-  })
+    res.redirect('/user');
+  });
 
   app.get('/ds/:id', async (req, res) => {
     const getQuery = await db.get('select * from query where id = ?', req.params.id);
     // console.log(getQuery);
     res.redirect('/admin')
   })
+
+  app.get('/directions/:id/:message/:userLong/:userLat/:standNo/:streetName/:techLong/:techLat', async (req, res) => {
+
+
+    req.session.mapMessage = req.params.message;
+
+    req.session.startLong = req.params.userLong;
+    req.session.startLat = req.params.userLat;
+    req.session.endLong = req.params.techLong;
+    req.session.endLat = req.params.techLat;
+    req.session.mapsandNo = req.params.standNo;
+    req.session.mapstreetName = req.params.streetName;
+    req.session.mapCord2 = req.params.cord2;
+
+
+    const mapToken = 'pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q';
+    const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${req.session.startLong},${req.session.startLat};${req.session.endLong},${req.session.endLat}?geometries=geojson&access_token=${mapToken}`;
+    const query = await fetch(url);
+    const json = await query.json();
+    const data =await json.routes[0];
+    const route = data.geometry.coordinates;
+    const directRoad = JSON.stringify(route);
+
+    res.render('directions', {
+      message: req.session.mapMessage,
+      standNo: req.session.mapsandNo,
+      streetName: req.session.mapstreetName,
+      startLong: req.session.startLong,
+      startLat: req.session.startLat,
+      endLong: req.session.endLong,
+      endLat: req.session.endLat,
+      route: directRoad
+    });
+  });
 
   app.post("/user", async function (req, response) {
     var images = new Array();

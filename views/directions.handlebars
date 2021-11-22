@@ -1,0 +1,116 @@
+
+<body>
+    
+    <div id='map'></div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q'
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/dark-v10',
+            center: [27.954088, -26.195246], // starting position
+            zoom: 12
+        })
+
+        const bounds = [[27.537, -26.563], [28.542, -25.834]];
+        {{!-- map.setMaxBounds(bounds); --}}
+
+        const start = [{{endLong}},{{endLat}}];
+        const streetName="{{standNo}}"+" "+"{{streetName}}";
+        var discript="{{message}}";
+    
+        
+        async function getRoute(end) {
+            
+
+            const route = {{route}};
+            const geojson = {
+                type: 'Feature',
+                properties: {},
+                geometry: {
+                    type: 'LineString',
+                    coordinates: route
+                }
+            };
+
+            if (map.getSource('route')) {
+                map.getSource('route').setData(geojson);
+            }
+            else {
+                map.addLayer({
+                    id: 'route',
+                    type: 'line',
+                    source: {
+                        type: 'geojson',
+                        data: geojson
+                    },
+                    layout: {
+                        'line-join': 'round',
+                        'line-cap': 'round'
+                    },
+                    paint: {
+                        'line-color': '#FFFF00',
+                        'line-width': 5,
+                        'line-opacity': 0.75
+                    }
+                });
+            };
+
+            const el = document.createElement('div');
+            el.className = 'marker';
+            new mapboxgl.Marker(el)
+                .setLngLat(end)
+                .setPopup(
+                    new mapboxgl.Popup({ offset: 25 }) // add popups
+                        .setHTML(
+                            `<h3>${streetName}</h3><p>${discript}</p>`
+                        )
+                )
+                .addTo(map);
+
+
+            const ele = document.createElement('div');
+            ele.className = 'motor';
+           const marker= new mapboxgl.Marker(ele)
+                .setLngLat(start)
+                .setPopup(
+                    new mapboxgl.Popup({ offset: 25 }) // add popups
+                        .setHTML(
+                            `<h3>${"Starting point"}</h3><p>${"good luck"}</p>`
+                        )
+                )
+                .addTo(map);
+
+        }
+        
+        const end = [{{startLong}},{{startLat}}];
+    
+        map.on('load', () => {
+            // make an initial directions request that
+            // starts and ends at the same location
+            getRoute(end);
+
+            // Add starting point to the map
+            map.addLayer({
+                id: 'point',
+                type: 'circle',
+                source: {
+                    type: 'geojson',
+                    data: {
+                        type: 'FeatureCollection',
+                        features: [
+                            {
+                                type: 'Feature',
+                                properties: {},
+                                geometry: {
+                                    type: 'Point',
+                                    coordinates: end
+                                }
+                            }
+                        ]
+                    }
+                }
+            });
+            // this is where the code from the next step will go
+        });
+    </script>
+</body>

@@ -1,125 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">container
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="simple-grid.css">
-    <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
-    <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet'/>
-    <link rel="stylesheet"
-        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.css"
-        type="text/css" />
-    <script
-        src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js"></script>
-    <style>
-        <title>Document</title>
-        </head><body><div id='map'></div><script>mapboxgl.accessToken='pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q';
+    <title>Smart Water Solutions</title>
+</head>
+<body>
 
-        const map=new mapboxgl.Map( {
-                container: 'map',
-                style: 'mapbox://styles/mapbox/light-v10',
-                center: [28.034088, -26.195246],
-                zoom: 15
-            }
+  <a href="/index1.html">Leak image Classification</a>
+    <table class="table">
 
-        );
+<h2 style="text-align:center">Query list</h2>
+<tr>
+	<th>Query Number:</th>
+  <th>Coordinates:</th>
+  <th>Description:</th>
+	<th>Leak Image:</th>
+</tr>
 
-        navigator.geolocation.getCurrentPosition((position)=> {
-                console.log(position.coords.longitude, position.coords.latitude);
-            }
+ {{#each queryQ}}
+ <tr>
+	<td>{{id}}</td>
+	<td>{{lon}} :{{lat}}</td>
+	<td>{{query}}</td>
+  <td><img src="/public/upload/empty-cart.png" alt="n/a"></td>
+  </tr>
+	{{!-- <td><button type="submit" value="submit">Submit</td> --}}
+	{{/each}}
+                        
+ 
 
-        );
+  </table>
 
-        map.addControl(new MapboxDirections( {
-                    accessToken: mapboxgl.accessToken
-                }
-
-            ),
-            'top-left'
-        );
-
-        const geolocate=new mapboxgl.GeolocateControl( {
-                positionOptions: {
-                    enableHighAccuracy: true
-                }
-
-                ,
-                // When active the map will receive updates to the device's location as it changes.
-                trackUserLocation: true,
-                // Draw an arrow next to the location dot to indicate which direction the device is heading.
-                showUserHeading: true
-            }
-
-        );
-        map.addControl(geolocate);
-
-        map.on('load', function () {
-                geolocate.trigger();
-            }
-
-        );
-
-        geolocate.on('trackuserlocationstart', ()=> {
-                console.log('A trackuserlocationstart event has occurred.');
-            }
-
-        );
-
-
-        async function getQueries() {
-
-            try {
-                const url='/data';
-
-                let res=await fetch(url);
-                const data=await res.json();
-                console.log(data);
-
-                const geojson= {
-                    type: 'FeatureCollection',
-                        features: data
-                }
-
-                ;
-
-
-                // add markers to map
-                for (const feature of geojson.features) {
-                    // create a HTML element for each feature
-                    const el=document.createElement('div');
-                    el.className='marker';
-
-                    // make a marker for each feature and add to the map
-                    new mapboxgl.Marker(el) .setLngLat(feature.geometry.coordinates) .setPopup(new mapboxgl.Popup( {
-                                offset: 25
-                            }
-
-                        ) // add popups
-
-                        .setHTML(`<h3>$ {
-                                feature.properties.title
-                            }
-
-                            </h3><p>$ {
-                                feature.properties.description
-                            }
-
-                            </p>`)) .addTo(map);
-                }
-
-
-            }
-
-            catch (error) {
-                console.log(error)
-            }
-        }
-
-        ;
-
-        getQueries();
-
-        </script></body></html>
+</body>
+</html>
