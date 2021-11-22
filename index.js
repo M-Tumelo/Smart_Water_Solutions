@@ -11,6 +11,7 @@ var moment = require('moment');
 const exphbs = require('express-handlebars');
 
 const bodyParser = require('body-parser');
+
 const path = require('path');
 
 //import sqlite modules
@@ -36,9 +37,10 @@ app.use(session({
 }))
 
 //app.use(fav(path.join(__dirname, 'public', 'img/favicon.ico')))
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(express.static('public'));
+app.use(express.static('upload'));
 app.use(fileUpload());
 
 
@@ -65,9 +67,9 @@ open({
 
   //getting queries data and name of the user from the database
   const queryQ = await db.all('select * from query');
-  var upload;
   var lon;
   var lat;
+  var upload
   app.get('/', (req, res) => {
     res.render('home');
   });
@@ -89,23 +91,19 @@ open({
     counter++;
     res.redirect('/user')
   });
-
+ 
+ 
   app.post('/johnquery', async function (req, res) {
     // read more about destructoring here - https://exploringjs.com/impatient-js/ch_destructuring.html
     const { Query } = req.body;
 
-    if (Query == null) {
+    if (Query != null) {
       // nothing is added
-      console.log("Test")
-      return res.redirect('/user');
-    }
-    else {
-      const insertQuerriesSQL = 'insert into query (name, longitude, lattitude query, date, picture, status) values (?, ?, ?, ?, ?, ?, ?)';
-      await db.run(insertQuerriesSQL, res.session.name, longitude, lattitude, Query, moment(new Date()).format('MMM D, YYYY'), upload, 'new');
-      console.log(Query)
+      const insertQuerriesSQL = 'insert into query (name, longitude, lattitude, query, date, status) values (?, ?, ?, ?, ?, ?)';
+      await db.run(insertQuerriesSQL, "res.session.name", lon, lat, Query, moment(new Date()).format('MMM D, YYYY'), 'new');
       res.redirect('/user')
+     
     }
-
   });
 
 
@@ -201,11 +199,15 @@ open({
   //   sampleFile = req.files.sampleFile;
   //   console.log(sampleFile);
 
-  // upload image files to server
-  app.post("/user", async function (req, response) {
-    var images = new Array();
+  app.post('/api', (req,res) =>{
     lat = req.body.lat;
     lon = req.body.lon;
+  })
+
+  // upload image files to server
+  app.post("/user", async function (req, res) {
+
+    var images = new Array();
     if (req.files) {
       var arr;
       if (Array.isArray(req.files.filesfld)) {
@@ -219,8 +221,11 @@ open({
         var file = arr[i];
         if (file.mimetype.substring(0, 5).toLowerCase() == "image") {
           images[i] = "/" + file.name;
-          upload = "./upload" + images[i]
-          // await db.run('insert into query (picture) values (?)', upload)
+          upload = "./upload" + images[i];
+          let update_table = `UPDATE query
+                                      SET picture = ?                                     
+                                     WHERE name = ?`;
+          await db.run(update_table, upload, 'req.session.name')
           file.mv(upload, function (err) {
             if (err) {
               console.log(err);
@@ -229,11 +234,11 @@ open({
         }
       }
     }
+    console.log(upload)
     // give the server a second to write the files
-    setTimeout(function () { response.json(images); }, 1000);
+    setTimeout(function () { res.json(images); }, 1000);
   });
 
-  
   app.post('/login', async (req, res) => {
     req.session.email = req.body.email;
     req.session.psw = req.body.psw;
