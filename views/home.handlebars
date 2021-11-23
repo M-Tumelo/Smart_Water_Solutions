@@ -2,15 +2,22 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Smart Water Solutions</title>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="author" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
 </head>
 
-<body>
+<body data-spy="scroll" data-target="#navbarNav" data-offset="50">
 
-
+  <!-- MENU BAR -->
   <div class="menu-wrapper">
     <header class="header">
       <a href="/" class="logo"><img alt="Logo" src="/img/logo.jpg"></a>
@@ -20,108 +27,294 @@
         <li><a href="#">Home</a></li>
         <li><a href="#">About Us</a></li>
         <li><a href="#">Contact Us</a></li>
+        <li><a href="#">Login</a></li>
+        <li><a href="#">Register</a></li>
       </ul>
     </header>
   </div>
-  <div>
-
-    {{#each queryQ}}
-    <center>
 
 
-      <h2>Queries</h2>
-      <div class="section mt-1">
+  <!-- HERO -->
+  <section class="hero d-flex flex-column justify-content-center align-items-center" style="width: 100%;" id="home">
 
-        {{first_name}}
-        {{!-- <br><br>
-        <strong>{{book_count}}</strong> queries(s) you sent took out at the library is due in
-        <strong>{{days_due_in}}</strong> day(s).
-        <br><br> --}}
+    <div class="bg-overlay"></div>
 
-        {{!-- {{#if notLate}}
-        Please return these books to us in the next <a href="/reminder/{{days_due_in}}/days">{{days_due_in}}
-          days</a> .
-        {{else}}
-        <span class="late"> Please return your books <strong>urgently</strong></span>
-        {{/if}} --}}
+    <div class="container">
+      <div class="row">
 
-        {{!-- <div class="mt-1">
-          <a href="/edit/{{id}}">Edit query</a>
-        </div> --}}
-        <div class="remove-query mt-1">
-          <form method="POST" action="/remove/{{id}}">
-            <input type="submit" class="small-button" value="Remove Query">
-          </form>
+        <div class="col-lg-8 col-md-10 mx-auto col-12">
+          <div class="hero-text mt-5 text-center">
+
+            <h6 data-aos="fade-up" data-aos-delay="300">New way to report water bursts and leaks!</h6>
+
+            <h1 class="text-white" data-aos="fade-up" data-aos-delay="500">Be a hero and partner with smart
+              water Solutions to conserve water</h1>
+
+            <a href="#feature" class="btn custom-btn mt-3" data-aos="fade-up" data-aos-delay="600">Get
+              started</a>
+
+            <a href="#about" class="btn custom-btn bordered mt-3" data-aos="fade-up" data-aos-delay="700">learn more</a>
+
+          </div>
         </div>
-      </div>
-      {{/each}}
-  </div>
-  </div>
-  <div style="margin-top: 6em;"></div>
-  <div class="center">
-    <div class="tabs">
 
-      <input type="radio" name="tabs" id="tabone" checked="checked">
-      <label for="tabone">Login</label>
-      <div class="tab">
-        <center>
-          <h1>Login</h1>
-        </center>
-
-        <form action="/login" method="post" style="margin:1em">
-          <div class="input-container">
-            <i class="fa fa-envelope icon"></i>
-            {{!-- Changed type from text to email --}}
-            <input class="input-field" type="email" required placeholder="Email" name="email">
-          </div>
-
-          <div class="input-container">
-            <i class="fa fa-lock icon"></i>
-            <input class="input-field" type="password" required placeholder="Password" name="psw">
-          </div>
-          <p>Have you forgotten your <a href="#"><strong>password</strong></a>?</p>
-          <button type="submit" class="btn">Login</button>
-          <p>Don't have an account? &nbsp;<a href="/register">Sign up</a></p>
-        </form>
-      </div>
-
-      <input type="radio" name="tabs" id="tabtwo">
-      <label for="tabtwo">Register</label>
-      <div class="tab">
-        <center>
-          <h1>Register</h1>
-        </center>
-
-        <form action="/register" method="post" style="margin:1em">
-          <div class="input-container">
-            <i class="fa fa-user icon"></i>
-            <input class="input-field" type="text" required placeholder="Name" name="name">
-          </div>
-
-          <div class="input-container">
-            <i class="fa fa-envelope icon"></i>
-            <input class="input-field" type="email" required placeholder="Email" name="email">
-          </div>
-
-          <div class="input-container">
-            <i class="fa fa-lock icon"></i>
-            <input class="input-field" type="password" required placeholder="Password" name="psw">
-          </div>
-
-          <div class="input-container">
-            <i class="fa fa-lock icon"></i>
-            <input class="input-field" type="password" required placeholder="Retype Password" name="psw1">
-          </div>
-          <div style="padding-bottom: 1em;">
-            <p>Are you a Rand Water Technican?</p>
-            <input id="padding" type="radio" name="user_type" checked value="user">No
-            <input id="padding" type="radio" name="user_type" value="technician">Yes
-          </div>
-          <button style="margin-top: 5px;" type="submit" class="btn">Register</button>
-        </form>
       </div>
     </div>
+  </section>
 
+
+  <section class="feature" id="feature">
+    <div class="container">
+      <div class="row">
+
+        <div class="d-flex flex-column justify-content-center ml-lg-auto mr-lg-5 col-lg-5 col-md-6 col-12">
+          <h2 class="mb-3 text-white" data-aos="fade-up">Already have an account?</h2>
+
+          <h6 class="mb-4 text-white" data-aos="fade-up">Login to continue your heroic deeds</h6>
+
+          <p data-aos="fade-up" data-aos-delay="200">Or <a rel="nofollow" href="/register" target="_parent">Register</a>
+            to become part of #TeamSaveWater.</p>
+
+          <a href="/login" class="btn custom-btn bg-color mt-3" data-aos="fade-up" data-aos-delay="300" data-toggle="modal"
+            data-target="#membershipForm">Login</a>
+        </div>
+
+        <div class="mr-lg-auto mt-3 col-lg-4 col-md-6 col-12">
+          <div class="about-working-hours">
+            <div>
+
+              <h2 class="mb-4 text-white" data-aos="fade-up" data-aos-delay="500">New Member?</h2>
+
+              <strong class="d-block" data-aos="fade-up" data-aos-delay="600">Great! You in the right
+                place</strong>
+
+
+
+              <p data-aos="fade-up" data-aos-delay="800" style="visibility: hidden;">SPACE</p>
+
+              <p data-aos="fade-up" data-aos-delay="800" style="visibility: hidden;">SPACE</p>
+
+              <a href="/register" class="btn custom-btn">Click here to Register</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    </div>
+  </section>
+
+
+  <!-- ABOUT -->
+  <section class="about section" id="about">
+    <div class="container">
+      <div class="row">
+
+        <div class="mt-lg-5 mb-lg-0 mb-4 col-lg-12 col-md-12 mx-auto col-12">
+          <h2 class="mb-4" data-aos="fade-up" data-aos-delay="300">Hello, we are Smart Water Solutions</h2>
+
+          <p data-aos="fade-up" data-aos-delay="400">
+            Smart Water Solutions is a wastewater management company that is registered and licensed. Our company is
+            determined to obey all rules and regulations guiding the wastewater management industry, hire well trained
+            and competent to handle water pipelines and install necessary equipment to detect water leakages in
+            Johannesburg.
+            We are in business to provide modern and smart, 4IR driven solutions to the water problems Johannesburg is
+            facing. We are specifically focusing on Johannesburg because we saw that the amount of water that is lost in
+            a month is very large as a result of that, water is becoming scarce and limited to various households around
+            Johannesburg.
+            We as a company are more than prepared to go an extra mile to ensure that water wastage is at its minimal in
+            Johannesburg. Our customers and potential customers can rest assured that they will get quality services at
+            competitive rates.
+            In our company our goal is to provide a smart water solution that will assist in mitigation of water
+            leakages around Johannesburg. We intend to mitigate water leakages by developing a 4IR enabled web
+            application, which is going to be the first of its kind in South Africa. With this technology we believe
+            that we can be successful in mitigating water leakages and also help improve service delivery in
+            Johannesburg
+
+          </p>
+
+          <h2 class="mb-4" data-aos="fade-up" data-aos-delay="300">Our Vision</h2>
+          <p data-aos="fade-up" data-aos-delay="400">
+            Our goal is to provide a smart water solution that will assist in mitigation of water leakages
+            around South Africa.
+          </p>
+
+          <h2 class="mb-4" data-aos="fade-up" data-aos-delay="300">Our Mission</h2>
+          <ul style="color:#666262;">
+            <li>To minimize water leakages in the townships</li>
+            <li>To minimize costs and time</li>
+            <li>To introduce the efficiency and effectiveness of using 4IR in the water and sanitation sector·</li>
+            <li>To improve township lives with advanced technology</li>
+            <li>To provide real-time water monitoring, reusing and maintenance</li>
+          </ul>
+        </div>
+
+        <div class="col-lg-12 col-12 text-center mb-5">
+          <h6 data-aos="fade-up">Get to know</h6>
+
+          <h2 data-aos="fade-up" data-aos-delay="200">Our Team</h2>
+        </div>
+
+        <div class="ml-lg-auto col-lg-3 col-md-4 col-12" data-aos="fade-up" data-aos-delay="700">
+          <div class="team-thumb">
+            <img src="images/team/team-imae.jpg" class="img-fluid" alt="pic">
+
+            <div class="team-info d-flex flex-column">
+
+              <h3>Christian</h3>
+              <span>Developer</span>
+
+
+            </div>
+          </div>
+        </div>
+
+        <div class="mr-lg-auto mt-5 mt-lg-0 mt-md-0 col-lg-3 col-md-4 col-12" data-aos="fade-up" data-aos-delay="800">
+          <div class="team-thumb">
+            <img src="images/team/team-imag.jpg" class="img-fluid" alt="pic">
+
+            <div class="team-info d-flex flex-column">
+
+              <h3>Thapelo</h3>
+              <span>Developer</span>
+
+
+            </div>
+          </div>
+        </div>
+        <div class="ml-lg-auto col-lg-3 col-md-4 col-12" data-aos="fade-up" data-aos-delay="700">
+          <div class="team-thumb">
+            <img src="images/team/team-imge.jpg" class="img-fluid" alt="pic">
+
+            <div class="team-info d-flex flex-column">
+
+              <h3>Regionald</h3>
+              <span>Developer</span>
+
+
+            </div>
+          </div>
+        </div>
+
+        <div class="mr-lg-auto mt-5 mt-lg-0 mt-md-0 col-lg-3 col-md-4 col-12" data-aos="fade-up" data-aos-delay="800">
+          <div class="team-thumb">
+            <img src="images/team/team-imag01.jpg" class="img-fluid" alt="pic">
+
+            <div class="team-info d-flex flex-column">
+
+              <h3>Tumelo</h3>
+              <span>Developer</span>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- TEAM -->
+  <section class="class section" id="class">
+    <div class="container">
+      <div class="row">
+
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Services -->
+  <section class="schedule section" id="schedule">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-lg-12 col-12 text-center">
+          <h6 data-aos="fade-up">Smart Water Solutions App</h6>
+
+          <h2 class="text-white" data-aos="fade-up" data-aos-delay="200">How does the app work?</h2>
+        </div>
+
+        <div class="col-lg-12 py-5 col-md-12 col-12">
+          <dl class="text-white text-center">
+            <dt>Step 1</dt>
+            <dd>- Use your smartphone and take a image of the water leak or burst</dd>
+            <dt>Step 2</dt>
+            <dd>- Login to Smart Water Solutions and allow the app to get your location</dd>
+            <dt>Step 3</dt>
+            <dd>- Upload your image and describe your water leak or burst (query)</dd>
+            <dt>Step 4</dt>
+            <dd>-Send your query</dd>
+            <dt>Step 5</dt>
+            <dd>- Wait for confirmation that your query has been sent</dd>
+            <dt>Step 6</dt>
+            <dd>- Wait for confirmation that your query resolved</dd>
+          </dl>
+
+          <p data-aos="fade-up" data-aos-delay="400" class="text-white text-center">
+            It is that easy!!!
+          </p>
+        </div>
+
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- CONTACT -->
+  <section class="contact section" id="contact">
+    <div class="container">
+      <div class="row">
+
+        <div class="ml-auto col-lg-5 col-md-6 col-12">
+          <h2 class="mb-4 pb-2" data-aos="fade-up" data-aos-delay="200">Feel free to ask anything</h2>
+
+          <form action="#" method="post" class="contact-form webform" data-aos="fade-up" data-aos-delay="400"
+            role="form">
+            <input type="text" class="form-control" name="cf-name" placeholder="Name">
+
+            <input type="email" class="form-control" name="cf-email" placeholder="Email">
+
+            <textarea class="form-control" rows="5" name="cf-message" placeholder="Message"></textarea>
+
+            <button type="submit" class="form-control" id="submit-button" name="submit">Send
+              Message</button>
+          </form>
+        </div>
+
+        <div class="mx-auto mt-4 mt-lg-0 mt-md-0 col-lg-5 col-md-6 col-12">
+          <h2 class="mb-4" data-aos="fade-up" data-aos-delay="600">Contact details</span></h2>
+
+
+        </div>
+      </div>
+  </section>
+
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="row">
+
+        <div class="ml-auto col-lg-4 col-md-5">
+          <p class="copyright-text">Copyright &copy; 2021 Smart Water Solutions.
+
+        </div>
+
+        <div class="d-flex justify-content-center mx-auto col-lg-5 col-md-7 col-12">
+          <p class="mr-4">
+            <i class="fa fa-envelope-o mr-1"></i>
+            <a href="#">info@smartwatersolutions.co</a>
+          </p>
+
+          <p><i class="fa fa-phone mr-1"></i> 012-345-6789</p>
+        </div>
+
+      </div>
+    </div>
+  </footer>
 
 </body>
 

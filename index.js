@@ -69,7 +69,7 @@ open({
   const queryQ = await db.all('select * from query');
   var lon;
   var lat;
-  var upload
+  var upload;
   app.get('/', (req, res) => {
     res.render('home');
   });
