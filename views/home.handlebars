@@ -1,4 +1,4 @@
-{{!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -6,61 +6,60 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart Water Solutions</title>
-</head> --}}
+</head>
 
-{{!-- <body> --}}
-  
-    
+<body>
+
+
   <div class="menu-wrapper">
     <header class="header">
       <a href="/" class="logo"><img alt="Logo" src="/img/logo.jpg"></a>
-      	<a href="/index.html">Leak image Classification</a>
       <input class="menu-btn" type="checkbox" id="menu-btn" />
       <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
       <ul class="menu">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">About Us</a></li>
-        <li><a href="#">Contact Us</a></li>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/contact">Contact Us</a></li>
         
       </ul>
     </header>
   </div>
   <div>
-            
-            {{#each queryQ}}
-            <center>
 
-            
-            <h2>Queries</h2>
-            <div class="section mt-1">
+    {{#each queryQ}}
+    <center>
 
-              {{first_name}}
-              {{!-- <br><br>
-              <strong>{{book_count}}</strong> queries(s) you sent took out at the library is due in
-              <strong>{{days_due_in}}</strong> day(s).
-              <br><br> --}}
 
-              {{!-- {{#if notLate}}
-              Please return these books to us in the next <a href="/reminder/{{days_due_in}}/days">{{days_due_in}}
-                days</a> .
-              {{else}}
-              <span class="late"> Please return your books <strong>urgently</strong></span>
-              {{/if}} --}}
+      <h2>Queries</h2>
+      <div class="section mt-1">
 
-              {{!-- <div class="mt-1">
-                <a href="/edit/{{id}}">Edit query</a>
-              </div> --}}
-              <div class="remove-query mt-1">
-                <form method="POST" action="/remove/{{id}}">
-                  <input type="submit" class="small-button" value="Remove Query">
-                </form>
-              </div>
-            </div>
-            {{/each}}
-          </div>
+        {{first_name}}
+        {{!-- <br><br>
+        <strong>{{book_count}}</strong> queries(s) you sent took out at the library is due in
+        <strong>{{days_due_in}}</strong> day(s).
+        <br><br> --}}
+
+        {{!-- {{#if notLate}}
+        Please return these books to us in the next <a href="/reminder/{{days_due_in}}/days">{{days_due_in}}
+          days</a> .
+        {{else}}
+        <span class="late"> Please return your books <strong>urgently</strong></span>
+        {{/if}} --}}
+
+        {{!-- <div class="mt-1">
+          <a href="/edit/{{id}}">Edit query</a>
+        </div> --}}
+        <div class="remove-query mt-1">
+          <form method="POST" action="/remove/{{id}}">
+            <input type="submit" class="small-button" value="Remove Query">
+          </form>
         </div>
-        <div style="margin-top: 6em;"></div>
-      <div class="center">
+      </div>
+      {{/each}}
+  </div>
+  </div>
+  <div style="margin-top: 6em;"></div>
+  <div class="center">
     <div class="tabs">
 
       <input type="radio" name="tabs" id="tabone" checked="checked">
@@ -69,12 +68,12 @@
         <center>
           <h1>Login</h1>
         </center>
-        
+
         <form action="/login" method="post" style="margin:1em">
           <div class="input-container">
             <i class="fa fa-envelope icon"></i>
             {{!-- Changed type from text to email --}}
-            <input class="input-field" type="email" required placeholder="Email" name="email"> 
+            <input class="input-field" type="email" required placeholder="Email" name="email">
           </div>
 
           <div class="input-container">
@@ -91,9 +90,9 @@
       <label for="tabtwo">Register</label>
       <div class="tab">
         <center>
-           <h1>Register</h1>
+          <h1>Register</h1>
         </center>
-       
+
         <form action="/register" method="post" style="margin:1em">
           <div class="input-container">
             <i class="fa fa-user icon"></i>
@@ -115,9 +114,9 @@
             <input class="input-field" type="password" required placeholder="Retype Password" name="psw1">
           </div>
           <div style="padding-bottom: 1em;">
-          <p>Are you a Rand Water Technican?</p>
-          <input id="padding" type="radio" name="user_type" checked value="user">No
-         <input id="padding" type="radio" name="user_type" value="technician">Yes
+            <p>Are you a Rand Water Technican?</p>
+            <input id="padding" type="radio" name="user_type" checked value="user">No
+            <input id="padding" type="radio" name="user_type" value="technician">Yes
           </div>
           <button style="margin-top: 5px;" type="submit" class="btn">Register</button>
         </form>
@@ -125,7 +124,6 @@
     </div>
 
 
- 
-{{!-- </body>
+</body>
 
-</html> --}}
+</html>
