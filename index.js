@@ -261,6 +261,11 @@ open({
 
   app.post("/user", async function (req, response) {
     var images = new Array();
+
+    req.session.query=req.body.string;
+    req.session.lattitude = req.body.lattitude;
+    req.session.longitude= req.body.longitude;
+    
     if (req.files) {
       var arr;
       if (Array.isArray(req.files.filesfld)) {
@@ -273,9 +278,12 @@ open({
       for (var i = 0; i < arr.length; i++) {
         var file = arr[i];
         if (file.mimetype.substring(0, 5).toLowerCase() == "image") {
-          images[i] = "/" + file.name;
-          upload = "./upload" + images[i]
-          // await db.run('insert into query (picture) values (?)', upload)
+          images[i] = file.name;
+          upload = images[i];
+          console.log(upload);
+          const insertDataUser = ('INSERT INTO QUERY (name,longitude,lattitude,query,date,picture,status)  VALUES (?,?,?,?,?,?,?)');
+          await db.run(insertDataUser, 'user',  req.session.longitude, req.session.lattitude,req.session.query, moment(new Date()).format('MMM D, YYYY'),upload,'new');
+
           file.mv(upload, function (err) {
             if (err) {
               console.log(err);

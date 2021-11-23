@@ -12,63 +12,6 @@
   <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
     integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
     crossorigin=""></script>
-  <script type="text/javascript">
-    function stopDefault(event) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-    function dragOver(label, text) {
-      /* ADD ALMOST ANY STYLING YOU LIKE */
-      label.style.animationName = "dropbox";
-      label.innerText = text;
-    }
-    function dragLeave(label) {
-      /* THIS SHOULD REMOVE ALL STYLING BY dragOver() */
-      var len = label.style.length;
-      for (var i = 0; i < len; i++) {
-        label.style[label.style[i]] = "";
-      }
-      label.innerText = "Click to choose images or Drop them here";
-    }
-    function addFilesAndSubmit(event) {
-      var files = event.target.files || event.dataTransfer.files;
-      document.getElementById("filesfld").files = files;
-      submitFilesForm(document.getElementById("filesfrm"));
-    }
-    function submitFilesForm(form) {
-      var label = document.getElementById("fileslbl");
-      dragOver(label, "Uploading images..."); // set the drop zone text and styling
-      var fd = new FormData();
-      for (var i = 0; i < form.filesfld.files.length; i++) {
-        var field = form.filesfld;
-        fd.append(field.name, field.files[i], field.files[i].name);
-      }
-      var progress = document.getElementById("progress");
-      var x = new XMLHttpRequest();
-      if (x.upload) {
-        x.upload.addEventListener("progress", function (event) {
-          var percentage = parseInt(event.loaded / event.total * 100);
-          progress.innerText = progress.style.width = percentage + "%";
-        });
-      }
-      x.onreadystatechange = function () {
-        if (x.readyState == 4) {
-          progress.innerText = progress.style.width = "";
-          form.filesfld.value = "";
-          dragLeave(label); // this will reset the text and styling of the drop zone
-          if (x.status == 200) {
-
-          }
-          else {
-            // failed - TODO: Add code to handle server errors
-          }
-        }
-      };
-      x.open("post", form.action, true);
-      x.send(fd);
-      return false;
-    }
-  </script>
   <style>
     body {
       background-color: #E5F0E6;
@@ -84,14 +27,12 @@
 <body style="background-color: black;">
   <div class="menu-wrapper">
     <header class="header">
-      <a href="/" class="logo"><img alt="Logo" src="/img/logo.jpg"></a>
+      <a href="/" class="logo"><img alt="Logo" src="/img/logo.jpg"><i class="fa fa-home" aria-hidden="true"></i></a>
       <input class="menu-btn" type="checkbox" id="menu-btn" />
       <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
       <ul class="menu">
-        <li class="hide"><a href="#" class="remove-hover">{{#each username}}<span
-              style="color: whitesmoke; vertical-align: 12px;">Welcome {{name}}</span>{{/each}}&nbsp;&nbsp;<i
-              style="color: whitesmoke; font-size:44px; margin-top:-11px;" class="fa fa-user-circle-o"
-              aria-hidden="true"></i></a></li>
+        <li class="hide"><a href="#" class="remove-hover">{{#each username}}<span style="color: whitesmoke; vertical-align: 12px;">Welcome {{name}}</span>{{/each}}&nbsp;&nbsp;<i style="color: whitesmoke; font-size:44px; margin-top:-11px;" class="fa fa-user-circle-o" aria-hidden="true"></i></a></li>
+       	<a href="/index1.html">Leak image Classification</a>
         {{!-- <li><a href="#">About Us</a></li>
         <li><a href="#">Contact Us</a></li> --}}
       </ul>
@@ -101,22 +42,25 @@
   <div class="home">
     ​<center>
       <h1>Welcome</h1>
-
-
     </center>
   </div>
 
+  {{!-- Testing 1,2 --}}
   <div class="containerr">
     <div class="columns">
-      <form action="/johnquery" method="POST">
-      <div class="section">
+        <div class="section">
           <div class="column">
             <div class="section">
               <h2>Send a Query</h2>
                   <div>
                     <label for="">Describe your Query:</label>
-                    <textarea name="Query" placeholder="Enter your Query here"></textarea>
+                    <textarea name="Query" id="queryText" placeholder="Enter your Query here"></textarea>
                   </div>
+              <div>
+                <button type="button" class="center bigger-button" onclick="myFunction()">save query</button>
+              </div>
+            </div>
+
             </center>
 
           </div>
@@ -156,71 +100,139 @@
           <div>
             <input type="submit" class="bigger-button" value="Send Your Query">
           </div>
-        </form>
-      </div>
+      </form>
     </div>
-  </div>
-  <footer id="contact">
-    <ul>
-      <div id="icon-container">
-        <a href="#">
-          <div id="icon">
-            <li><i class="fab fa-twitter"></i></li>
-          </div>
-        </a>
-        <a href="#">
-          <div id="icon">
-            <li><i class="fab fa-instagram"></i></li>
-          </div>
-        </a>
-        <a href="#">
-          <div id="icon">
-            <li><i class="fab fa-facebook-f"></i></li>
-          </div>
-        </a>
-        <a href="#">
-          <div id="icon">
-            <li><i class="far fa-envelope"></i></li>
-          </div>
-        </a>
-    </ul>
-    <p>&copy 2021 Smart Water Solutions</p>
-  </footer>
-  <script>
+    
+<footer id="contact">
+  <ul>
+    <div id="icon-container">
+      <a href="#">
+        <div id="icon">
+          <li><i class="fab fa-twitter"></i></li>
+        </div>
+      </a>
+      <a href="#">
+        <div id="icon">
+          <li><i class="fab fa-instagram"></i></li>
+        </div>
+      </a>
+      <a href="#">
+        <div id="icon">
+          <li><i class="fab fa-facebook-f"></i></li>
+        </div>
+      </a>
+      <a href="#">
+        <div id="icon">
+          <li><i class="far fa-envelope"></i></li>
+        </div>
+      </a>
+  </ul>
+  <p>&copy 2021 Smart Water Solutions</p>
+ 
+</footer>
+      <script type="text/javascript">
+  var TextQuerry='only added a picture';
+  function myFunction() {
+  var queryText2=document.getElementById('queryText').value;
+  TextQuerry=queryText2;
+ };
+ var longitude;
+ var lattitude;
     if ('geolocation' in navigator) {
       console.log('geolocation available');
       navigator.geolocation.getCurrentPosition(async position => {
         lat = position.coords.latitude;
         lon = position.coords.longitude;
+        lattitude=lat;
+        longitude=lon;
         console.log(lat, lon);
         document.getElementById('latitude').textContent = lat;
         document.getElementById('longitude').textContent = lon;
-
         const mymap = L.map('mymap').setView([lat, lon], 15);
-        const attribution =
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+        const attribution ='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
         const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
         const tiles = L.tileLayer(tileUrl, { attribution });
         tiles.addTo(mymap);
         const marker = L.marker([lat, lon]).addTo(mymap);
-
         const data = { lat, lon };
         const options = {
           method: 'POST',
           headers: {
+            'Accept': 'application/json',
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(data)
-        }
-        const response = await fetch('/api', options);
+          body: JSON.stringify({
+            lon: lon,
+            lat: lat
+          })
+        };
+        const response = await fetch('/user', options);
         const json = await response.json();
-        await db.run('insert into query (longitude, lattitude) values (?, ?)', lon, lat)
       });
     } else {
       console.log('geolocation not available');
     }
-  </script>
   
+    function stopDefault(event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    function dragOver(label, text) {
+      /* ADD ALMOST ANY STYLING YOU LIKE */
+      label.style.animationName = "dropbox";
+      label.innerText = text;
+    }
+    function dragLeave(label) {
+      /* THIS SHOULD REMOVE ALL STYLING BY dragOver() */
+      var len = label.style.length;
+      for (var i = 0; i < len; i++) {
+        label.style[label.style[i]] = "";
+      }
+      label.innerText = "Click to choose images or Drop them here";
+    }
+    function addFilesAndSubmit(event) {
+      var files = event.target.files || event.dataTransfer.files;
+      document.getElementById("filesfld").files = files;
+      submitFilesForm(document.getElementById("filesfrm"));
+    };
+    function submitFilesForm(form) {
+      var label = document.getElementById("fileslbl");
+      dragOver(label, "Uploading images..."); // set the drop zone text and styling
+      var fd = new FormData();
+      for (var i = 0; i < form.filesfld.files.length; i++) {
+        var field = form.filesfld;
+        fd.append(field.name, field.files[i], field.files[i].name);
+        fd.append('string',TextQuerry);
+        fd.append('longitude',longitude);
+        fd.append('lattitude',lattitude);
+      }
+      
+      var progress = document.getElementById("progress");
+      var x = new XMLHttpRequest();
+      if (x.upload) {
+        x.upload.addEventListener("progress", function (event) {
+          var percentage = parseInt(event.loaded / event.total * 100);
+          progress.innerText = progress.style.width = percentage + "%";
+        });
+      }
+      x.onreadystatechange = function () {
+        if (x.readyState == 4) {
+          progress.innerText = progress.style.width = "";
+          form.filesfld.value = "";
+          dragLeave(label); // this will reset the text and styling of the drop zone
+          if (x.status == 200) {
+          }
+          else {
+            // failed - TODO: Add code to handle server errors
+          }
+        }
+      };
+      x.open("post", form.action, true);
+      x.send(fd);
+      return false;
+    }
+  </script>
+
 </body>
 
 </html>
