@@ -46,7 +46,7 @@ app.use(fileUpload());
 
 
 
- app.use(express.static('modelAI'))
+ //app.use(express.static('modelAI'))
 
 
 open({
@@ -58,13 +58,6 @@ open({
 
   await db.migrate();
 
-  // const knex = require('knex')({
-  //   client: 'sqlite3',
-  //   connection: {
-  //     filename: "./data.db"
-  //   },
-  //   useNullAsDefault: true
-  // });
   // only setup the routes once the database connection has been established
 
   //getting queries data and name of the user from the database
@@ -112,22 +105,6 @@ open({
       // console.log(Query)
       res.redirect('/user')
     }
-
-
-    // app.post('/johnquery', async function (req, res) {
-
-    // });
-
-    // if (!Query) {
-    //   // nothing is added
-    //   return res.redirect('/user');
-    // }
-
-    // const insertQuerriesSQL = 'insert into query (name, query, date, picture, status) values (?, ?, ?, ?, ?)';
-    // await db.run(insertQuerriesSQL, "res.session.name", Query, moment(new Date()).format('MMM D, YYYY'), upload, 'new');
-    // //const queryQ = await db.all('select * from query');
-    // //console.log(queryQ)
-    // res.redirect('/user')
   });
 
   app.post('/uQuerry', async (req, res) => {
@@ -140,29 +117,27 @@ open({
     console.log(req.body.discript);
     const insertData = ('INSERT INTO QUERiES (long,lat,discript,image)  VALUES (?,?,?)');
     await db.run(insertData, req.body.long, req.body.lat, req.body.descript, req.body.image);
-
-    // const insertQuerriesSQL = 'insert into query (query, date) values (?, ?)';
-    // await db.run(insertQuerriesSQL, Query, moment(new Date()).format('MMM D, YYYY'));
-    // const queryQ = await db.all('select * from query');;
-    //res.redirect('/user')
   });
   app.get('/uQuerry', async (req, res) => {
 
     const queryQ = await db.all('select * from QUERiES');
     res.render('user', { queryQ })
   });
-
-  // });
   app.get('/about', async (req, res) => {
     res.render('about')
   });
+  app.get('/class', (req, res) => {    
+    res.render('class');
+  })
 
+  app.post('/class', (req, res) => {
+    res.redirect('/user');
+  })
 
   app.get('/contact', async (req, res) => {
     res.render('contact')
   });
 
-<<<<<<< HEAD
 app.get('/contact', async (req, res) => {
   res.render('contact')
 });
@@ -213,65 +188,6 @@ app.post('/contact', (req, res) => {
       res.render('contact', {msg:'Email has been sent'});
   });
   });
-
-
-
-app.post('/remove/:id', async function(req, res){
-=======
-  app.post('/contact', (req, res) => {
-    const output = `
-      <p>You have a new contact request</p>
-      <h3>Contact Details</h3>
-      <ul>  
-        <li>Name: ${req.body.name}</li>
-        <li>Company: ${req.body.company}</li>
-        <li>Email: ${req.body.email}</li>
-        <li>Phone: ${req.body.phone}</li>
-      </ul>
-      <h3>Message</h3>
-      <p>${req.body.message}</p>
-    `;
-  
-    let transporter = nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
-      port: 587,
-      secure: false, 
-      auth: {
-          user: 'kaylah.pfeffer26@ethereal.email', 
-          pass: 'kdrPZj4eMzK32pADj3'  
-      },
-      tls:{
-        rejectUnauthorized:false
-      }
-    });
-  
-    let mailOptions = {
-        from: '"Nodemailer Contact" <kaylah.pfeffer26@ethereal.emai>', // sender address
-        to: 'cktshukudu@gmail.com', // list of receivers
-        subject: 'Water Leaks', // Subject line
-        text: 'Hello world?', // plain text body
-        html: output // html body
-    };
-  
- 
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            return console.log(error);
-        }
-        console.log('Message sent: %s', info.messageId);   
-        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-  
-        res.render('contact', {msg:'Email has been sent'});
-    });
-    });
->>>>>>> main
-
-    // app.get('/image', (req, res) => {
-    //   res.render('image')
-    // });
-  
-
-
   app.post('/remove/:id', async function (req, res) {
 
     const bookId = req.params.id;
