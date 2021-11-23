@@ -155,16 +155,18 @@ open({
     }
 
     else {
+      try{
       const geojson = await Promise.all(
 
         querries.map(async function (column) {
-
+        
           const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${column.longitude},${column.lattitude};${req.session.techLong},${req.session.techLat}?geometries=geojson&access_token=${mapToken}`;
           const adressUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${column.longitude},${column.lattitude}.json?access_token=${mapToken}`;
 
           //Direction API MAPBOX
           const mapBoxdata = await fetch(url);
           const data = await mapBoxdata.json();
+          console.log(data);
           const time = await data.routes[0].duration / 60;
           const distance = await data.routes[0].distance / 1000;
 
@@ -173,9 +175,6 @@ open({
           const location = await adrress.json();
           const standNo = await location.features[0].address;
           const streetName = await location.features[0].text;
-
-
-          // console.log(time, distance);
 
           return {
             id: column.id,
@@ -196,8 +195,10 @@ open({
         }
 
         ))
-
-      res.render('admin', { geojson });
+      res.render('admin', { geojson });}
+      catch(err){
+       console.log(err);
+      }
     }
   });
 
@@ -205,7 +206,8 @@ open({
 
     req.session.techLong = req.body.long;
     req.session.techLat = req.body.lat;
-    res.redirect('/user');
+    if (req.session.techLat!=undefined){
+    res.redirect('/ad');}
   });
 
   app.get('/ds/:id', async (req, res) => {
