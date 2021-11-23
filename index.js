@@ -1,15 +1,10 @@
 let express = require('express');
 const fileUpload = require('express-fileupload');
 const FileType = require('file-type');
-
 let app = express();
-
 let fav = require('serve-favicon');
-
 var moment = require('moment');
-
 const exphbs = require('express-handlebars');
-
 const bodyParser = require('body-parser');
 const path = require('path');
 
@@ -43,8 +38,6 @@ app.use(express.static('public'));
 app.use(fileUpload());
 app.use(express.static('modelAI'));
 
-
-
 app.use(express.static('modelAI'))
 
 
@@ -57,16 +50,6 @@ open({
 
   await db.migrate();
 
-  // const knex = require('knex')({
-  //   client: 'sqlite3',
-  //   connection: {
-  //     filename: "./data.db"
-  //   },
-  //   useNullAsDefault: true
-  // });
-  // only setup the routes once the database connection has been established
-
-  //getting queries data and name of the user from the database
   const queryQ = await db.all('select * from query');
   var upload;
   var lon;
@@ -79,8 +62,7 @@ open({
   app.get('/user', async (req, res) => {
     const username = await db.all('select * from signup where email = ?', req.session.email);
     res.render('image', {
-      queryQ,
-      username
+      queryQ,username
     });
   });
 
@@ -121,15 +103,12 @@ open({
       // nothing is added
       return res.redirect('/user');
     }
-
-    const insertQuerriesSQL = 'insert into query (query, date) values (?, ?)';
-    await db.run(insertQuerriesSQL, Query, moment(new Date()).format('MMM D, YYYY'));
-    const queryQ = await db.all('select * from query');
-    //console.log(queryQ)
     res.redirect('/user')
   });
 
   app.post('/uQuerry', async (req, res) => {
+
+    console.log('uQuerry route'+req.body)
     const { Query } = req.body;
 
     if (!Query) {
@@ -182,7 +161,7 @@ open({
 
 
   app.post('/api', (request, response) => {
-    console.log(request.body);
+    console.log("api route"+request.body);
     const data = request.body;
     response.json({
       status: 'Success',
@@ -236,8 +215,11 @@ open({
   
   app.post("/user", async function (req, response) {
     var images = new Array();
-    lat = req.body.lat;
-    lon = req.body.lon;
+
+    req.session.query=req.body.string;
+    req.session.lattitude = req.body.lattitude;
+    req.session.longitude= req.body.longitude;
+    
     if (req.files) {
       var arr;
       if (Array.isArray(req.files.filesfld)) {
@@ -251,8 +233,11 @@ open({
         var file = arr[i];
         if (file.mimetype.substring(0, 5).toLowerCase() == "image") {
           images[i] = "/" + file.name;
-          upload = "./upload" + images[i]
-          // await db.run('insert into query (picture) values (?)', upload)
+          upload = "./upload" + images[i];
+          console.log(upload);
+          const insertDataUser = ('INSERT INTO QUERY (name,longitude,lattitude,query,date,picture,status)  VALUES (?,?,?,?,?,?,?)');
+          await db.run(insertDataUser, 'user',  req.session.longitude, req.session.lattitude,req.session.query, moment(new Date()).format('MMM D, YYYY'),upload,'new');
+
           file.mv(upload, function (err) {
             if (err) {
               console.log(err);

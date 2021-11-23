@@ -12,63 +12,6 @@
   <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
     integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
     crossorigin=""></script>
-  <script type="text/javascript">
-    function stopDefault(event) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-    function dragOver(label, text) {
-      /* ADD ALMOST ANY STYLING YOU LIKE */
-      label.style.animationName = "dropbox";
-      label.innerText = text;
-    }
-    function dragLeave(label) {
-      /* THIS SHOULD REMOVE ALL STYLING BY dragOver() */
-      var len = label.style.length;
-      for (var i = 0; i < len; i++) {
-        label.style[label.style[i]] = "";
-      }
-      label.innerText = "Click to choose images or Drop them here";
-    }
-    function addFilesAndSubmit(event) {
-      var files = event.target.files || event.dataTransfer.files;
-      document.getElementById("filesfld").files = files;
-      submitFilesForm(document.getElementById("filesfrm"));
-    }
-    function submitFilesForm(form) {
-      var label = document.getElementById("fileslbl");
-      dragOver(label, "Uploading images..."); // set the drop zone text and styling
-      var fd = new FormData();
-      for (var i = 0; i < form.filesfld.files.length; i++) {
-        var field = form.filesfld;
-        fd.append(field.name, field.files[i], field.files[i].name);
-      }
-      var progress = document.getElementById("progress");
-      var x = new XMLHttpRequest();
-      if (x.upload) {
-        x.upload.addEventListener("progress", function (event) {
-          var percentage = parseInt(event.loaded / event.total * 100);
-          progress.innerText = progress.style.width = percentage + "%";
-        });
-      }
-      x.onreadystatechange = function () {
-        if (x.readyState == 4) {
-          progress.innerText = progress.style.width = "";
-          form.filesfld.value = "";
-          dragLeave(label); // this will reset the text and styling of the drop zone
-          if (x.status == 200) {
-
-          }
-          else {
-            // failed - TODO: Add code to handle server errors
-          }
-        }
-      };
-      x.open("post", form.action, true);
-      x.send(fd);
-      return false;
-    }
-  </script>
   <style>
     body {
       background-color: #E5F0E6;
@@ -90,8 +33,6 @@
       <ul class="menu">
         <li class="hide"><a href="#" class="remove-hover">{{#each username}}<span style="color: whitesmoke; vertical-align: 12px;">Welcome {{name}}</span>{{/each}}&nbsp;&nbsp;<i style="color: whitesmoke; font-size:44px; margin-top:-11px;" class="fa fa-user-circle-o" aria-hidden="true"></i></a></li>
        	<a href="/index1.html">Leak image Classification</a>
-        {{!-- <li><a href="#">About Us</a></li>
-        <li><a href="#">Contact Us</a></li> --}}
       </ul>
     </header>
   </div>
@@ -104,107 +45,28 @@
     </center>
   
   </div>
-  {{!-- <div class="pizzas"> --}}
-    {{!-- <div>
-      <div class="row">
-
-
-
-        <div class="col-12 section">
-          <center>
-
-            <h2>Social Media</h2>
-            <p><a href="https://twitter.com/JHBWater" target="_blank"> twitter</a>
-
-              <a href="https://www.facebook.com/RandWater/" target="_blank"> facebook</a>
-
-              <a href="https://www.youtube.com/watch?v=N_2Dr28k2ag" target="_blank"> Youtube</a>
-            </p>
-
-          </center>
-
-        </div>
-      </div>
-    </div> --}}
-    {{!-- </div> --}}
-
-  {{!-- Testing 1,2 --}}
   <div class="containerr">
     <div class="columns">
-      <form action="/johnquery" method="POST">
+
+
+      
+    
         <div class="section">
           <div class="column">
             <div class="section">
               <h2>Send a Query</h2>
 
-              {{!-- <h1>
-
-                may you please add your query below
-              </h1> --}}
-              {{!-- <h2>Status Bar</h2> --}}
-              {{!-- <div class="section"> --}}
-
-                {{!-- <form action="/johnquery" method="POST"> --}}
-                  <div>
+            
                     <label for="">Describe your Query:</label>
-                    <textarea name="Query" placeholder="Enter your Query here"></textarea>
+                    <textarea name="Query" id="queryText" placeholder="Enter your Query here"></textarea>
                   </div>
-                  {{!-- <div>
-                    <label for="">Days to query:</label>
-                    <input type="text" name="noQueries" placeholder="Enter the number of queries">
-                  </div>
-                  <div>
-                    <label for="">Days due in:</label>
-
-                    <input type="text" name="noDays" placeholder="Enter the number of days">
-                  </div> --}}
-
-                  {{!-- <div>
-                    <input type="submit" class="center bigger-button" value="send your Query">
-                  </div> --}}
-
-
-                  {{!--
-              </div> --}}
-
+        
               <div>
                 <input type="submit" class="center bigger-button" value="send your Query">
+                <button type="button" onclick="myFunction()">add</button>
               </div>
-            </form>
-         
-          {{!-- </div> --}}
-
-                {{!-- {{#each queryQ}}
-                <center>
-
-
-                  <h2>Queries</h2>
-                  <div class="section mt-1">
-
-                    {{first_name}}
-                    {{!-- <br><br>
-                    <strong>{{book_count}}</strong> queries(s) you sent took out at the library is due in
-                    <strong>{{days_due_in}}</strong> day(s).
-                    <br><br> --}}
-
-                    {{!-- {{#if notLate}}
-                    Please return these books to us in the next <a href="/reminder/{{days_due_in}}/days">{{days_due_in}}
-                      days</a> .
-                    {{else}}
-                    <span class="late"> Please return your books <strong>urgently</strong></span>
-                    {{/if}} --}}
-
-                    {{!-- <div class="mt-1">
-                      <a href="/edit/{{id}}">Edit query</a>
-                    </div> --}}
-                    {{!-- <div class="remove-query mt-1">
-                      <form method="POST" action="/remove/{{id}}">
-                        <input type="submit" class="small-button" value="Remove Query">
-                      </form>
-                    </div>
-                  </div>
-                  {{/each}}
-              </div> --}}
+          
+        
             </div>
 
             </center>
@@ -276,19 +138,29 @@
   <p>&copy 2021 Smart Water Solutions</p>
  
 </footer>
-  <script>
+
+  <script type="text/javascript">
+  var TextQuerry='only added a picture';
+  function myFunction() {
+  var queryText2=document.getElementById('queryText').value;
+  TextQuerry=queryText2;
+ };
+
+ var longitude;
+ var lattitude;
     if ('geolocation' in navigator) {
       console.log('geolocation available');
       navigator.geolocation.getCurrentPosition(async position => {
         lat = position.coords.latitude;
         lon = position.coords.longitude;
+        lattitude=lat;
+        longitude=lon;
         console.log(lat, lon);
         document.getElementById('latitude').textContent = lat;
         document.getElementById('longitude').textContent = lon;
 
         const mymap = L.map('mymap').setView([lat, lon], 15);
-        const attribution =
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+        const attribution ='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
         const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
         const tiles = L.tileLayer(tileUrl, { attribution });
         tiles.addTo(mymap);
@@ -305,13 +177,73 @@
             lon: lon,
             lat: lat
           })
-        }
+        };
         const response = await fetch('/user', options);
         const json = await response.json();
-        await db.run('insert into query (longitude, lattitude) values (?, ?)', lon, lat)
       });
     } else {
       console.log('geolocation not available');
+    }
+  
+    function stopDefault(event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    function dragOver(label, text) {
+      /* ADD ALMOST ANY STYLING YOU LIKE */
+      label.style.animationName = "dropbox";
+      label.innerText = text;
+    }
+    function dragLeave(label) {
+      /* THIS SHOULD REMOVE ALL STYLING BY dragOver() */
+      var len = label.style.length;
+      for (var i = 0; i < len; i++) {
+        label.style[label.style[i]] = "";
+      }
+      label.innerText = "Click to choose images or Drop them here";
+    }
+    function addFilesAndSubmit(event) {
+      var files = event.target.files || event.dataTransfer.files;
+      document.getElementById("filesfld").files = files;
+      submitFilesForm(document.getElementById("filesfrm"));
+    };
+
+    function submitFilesForm(form) {
+      var label = document.getElementById("fileslbl");
+      dragOver(label, "Uploading images..."); // set the drop zone text and styling
+      var fd = new FormData();
+      for (var i = 0; i < form.filesfld.files.length; i++) {
+        var field = form.filesfld;
+        fd.append(field.name, field.files[i], field.files[i].name);
+        fd.append('string',TextQuerry);
+        fd.append('longitude',longitude);
+        fd.append('lattitude',lattitude);
+      }
+      
+      var progress = document.getElementById("progress");
+      var x = new XMLHttpRequest();
+      if (x.upload) {
+        x.upload.addEventListener("progress", function (event) {
+          var percentage = parseInt(event.loaded / event.total * 100);
+          progress.innerText = progress.style.width = percentage + "%";
+        });
+      }
+      x.onreadystatechange = function () {
+        if (x.readyState == 4) {
+          progress.innerText = progress.style.width = "";
+          form.filesfld.value = "";
+          dragLeave(label); // this will reset the text and styling of the drop zone
+          if (x.status == 200) {
+
+          }
+          else {
+            // failed - TODO: Add code to handle server errors
+          }
+        }
+      };
+      x.open("post", form.action, true);
+      x.send(fd);
+      return false;
     }
   </script>
 
