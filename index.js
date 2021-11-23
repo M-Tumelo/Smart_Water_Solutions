@@ -1,6 +1,6 @@
 let express = require('express');
 const fileUpload = require('express-fileupload');
-const FileType = require('file-type');
+//const FileType = require('file-type');
 const nodemailer = require('nodemailer');
 
 let app = express();
@@ -42,11 +42,11 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static('public'));
 app.use(fileUpload());
-app.use(express.static('modelAI'));
+// app.use(express.static('modelAI'));
 
 
 
-app.use(express.static('modelAI'))
+ app.use(express.static('modelAI'))
 
 
 open({
@@ -107,27 +107,27 @@ open({
       return res.redirect('/user');
     }
     else {
-      const insertQuerriesSQL = 'insert into query (name,longitude,lattitude,query, date, picture, status) values (?, ?, ?, ?, ?,?,?)';
-      await db.run(insertQuerriesSQL, "User", lon, lat, Query, moment(new Date()).format('MMM D, YYYY'), upload, 'new');
+      const insertQuerriesSQL = 'insert into query (name, query, date, picture, status) values (?, ?, ?, ?, ?)';
+      await db.run(insertQuerriesSQL, "res.session.name", Query, moment(new Date()).format('MMM D, YYYY'), upload, 'new');
       // console.log(Query)
       res.redirect('/user')
     }
 
 
-    app.post('/johnquery', async function (req, res) {
+    // app.post('/johnquery', async function (req, res) {
 
-    });
+    // });
 
-    if (!Query) {
-      // nothing is added
-      return res.redirect('/user');
-    }
+    // if (!Query) {
+    //   // nothing is added
+    //   return res.redirect('/user');
+    // }
 
-    const insertQuerriesSQL = 'insert into query (query, date) values (?, ?)';
-    await db.run(insertQuerriesSQL, Query, moment(new Date()).format('MMM D, YYYY'));
-    const queryQ = await db.all('select * from query');
-    //console.log(queryQ)
-    res.redirect('/user')
+    // const insertQuerriesSQL = 'insert into query (name, query, date, picture, status) values (?, ?, ?, ?, ?)';
+    // await db.run(insertQuerriesSQL, "res.session.name", Query, moment(new Date()).format('MMM D, YYYY'), upload, 'new');
+    // //const queryQ = await db.all('select * from query');
+    // //console.log(queryQ)
+    // res.redirect('/user')
   });
 
   app.post('/uQuerry', async (req, res) => {
@@ -153,6 +153,9 @@ open({
   });
 
   // });
+  app.get('/about', async (req, res) => {
+    res.render('about')
+  });
 
 
   app.get('/contact', async (req, res) => {
@@ -206,6 +209,10 @@ open({
     });
     });
 
+    // app.get('/image', (req, res) => {
+    //   res.render('image')
+    // });
+  
 
 
   app.post('/remove/:id', async function (req, res) {
@@ -368,4 +375,4 @@ open({
   app.listen(PORT, function () {
     console.log('App starting on port', PORT);
   });
-})
+});

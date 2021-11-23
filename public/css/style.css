@@ -2,7 +2,7 @@
   box-sizing: border-box;
 }
 body {
-  background: white;
+  background: black;
   /* color: #222; */
   line-height: normal;
   font-size: 16px;
@@ -576,6 +576,7 @@ color: black;
 .containerr {
    padding: 1em 2em;
    height: 100%;
+    
 }
 
 ul {
@@ -599,7 +600,7 @@ ul li {
   justify-content: center;
   align-items: center;
   height: 130px;
-  position: fixed;
+  position: relative;
   bottom: 0;
   width: 100%;
   border-top-left-radius: 2px;
@@ -737,39 +738,8 @@ width: 100%;
   font-size: 16px;
   cursor: pointer;
   width: 50%;
+  
 }
 .button2:hover {
   box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-<<<<<<< HEAD
 }
-=======
-}
-
-/* Table */
-.table {
-  border-collapse: separate;
-  margin: 5px 0;
-  font-size: 0.9em;
-  font-family: sans-serif;
-  margin-left: auto;
-  margin-right: auto;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-  }
-  .table thead tr {
-  background-color: #009879;
-  color: #ffffff;
-  }
-  .table th,
-  .table td {
-  padding: 12px 15px;
-  }
-  .table tbody td {
-  border-bottom: 1px solid #dddddd;
-  }
-  .table tbody tr:nth-of-type(even) {
-  background-color: #f3f3f3;
-  }
-  .table tbody tr:last-of-type {
-  border-bottom: 2px solid #009879;
-  }
->>>>>>> c768a3b7af230b566f47c220a8e107bae8a30255
