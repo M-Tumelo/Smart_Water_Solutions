@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>locator</title>
+</head>
+
+<body style="background-color: whitesmoke;">
+
+    <script>
+
+        navigator.geolocation.getCurrentPosition((position) => {
+
+            const long = position.coords.longitude;
+            const lat = position.coords.latitude;
+            console.log("long " + long, "lat " + lat);
+
+            async function postData() {
+                const send = await fetch('/ad', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        Descript: 'Techinician',
+                        long: long,
+                        lat: lat
+                    })
+                })
+                const content = await send.json();
+                {{!-- location.reload(); --}}
+            }
+            postData();
+            
+        });
+    </script>
+
+    <div class="menu-wrapper">
+        <header class="header">
+            <a href="/" class="logo"><img alt="Logo" src="/img/logo.jpg"></a>
+            <input class="menu-btn" type="checkbox" id="menu-btn" />
+            <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
+            <ul class="menu">
+                <li class="hide"><a href="#" class="remove-hover">{{#each username}}<span
+                            style="color: whitesmoke; vertical-align: 12px;">Welcome
+                            {{name}}</span>{{/each}}&nbsp;&nbsp;<i
+                            style="color: whitesmoke; font-size:44px; margin-top:-11px;" class="fa fa-user-circle-o"
+                            aria-hidden="true"></i></a></li>
+                {{!-- <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact Us</a></li> --}}
+            </ul>
+        </header>
+    </div>
+
+    <div style="margin-top: 5em;">Welcome {{username}}</div>
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-12">
+                <p>Queries</p>
+            </div>
+        </div>
+        <div class="line"></div>
+        {{#each geojson}}
+        <br>
+        <a href="/directions/{{id}}/{{query}}/{{longitude}}/{{lattitude}}/{{standNo}}_/_{{streetName}}/{{techlong}}/{{techLat}}">
+            <div class="row" style="background-color: green;">
+
+                <div class="col-4">
+                    {{standNo}} {{streetName}}
+                </div>
+                <div class="col-2">{{time}} min</div>
+                <div class="col-2">{{distance}} km</div>
+                <div class="col-2">{{date}}</div>
+            </div>
+
+            <div class="row" style="background-color: green;">
+
+                <div class="col-8">{{query}}</div>
+            
+
+                <div class="col-4">
+                    <div class="{{status}}"></div>
+                </div>
+
+            </div>
+            <div class="row" style="background-color: green;">
+
+                <div class="col-8"></div>
+                <div class="col-4">more...</div>
+
+            </div>
+
+            <div class="row" style="background-color: green;">
+
+                <div class="col-12">
+                    <img src="{{picture}}" alt="leak" width="93%" height="300px">
+                </div>
+
+            </div>
+        </a>
+        {{/each}}
+    </div>
+</body>
+
+</html>

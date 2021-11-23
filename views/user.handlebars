@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Water Solutions</title>
+</head>
+<body>
+    <div class="menu-wrapper">
+    <header class="header">
+      <a href="/" class="logo"><img alt="Logo" src="/img/logo.jpg"></a>
+      <input class="menu-btn" type="checkbox" id="menu-btn" />
+      <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
+      <ul class="menu">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </header>
+  </div>
+  <div style="margin-top: 20em;"></div>
+
+ <div class="containerr">
+        <div class="columns" id="cont">
+            <div class="column">
+<div class="section" style="height: 500px; width:400px">
+  <button class="button2"><a style="color: white;" href="/user">Send Query</a></button>
+   <button class="button2">Pending</button>
+   <button class="button2">Attended</button>
+</div>
+            </div>
+            <div class="column">
+<div style="margin-top: 1em;" class="board">
+          <h1 class="board__heading">
+            Newsletter
+          </h1>
+          <section class="board__news">
+            {{#each queryQ}}
+            <a class="news--item" href="#">
+              <p class="date">
+                {{date}}
+              </p>
+              <p class="title">
+                {{query}}
+              </p>
+            </a>
+
+            {{/each}}
+          </section>
+        </div>
+            </div>
+        </div>
+    </div>
+</body>

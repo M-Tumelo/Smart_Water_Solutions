@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Water Solutions</title>
+</head>
+<body>
+
+  <a href="/index1.html">Leak image Classification</a>
+    <table class="table">
+
+<h2 style="text-align:center">Query list</h2>
+<tr>
+	<th>Query Number:</th>
+  <th>Coordinates:</th>
+  <th>Description:</th>
+	<th>Leak Image:</th>
+</tr>
+
+ {{#each queryQ}}
+ <tr>
+	<td>{{id}}</td>
+	<td>{{lon}} :{{lat}}</td>
+	<td>{{query}}</td>
+  <td><img src="/public/upload/empty-cart.png" alt="n/a"></td>
+  </tr>
+	{{!-- <td><button type="submit" value="submit">Submit</td> --}}
+	{{/each}}
+                        
+ 
+
+  </table>
+
+</body>
+</html>
