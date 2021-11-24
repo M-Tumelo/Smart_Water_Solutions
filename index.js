@@ -62,8 +62,8 @@ open({
   app.get('/login', function (req, res) {
     res.render('login')
   });
- 
- 
+
+
   app.post('/johnquery', async function (req, res) {
 
     // read more about destructoring here - https://exploringjs.com/impatient-js/ch_destructuring.html
@@ -79,7 +79,7 @@ open({
       await db.run(insertQuerriesSQL, "res.session.name", Query, moment(new Date()).format('MMM D, YYYY'), upload, 'new');
       // console.log(Query)
       res.redirect('/user')
-     
+
     }
   });
 
@@ -112,7 +112,7 @@ open({
 
   app.post('/sense', async (req, res) => {
     const insertData = ('INSERT INTO QUERY (name,longitude,lattitude,query,date,picture,status)  VALUES (?,?,?,?,?,?,?)');
-    await db.run(insertData, 'Sense', req.body.long, req.body.lat, req.body.Descript, moment(new Date()).format('MMM D, YYYY'), 'leak.PNG','new');
+    await db.run(insertData, 'Sense', req.body.long, req.body.lat, req.body.Descript, moment(new Date()).format('MMM D, YYYY'), 'leak.PNG', 'new');
   });
 
   app.get('/ad', async (req, res) => {
@@ -123,20 +123,20 @@ open({
     const mapToken = 'pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q';
 
     if (req.session.techLong == undefined && req.session.techLat == undefined) {
-       try {
+      try {
         const geojson = await Promise.all(
 
           querries.map(async function (column) {
-  
+
             const adressUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${column.longitude},${column.lattitude}.json?access_token=${mapToken}`;
-  
-  
+
+
             //REVERSE GEOLOCATOR API MAPBOX
             const adrress = await fetch(adressUrl);
             const location = await adrress.json();
             const standNo = await location.features[0].address;
             const streetName = await location.features[0].text;
-  
+
             return {
               id: column.id,
               picture: column.picture,
@@ -150,58 +150,59 @@ open({
               status: column.status
             }
           }
-  
+
           ))
         res.render('admin');
-       } catch (error) {
-         console.log(error);
-       }
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     else {
-      try{
-      const geojson = await Promise.all(
+      try {
+        const geojson = await Promise.all(
 
-        querries.map(async function (column) {
-        
-          const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${column.longitude},${column.lattitude};${req.session.techLong},${req.session.techLat}?geometries=geojson&access_token=${mapToken}`;
-          const adressUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${column.longitude},${column.lattitude}.json?access_token=${mapToken}`;
+          querries.map(async function (column) {
 
-          //Direction API MAPBOX
-          const mapBoxdata = await fetch(url);
-          const data = await mapBoxdata.json();
-          console.log(data);
-          const time = await data.routes[0].duration / 60;
-          const distance = await data.routes[0].distance / 1000;
+            const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${column.longitude},${column.lattitude};${req.session.techLong},${req.session.techLat}?geometries=geojson&access_token=${mapToken}`;
+            const adressUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${column.longitude},${column.lattitude}.json?access_token=${mapToken}`;
 
-          //REVERSE GEOLOCATOR API MAPBOX
-          const adrress = await fetch(adressUrl);
-          const location = await adrress.json();
-          const standNo = await location.features[0].address;
-          const streetName = await location.features[0].text;
+            //Direction API MAPBOX
+            const mapBoxdata = await fetch(url);
+            const data = await mapBoxdata.json();
+            console.log(data);
+            const time = await data.routes[0].duration / 60;
+            const distance = await data.routes[0].distance / 1000;
 
-          return {
-            id: column.id,
-            techlong: req.session.techLong,
-            techLat: req.session.techLat,
-            picture: column.picture,
-            standNo: standNo,
-            streetName: streetName,
-            name: column.name,
-            longitude: column.longitude,
-            lattitude: column.lattitude,
-            query: column.query,
-            date: column.date,
-            status: column.status,
-            time: time.toFixed(2),
-            distance: distance.toFixed(2)
+            //REVERSE GEOLOCATOR API MAPBOX
+            const adrress = await fetch(adressUrl);
+            const location = await adrress.json();
+            const standNo = await location.features[0].address;
+            const streetName = await location.features[0].text;
+
+            return {
+              id: column.id,
+              techlong: req.session.techLong,
+              techLat: req.session.techLat,
+              picture: column.picture,
+              standNo: standNo,
+              streetName: streetName,
+              name: column.name,
+              longitude: column.longitude,
+              lattitude: column.lattitude,
+              query: column.query,
+              date: column.date,
+              status: column.status,
+              time: time.toFixed(2),
+              distance: distance.toFixed(2)
+            }
           }
-        }
 
-        ))
-      res.render('admin', { geojson });}
-      catch(err){
-       console.log(err);
+          ))
+        res.render('admin', { geojson });
+      }
+      catch (err) {
+        console.log(err);
       }
     }
   });
@@ -210,8 +211,9 @@ open({
 
     req.session.techLong = req.body.long;
     req.session.techLat = req.body.lat;
-    if (req.session.techLat!=undefined){
-    res.redirect('/ad');}
+    if (req.session.techLat != undefined) {
+      res.redirect('/ad');
+    }
   });
 
   app.get('/ds/:id', async (req, res) => {
@@ -231,36 +233,43 @@ open({
     req.session.startLat = req.params.userLat;
     req.session.endLong = req.params.techLong;
     req.session.endLat = req.params.techLat;
-    console.log(req.session.startLong,req.session.startLat,req.session.endLong,req.session.endLat)
+    console.log(req.session.startLong, req.session.startLat, req.session.endLong, req.session.endLat);
     req.session.mapsandNo = req.params.standNo;
     req.session.mapstreetName = req.params.streetName;
 
 
     const mapToken = 'pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q';
-    const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${req.session.startLong},${req.session.startLat};${req.session.endLong},${req.session.endLat}?geometries=geojson&access_token=${mapToken}`;
-    const query = await fetch(url);
-    const json = await query.json();
-    const data =await json.routes[0];
-    const route = data.geometry.coordinates;
-    const directRoad = JSON.stringify(route);
+    try {
 
-    res.render('directions', {
-      idno:req.session.idno,
-      message: req.session.mapMessage,
-      standNo: req.session.mapsandNo,
-      streetName: req.session.mapstreetName,
-      startLong: req.session.startLong,
-      startLat: req.session.startLat,
-      endLong: req.session.endLong,
-      endLat: req.session.endLat,
-      route: directRoad
-    });
+
+      req.session.url = `https://api.mapbox.com/directions/v5/mapbox/driving/${req.session.startLong},${req.session.startLat};${req.session.endLong},${req.session.endLat}?geometries=geojson&access_token=${mapToken}`;
+      req.session.query = await fetch(req.session.url);
+      req.session.json = await req.session.query.json();
+      req.session.data = await req.session.json.routes[0];
+      req.session.route = req.session.data.geometry.coordinates;
+      req.session.directRoad = JSON.stringify(req.session.route);
+
+      res.render('directions', {
+        idno: req.session.idno,
+        message: req.session.mapMessage,
+        standNo: req.session.mapsandNo,
+        streetName: req.session.mapstreetName,
+        startLong: req.session.startLong,
+        startLat: req.session.startLat,
+        endLong: req.session.endLong,
+        endLat: req.session.endLat,
+        route: req.session.directRoad
+      });
+    } catch (error) {
+      console.log(error)
+    }
+
   });
-  app.get('/complete/:attendedId',async (req,res)=>{
+  app.get('/complete/:attendedId', async (req, res) => {
 
-   req.session.attendId=req.params.attendedId;
-   const updateAttended = 'UPDATE query set status=? where id=?'
-  await db.all(updateAttended,'attended',req.session.attendId);
+    req.session.attendId = req.params.attendedId;
+    const updateAttended = 'UPDATE query set status=? where id=?'
+    await db.all(updateAttended, 'attended', req.session.attendId);
     res.redirect('/ad');
 
   });
@@ -268,10 +277,10 @@ open({
   app.post("/user", async function (req, response) {
     var images = new Array();
 
-    req.session.query=req.body.string;
+    req.session.query = req.body.string;
     req.session.lattitude = req.body.lattitude;
-    req.session.longitude= req.body.longitude;
-    
+    req.session.longitude = req.body.longitude;
+
     if (req.files) {
       var arr;
       if (Array.isArray(req.files.filesfld)) {
@@ -288,7 +297,7 @@ open({
           upload = "./upload" + images[i];
           console.log(upload);
           const insertDataUser = ('INSERT INTO QUERY (name,longitude,lattitude,query,date,picture,status)  VALUES (?,?,?,?,?,?,?)');
-          await db.run(insertDataUser, 'user',  req.session.longitude, req.session.lattitude,req.session.query, moment(new Date()).format('MMM D, YYYY'),file.name,'new');
+          await db.run(insertDataUser, 'user', req.session.longitude, req.session.lattitude, req.session.query, moment(new Date()).format('MMM D, YYYY'), file.name, 'new');
 
           file.mv(upload, function (err) {
             if (err) {

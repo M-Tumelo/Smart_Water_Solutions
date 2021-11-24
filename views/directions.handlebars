@@ -17,7 +17,15 @@
         }
 
         .marker {
-            background-image: url('mapbox-icon.png');
+            background-image: url('/upload/mapbox-icon.png');
+            background-size: cover;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .motor {
+            background-image: url('/upload/motor.jpg');
             background-size: cover;
             width: 50px;
             height: 50px;
@@ -53,7 +61,7 @@
         });
 
         const bounds = [[27.537, -26.563], [28.542, -25.834]];
-        map.setMaxBounds(bounds);
+        {{!-- map.setMaxBounds(bounds); --}}
 
         const start = [{{endLong}},{{endLat}}];
 

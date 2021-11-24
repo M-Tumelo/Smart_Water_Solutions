@@ -11,7 +11,7 @@
 <body style="background-color: black;">
 
     <script>
-
+      try{
         navigator.geolocation.getCurrentPosition((position) => {
 
             const long = position.coords.longitude;
@@ -32,11 +32,23 @@
                     })
                 })
                 const content = await send.json();
-                {{!-- location.reload(); --}}
+             
             };
             postData();
             
-        });
+        });}
+        catch(error){
+            console.log(error);
+        }
+        finally{
+           window.onload = function() {
+          if(!window.location.hash) {
+         window.location = window.location + '#loaded';
+          window.location.reload();
+    }
+}
+
+        }
     </script>
 
     <div class="menu-wrapper">
