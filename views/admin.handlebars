@@ -8,7 +8,7 @@
     <title>locator</title>
 </head>
 
-<body style="background-color: black">
+<body style="background-color: black;">
 
     <script>
 
@@ -32,10 +32,10 @@
                     })
                 })
                 const content = await send.json();
-                { { !--location.reload(); --} }
+                {{!-- location.reload(); --}}
             }
             postData();
-
+            
         });
     </script>
 
@@ -56,20 +56,20 @@
         </header>
     </div>
 
+    <div style="margin-top: 5em;">Welcome {{username}}</div>
 
     <div class="container">
         <div class="row">
-            <div class="col-lg-12 col-12 text-center mb-5">
-                <h6 style="color: white;">Welcome {{username}}</h6>
 
-                <h2 style="color: white;">Query List</h2>
+            <div class="col-12">
+                <p>Queries</p>
             </div>
         </div>
+        <div class="line"></div>
         {{#each geojson}}
         <br>
-        <a
-            href="/directions/{{id}}/{{query}}/{{longitude}}/{{lattitude}}/{{standNo}}_/_{{streetName}}/{{techlong}}/{{techLat}}">
-            <div class="row" style="background-color: whitesmoke;">
+        <a href="/directions/{{id}}/{{query}}/{{longitude}}/{{lattitude}}/{{standNo}}_/_{{streetName}}/{{techlong}}/{{techLat}}">
+            <div class="row" style="background-color: black;">
 
                 <div class="col-4">
                     {{standNo}} {{streetName}}
@@ -79,24 +79,24 @@
                 <div class="col-2">{{date}}</div>
             </div>
 
-            <div class="row" style="background-color: whitesmoke;">
+            <div class="row" style="background-color: black;">
 
                 <div class="col-8">{{query}}</div>
-
+            
 
                 <div class="col-4">
                     <div class="{{status}}"></div>
                 </div>
 
             </div>
-            <div class="row" style="background-color: whitesmoke;">
+            <div class="row" style="background-color: black;">
 
                 <div class="col-8"></div>
                 <div class="col-4">more...</div>
 
             </div>
 
-            <div class="row" style="background-color: whitesmoke;">
+            <div class="row" style="background-color: black;">
 
                 <div class="col-12">
                     <img src="{{picture}}" alt="leak" width="93%" height="300px">
