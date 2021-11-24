@@ -28,6 +28,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 app.use(express.static('public'));
 app.use(express.static('upload'));
+app.use(express.static('modelAI'));
 app.use(fileUpload());
 
 open({
@@ -54,15 +55,15 @@ open({
   });
 
   app.get('/register', (req, res) => {
-    res.render('home');
+    res.render('login');
   })
 
 
-  app.post('/count', function (req, res) {
-    counter++;
-    res.redirect('/user')
+  app.get('/login', function (req, res) {
+    res.render('login')
   });
-
+ 
+ 
   app.post('/johnquery', async function (req, res) {
 
     // read more about destructoring here - https://exploringjs.com/impatient-js/ch_destructuring.html
@@ -78,8 +79,8 @@ open({
       await db.run(insertQuerriesSQL, "res.session.name", Query, moment(new Date()).format('MMM D, YYYY'), upload, 'new');
       // console.log(Query)
       res.redirect('/user')
+     
     }
-
   });
 
 
@@ -297,6 +298,7 @@ open({
         }
       }
     }
+    console.log(upload)
     // give the server a second to write the files
     setTimeout(function () { response.json(images); }, 1000);
   });
@@ -316,7 +318,7 @@ open({
     }
     else {
       // console.log('siright')
-      if (sql.type_of_user == 'user') res.redirect('/user');
+      if (sql.type_of_user == 'user') res.render('image');
       else res.redirect('/ad');
     }
 
@@ -334,9 +336,10 @@ open({
       if (req.session.psw == psw1) {
         const insert_details = 'insert into signup (name, email, password, type_of_user) values (?, ?, ?, ?)';
         await db.run(insert_details, req.session.name, req.session.email, req.session.psw, req.session.user_type);
-        res.redirect('/');
+        res.redirect('/login');
       }
       else {
+        //Passwords do not match
         res.redirect('/')
       }
     }

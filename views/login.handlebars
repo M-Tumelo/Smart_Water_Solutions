@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Water Solutions</title>
+</head>
+<body style="background-color: black;">
+    <a href="/" class="btn custom-btn"><i class="fas fa-angle-double-left"></i>&nbsp;back</a>
+<div class="center">
+    <div class="tabs">
+
+      <input type="radio" name="tabs" id="tabone" checked="checked">
+      <label for="tabone">Login</label>
+      <div class="tab">
+        <center>
+          <h1>Login</h1>
+        </center>
+
+        <form action="/login" method="post">
+          <div class="input-container">
+            <i class="fa fa-envelope icon"></i>
+            {{!-- Changed type from text to email --}}
+            <input class="input-field" type="email" required placeholder="Email" name="email">
+          </div>
+
+          <div class="input-container">
+            <i class="fa fa-lock icon"></i>
+            <input class="input-field" type="password" required placeholder="Password" name="psw">
+          </div>
+          <p>Have you forgotten your <a href="#"><strong>password</strong></a>?</p>
+          <button type="submit" class="btnn">Login</button>
+          <p>Don't have an account? &nbsp;<a href="/register">Sign up</a></p>
+        </form>
+      </div>
+
+      <input type="radio" name="tabs" id="tabtwo">
+      <label for="tabtwo">Register</label>
+      <div class="tab">
+        <center>
+          <h1>Register</h1>
+        </center>
+
+        <form action="/register" method="post">
+          <div class="input-container">
+            <i class="fa fa-user icon"></i>
+            <input class="input-field" type="text" required placeholder="Name" name="name">
+          </div>
+
+          <div class="input-container">
+            <i class="fa fa-envelope icon"></i>
+            <input class="input-field" type="email" required placeholder="Email" name="email">
+          </div>
+
+          <div class="input-container">
+            <i class="fa fa-lock icon"></i>
+            <input class="input-field" type="password" required placeholder="Password" name="psw">
+          </div>
+
+          <div class="input-container">
+            <i class="fa fa-lock icon"></i>
+            <input class="input-field" type="password" required placeholder="Retype Password" name="psw1">
+          </div>
+          <div style="padding-bottom: 1em;">
+            <p>Are you a Rand Water Technican?</p>
+            <input id="padding" type="radio" name="user_type" checked value="user">No
+            <input id="padding" type="radio" name="user_type" value="technician">Yes
+          </div>
+          <button style="margin-top: 5px;" type="submit" class="btnn">Register</button>
+        </form>
+      </div>
+    </div>
+
+</body>
+</html>

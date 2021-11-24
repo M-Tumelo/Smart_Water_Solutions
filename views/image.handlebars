@@ -31,10 +31,12 @@
       <input class="menu-btn" type="checkbox" id="menu-btn" />
       <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
       <ul class="menu">
-        <li class="hide"><a href="#" class="remove-hover">{{#each username}}<span style="color: whitesmoke; vertical-align: 12px;">Welcome {{name}}</span>{{/each}}&nbsp;&nbsp;<i style="color: whitesmoke; font-size:44px; margin-top:-11px;" class="fa fa-user-circle-o" aria-hidden="true"></i></a></li>
-       	<a href="/index1.html">Leak image Classification</a>
-        {{!-- <li><a href="#">About Us</a></li>
-        <li><a href="#">Contact Us</a></li> --}}
+        <li class="hide"><a href="#" class="remove-hover">{{#each username}}<span
+              style="color: whitesmoke; vertical-align: 12px;">Welcome {{name}}</span>{{/each}}&nbsp;&nbsp;<i
+              style="color: whitesmoke; font-size:44px; margin-top:-11px;" class="fa fa-user-circle-o"
+              aria-hidden="true"></i></a></li>
+        <li><a href="#"><a href="/index1.html">Leak image Classification</a></a></li>
+        <li><a href="#">Logout</a></li>
       </ul>
     </header>
   </div>
@@ -46,110 +48,107 @@
   </div>
 
   {{!-- Testing 1,2 --}}
+  <section class="section sec" style="background-color:black">
   <div class="containerr">
     <div class="columns">
-        <div class="section">
-          <div class="column">
-            <div class="section">
-              <h2>Send a Query</h2>
-                  <div>
-                    <label for="">Describe your Query:</label>
-                    <textarea name="Query" id="queryText" placeholder="Enter your Query here"></textarea>
-                  </div>
-              <div>
-                <button type="button" class="center bigger-button" onclick="myFunction()">save query</button>
-              </div>
-            </div>
-
-            </center>
-
-          </div>
-          <div class="column">
-            <div class="section">
-
-              <div class="water">
-                <h2>Upload Media</h2>
-                <form id="filesfrm" action="/user" method="post" onsubmit="return submitFilesForm(this);">
-                  <input type="file" name="filesfld" id="filesfld" accept="image/*"
-                    onchange="submitFilesForm(this.form);" multiple />
-                  <label for="filesfld" id="fileslbl" style="display: block;"
-                    ondragover="stopDefault(event);dragOver(this, 'Drop the images to upload them.');"
-                    ondragenter="stopDefault(event);dragOver(this, 'Drop the images to upload them.');"
-                    ondragleave="stopDefault(event);dragLeave(this);"
-                    ondrop="stopDefault(event);dragLeave(this);addFilesAndSubmit(event);">
-                    <div><i style="font-size:48px;color:#cccccc;" class="fa fa-cloud-upload"></i></div>
-                    <div style="color:#cccccc;">Drag & Drop to Upload file or <br> Click to Upload</div>
-                  </label>
-                </form>
-                <div style="text-align: left;">
-                  <div id="progress"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="column">
-            <div class="section">
-              <h2>Attach Location</h2>
-              <p>
-                latitude: <span id="latitude"></span>&deg;<br />
-                longitude: <span id="longitude"></span>&deg;
-              </p>
-              <div id="mymap"></div>
-            </div>
+      <div class="column">
+        <div class="sec">
+          <h2>Send a Query</h2>
+          <div>
+            <label for="">Describe your Query:</label>
+            <textarea name="Query" id="queryText" placeholder="Enter your Query here"></textarea>
           </div>
           <div>
-            <input type="submit" class="bigger-button" value="Send Your Query">
+            <button type="button" class="center small-button" onclick="myFunction()">Save query</button>
           </div>
-      </form>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="sec">
+
+          <div class="water">
+            <h2>Upload Media</h2>
+            <form id="filesfrm" action="/user" method="post" onsubmit="return submitFilesForm(this);">
+              <input type="file" name="filesfld" id="filesfld" accept="image/*"
+                onchange="submitFilesForm(this.form);" />
+              <label for="filesfld" id="fileslbl" style="display: block;"
+                ondragover="stopDefault(event);dragOver(this, 'Drop the images to upload them.');"
+                ondragenter="stopDefault(event);dragOver(this, 'Drop the images to upload them.');"
+                ondragleave="stopDefault(event);dragLeave(this);"
+                ondrop="stopDefault(event);dragLeave(this);addFilesAndSubmit(event);">
+                <div><i style="font-size:48px;color:#cccccc;" class="fa fa-cloud-upload"></i></div>
+                <div style="color:#cccccc;">Drag & Drop to Upload file or <br> Click to Upload</div>
+              </label>
+            </form>
+            <div style="text-align: left;">
+              <div id="progress"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="sec">
+          <h2>Attach Location</h2>
+          <p>
+            latitude: <span id="latitude"></span>&deg;<br />
+            longitude: <span id="longitude"></span>&deg;
+          </p>
+          <div id="mymap"></div>
+        </div>
+      </div>
     </div>
-    
-<footer id="contact">
-  <ul>
-    <div id="icon-container">
-      <a href="#">
-        <div id="icon">
-          <li><i class="fab fa-twitter"></i></li>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-12 text-center mb-5">
+          <input type="button" value="Send Query">
         </div>
-      </a>
-      <a href="#">
-        <div id="icon">
-          <li><i class="fab fa-instagram"></i></li>
+      </div>
+    </div>
+   </section>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="row">
+
+        <div class="ml-auto col-lg-4 col-md-5">
+          <p class="copyright-text">Copyright &copy; 2021 Smart Water Solutions.
+
         </div>
-      </a>
-      <a href="#">
-        <div id="icon">
-          <li><i class="fab fa-facebook-f"></i></li>
+
+        <div class="d-flex justify-content-center mx-auto col-lg-5 col-md-7 col-12">
+          <p class="mr-4">
+            <i class="fa fa-envelope-o mr-1"></i>
+            <a href="#">info@smartwatersolutions.co</a>
+          </p>
+
+          <p><i class="fa fa-phone mr-1"></i> 012-345-6789</p>
         </div>
-      </a>
-      <a href="#">
-        <div id="icon">
-          <li><i class="far fa-envelope"></i></li>
-        </div>
-      </a>
-  </ul>
-  <p>&copy 2021 Smart Water Solutions</p>
- 
-</footer>
-      <script type="text/javascript">
-  var TextQuerry='only added a picture';
-  function myFunction() {
-  var queryText2=document.getElementById('queryText').value;
-  TextQuerry=queryText2;
- };
- var longitude;
- var lattitude;
+
+      </div>
+    </div>
+  </footer>
+  <script type="text/javascript">
+    var TextQuerry = 'only added a picture';
+    function myFunction() {
+      var queryText2 = document.getElementById('queryText').value;
+      TextQuerry = queryText2;
+    };
+    var longitude;
+    var lattitude;
     if ('geolocation' in navigator) {
       console.log('geolocation available');
       navigator.geolocation.getCurrentPosition(async position => {
         lat = position.coords.latitude;
         lon = position.coords.longitude;
-        lattitude=lat;
-        longitude=lon;
+        lattitude = lat;
+        longitude = lon;
         console.log(lat, lon);
         document.getElementById('latitude').textContent = lat;
         document.getElementById('longitude').textContent = lon;
         const mymap = L.map('mymap').setView([lat, lon], 15);
-        const attribution ='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+        const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
         const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
         const tiles = L.tileLayer(tileUrl, { attribution });
         tiles.addTo(mymap);
@@ -172,7 +171,7 @@
     } else {
       console.log('geolocation not available');
     }
-  
+
     function stopDefault(event) {
       event.preventDefault();
       event.stopPropagation();
@@ -202,11 +201,11 @@
       for (var i = 0; i < form.filesfld.files.length; i++) {
         var field = form.filesfld;
         fd.append(field.name, field.files[i], field.files[i].name);
-        fd.append('string',TextQuerry);
-        fd.append('longitude',longitude);
-        fd.append('lattitude',lattitude);
+        fd.append('string', TextQuerry);
+        fd.append('longitude', longitude);
+        fd.append('lattitude', lattitude);
       }
-      
+
       var progress = document.getElementById("progress");
       var x = new XMLHttpRequest();
       if (x.upload) {
