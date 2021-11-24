@@ -230,9 +230,9 @@ open({
     req.session.startLat = req.params.userLat;
     req.session.endLong = req.params.techLong;
     req.session.endLat = req.params.techLat;
+    console.log(req.session.startLong,req.session.startLat,req.session.endLong,req.session.endLat)
     req.session.mapsandNo = req.params.standNo;
     req.session.mapstreetName = req.params.streetName;
-    req.session.mapCord2 = req.params.cord2;
 
 
     const mapToken = 'pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q';
