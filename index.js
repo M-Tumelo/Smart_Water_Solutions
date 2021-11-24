@@ -1,51 +1,35 @@
-let express = require('express');
+const express = require('express');
 const fileUpload = require('express-fileupload');
-const FileType = require('file-type');
-
-let app = express();
-
+const app = express();
 let fav = require('serve-favicon');
-
 var moment = require('moment');
-
 const exphbs = require('express-handlebars');
-
-const bodyParser = require('body-parser');
-
-const path = require('path');
-
-//import sqlite modules
+const session = require('express-session');
+const { compile } = require('handlebars');
 const sqlite3 = require('sqlite3');
 const { open } = require('sqlite');
 var cors = require('cors');
-app.use(cors());
+const fetch = require('node-fetch');
+const { Promise } = require('node-fetch');
+
 let PORT = process.env.PORT || 3001;
 
 //Configure the express-handlebars module
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
-
-const session = require('express-session');
-const { compile } = require('handlebars');
+app.use(cors());
 
 //Set-up middleware
 
-app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true
-}))
+app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: true }))
 
 //app.use(fav(path.join(__dirname, 'public', 'img/favicon.ico')))
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
+app.use(express.urlencoded({ extended: false }))
+app.use(express.json())
 app.use(express.static('public'));
 app.use(express.static('upload'));
+app.use(express.static('modelAI'));
 app.use(fileUpload());
-
-
-
-
 
 open({
   filename: './data.db',
@@ -56,19 +40,7 @@ open({
 
   await db.migrate();
 
-  const knex = require('knex')({
-    client: 'sqlite3',
-    connection: {
-      filename: "./data.db"
-    },
-    useNullAsDefault: true
-  });
-  // only setup the routes once the database connection has been established
-
-  //getting queries data and name of the user from the database
   const queryQ = await db.all('select * from query');
-  var lon;
-  var lat;
   var upload;
   app.get('/', (req, res) => {
     res.render('home');
@@ -83,42 +55,34 @@ open({
   });
 
   app.get('/register', (req, res) => {
-    res.render('home');
+    res.render('login');
   })
 
 
-  app.post('/count', function (req, res) {
-    counter++;
-    res.redirect('/user')
+  app.get('/login', function (req, res) {
+    res.render('login')
   });
  
  
   app.post('/johnquery', async function (req, res) {
+
     // read more about destructoring here - https://exploringjs.com/impatient-js/ch_destructuring.html
     const { Query } = req.body;
 
-    if (Query != null) {
+    if (!Query) {
       // nothing is added
-      const insertQuerriesSQL = 'insert into query (name, longitude, lattitude, query, date, status) values (?, ?, ?, ?, ?, ?)';
-      await db.run(insertQuerriesSQL, "res.session.name", lon, lat, Query, moment(new Date()).format('MMM D, YYYY'), 'new');
+      console.log("Test")
+      return res.redirect('/user');
+    }
+    else {
+      const insertQuerriesSQL = 'insert into query (name, query, date, picture, status) values (?, ?, ?, ?, ?)';
+      await db.run(insertQuerriesSQL, "res.session.name", Query, moment(new Date()).format('MMM D, YYYY'), upload, 'new');
+      // console.log(Query)
       res.redirect('/user')
      
     }
   });
 
-
-  // app.get('/reminder/:dayCount/days', function (req, res) {
-
-  //   // find me all the reminders for the current Day count
-  //   const filteredReminders = reminders.filter(function (reminder) {
-  //     return reminder.dayCount == Number(req.params.dayCount)
-  //   })
-
-  //   res.render('reminder', {
-  //     reminders: filteredReminders
-  //   });
-
-  // });
 
   app.post('/remove/:id', async function (req, res) {
 
@@ -129,58 +93,122 @@ open({
 
   });
 
-  // app.get('/edit/:id', function (req, res) {
-  //   res.render("edit");
-  // });
-
-
-
-  // only setup the routes once the database connection has been established
-
-  // })
-
-  // only setup the routes once the database connection has been established
-
-  // })
-
-
-  // we use global state to store data
-
-  // const reminders = [];
-
-  // we use global state to store data
-
-  // const reminders = [];
-
-
-  // list of querries 
   app.get('/data', async (req, res) => {
 
     const querries = 'SELECT * from QUERiES';
     const geos = await db.all(querries);
-
-    const geoJson = geos.map(function (store) {
-      return {
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: [store.long, store.lat]
-        },
-        properties: {
-          title: 'Mapbox',
-          description: store.discript
-        }
-      }
-    });
-    res.json(geoJson);
+    res.json(geos);
   });
 
   app.get('/admin', async (req, res) => {
     const username = await db.all('select * from signup where email = ?', req.session.email);
-    res.render('technician', {
-      queryQ,
-      username
-    });
+    res.render('querry', { queryQ, username });
+  });
+
+  app.get('/sense', (req, res) => {
+
+    res.render('sense');
+  });
+
+  app.post('/sense', async (req, res) => {
+    const insertData = ('INSERT INTO QUERY (name,longitude,lattitude,query,date,picture,status)  VALUES (?,?,?,?,?,?,?)');
+    await db.run(insertData, 'Sense', req.body.long, req.body.lat, req.body.Descript, moment(new Date()).format('MMM D, YYYY'), 'leak.PNG','new');
+  });
+
+  app.get('/ad', async (req, res) => {
+
+    const querries = await db.all('select * from query');
+    const username = await db.all('select * from signup where email = ?', req.session.email);
+    console.log(req.session.techLong, req.session.techLat);
+    const mapToken = 'pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q';
+
+    if (req.session.techLong == undefined && req.session.techLat == undefined) {
+
+      const geojson = await Promise.all(
+
+        querries.map(async function (column) {
+
+          const adressUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${column.longitude},${column.lattitude}.json?access_token=${mapToken}`;
+
+
+          //REVERSE GEOLOCATOR API MAPBOX
+          const adrress = await fetch(adressUrl);
+          const location = await adrress.json();
+          const standNo = await location.features[0].address;
+          const streetName = await location.features[0].text;
+
+          return {
+            id: column.id,
+            picture: column.picture,
+            standNo: standNo,
+            streetName: streetName,
+            name: column.name,
+            longitude: column.longitude,
+            lattitude: column.lattitude,
+            query: column.query,
+            date: column.date,
+            status: column.status
+          }
+        }
+
+        ))
+      res.render('admin');
+    }
+
+    else {
+      try{
+      const geojson = await Promise.all(
+
+        querries.map(async function (column) {
+        
+          const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${column.longitude},${column.lattitude};${req.session.techLong},${req.session.techLat}?geometries=geojson&access_token=${mapToken}`;
+          const adressUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${column.longitude},${column.lattitude}.json?access_token=${mapToken}`;
+
+          //Direction API MAPBOX
+          const mapBoxdata = await fetch(url);
+          const data = await mapBoxdata.json();
+          console.log(data);
+          const time = await data.routes[0].duration / 60;
+          const distance = await data.routes[0].distance / 1000;
+
+          //REVERSE GEOLOCATOR API MAPBOX
+          const adrress = await fetch(adressUrl);
+          const location = await adrress.json();
+          const standNo = await location.features[0].address;
+          const streetName = await location.features[0].text;
+
+          return {
+            id: column.id,
+            techlong: req.session.techLong,
+            techLat: req.session.techLat,
+            picture: column.picture,
+            standNo: standNo,
+            streetName: streetName,
+            name: column.name,
+            longitude: column.longitude,
+            lattitude: column.lattitude,
+            query: column.query,
+            date: column.date,
+            status: column.status,
+            time: time.toFixed(2),
+            distance: distance.toFixed(2)
+          }
+        }
+
+        ))
+      res.render('admin', { geojson });}
+      catch(err){
+       console.log(err);
+      }
+    }
+  });
+
+  app.post('/ad', (req, res) => {
+
+    req.session.techLong = req.body.long;
+    req.session.techLat = req.body.lat;
+    if (req.session.techLat!=undefined){
+    res.redirect('/ad');}
   });
 
   app.get('/ds/:id', async (req, res) => {
@@ -189,25 +217,58 @@ open({
     res.redirect('/admin')
   })
 
-  // app.post('', (req, res) => {
-  //   let sampleFile;
-  //   let uploadPath;
+  app.get('/directions/:id/:message/:userLong/:userLat/:standNo/:streetName/:techLong/:techLat', async (req, res) => {
 
-  //   if (!req.files || Object.keys(req.files).length === 0) {
-  //     return res.status(400).send('No files were uploaded.');
-  //   }
-  //   sampleFile = req.files.sampleFile;
-  //   console.log(sampleFile);
+    req.session.idno = req.params.id;
+    const update = 'UPDATE query set status=? where id=?'
+    await db.all(update, 'pending', req.session.idno);
+    req.session.mapMessage = req.params.message;
 
-  app.post('/api', (req,res) =>{
-    lat = req.body.lat;
-    lon = req.body.lon;
-  })
+    req.session.startLong = req.params.userLong;
+    req.session.startLat = req.params.userLat;
+    req.session.endLong = req.params.techLong;
+    req.session.endLat = req.params.techLat;
+    req.session.mapsandNo = req.params.standNo;
+    req.session.mapstreetName = req.params.streetName;
+    req.session.mapCord2 = req.params.cord2;
 
-  // upload image files to server
-  app.post("/user", async function (req, res) {
 
+    const mapToken = 'pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q';
+    const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${req.session.startLong},${req.session.startLat};${req.session.endLong},${req.session.endLat}?geometries=geojson&access_token=${mapToken}`;
+    const query = await fetch(url);
+    const json = await query.json();
+    const data =await json.routes[0];
+    const route = data.geometry.coordinates;
+    const directRoad = JSON.stringify(route);
+
+    res.render('directions', {
+      idno:req.session.idno,
+      message: req.session.mapMessage,
+      standNo: req.session.mapsandNo,
+      streetName: req.session.mapstreetName,
+      startLong: req.session.startLong,
+      startLat: req.session.startLat,
+      endLong: req.session.endLong,
+      endLat: req.session.endLat,
+      route: directRoad
+    });
+  });
+  app.get('/complete/:attendedId',async (req,res)=>{
+
+   req.session.attendId=req.params.attendedId;
+   const updateAttended = 'UPDATE query set status=? where id=?'
+  await db.all(updateAttended,'attended',req.session.attendId);
+    res.redirect('/ad');
+
+  });
+
+  app.post("/user", async function (req, response) {
     var images = new Array();
+
+    req.session.query=req.body.string;
+    req.session.lattitude = req.body.lattitude;
+    req.session.longitude= req.body.longitude;
+    
     if (req.files) {
       var arr;
       if (Array.isArray(req.files.filesfld)) {
@@ -222,10 +283,10 @@ open({
         if (file.mimetype.substring(0, 5).toLowerCase() == "image") {
           images[i] = "/" + file.name;
           upload = "./upload" + images[i];
-          let update_table = `UPDATE query
-                                      SET picture = ?                                     
-                                     WHERE name = ?`;
-          await db.run(update_table, upload, 'req.session.name')
+          console.log(upload);
+          const insertDataUser = ('INSERT INTO QUERY (name,longitude,lattitude,query,date,picture,status)  VALUES (?,?,?,?,?,?,?)');
+          await db.run(insertDataUser, 'user',  req.session.longitude, req.session.lattitude,req.session.query, moment(new Date()).format('MMM D, YYYY'),file.name,'new');
+
           file.mv(upload, function (err) {
             if (err) {
               console.log(err);
@@ -236,7 +297,7 @@ open({
     }
     console.log(upload)
     // give the server a second to write the files
-    setTimeout(function () { res.json(images); }, 1000);
+    setTimeout(function () { response.json(images); }, 1000);
   });
 
   app.post('/login', async (req, res) => {
@@ -254,8 +315,8 @@ open({
     }
     else {
       // console.log('siright')
-      if (sql.type_of_user == 'user') res.render('user');
-      else res.redirect('/admin');
+      if (sql.type_of_user == 'user') res.render('image');
+      else res.redirect('/ad');
     }
 
   });
@@ -272,9 +333,10 @@ open({
       if (req.session.psw == psw1) {
         const insert_details = 'insert into signup (name, email, password, type_of_user) values (?, ?, ?, ?)';
         await db.run(insert_details, req.session.name, req.session.email, req.session.psw, req.session.user_type);
-        res.redirect('/');
+        res.redirect('/login');
       }
       else {
+        //Passwords do not match
         res.redirect('/')
       }
     }

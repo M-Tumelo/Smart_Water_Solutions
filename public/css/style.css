@@ -272,6 +272,39 @@ a:focus {
   z-index: 3;
   width: 100%;
 }
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.marker {
+  background-image: url('mapbox-icon.png');
+  background-size: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.motor {
+  background-image: url('motor.jpg');
+  background-size: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.mapboxgl-popup {
+  max-width: 200px;
+}
+
+.mapboxgl-popup-content {
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+}
 
 .header ul {
   margin: 0;
@@ -320,7 +353,6 @@ a:focus {
 .header .menu-icon {
   cursor: pointer;
   display: inline-block;
-  float: right;
   padding: 28px 20px;
   position: relative;
   user-select: none;
@@ -331,7 +363,6 @@ a:focus {
   display: block;
   height: 2px;
   position: relative;
-  transition: background .2s ease-out;
   width: 18px;
 }
 
@@ -612,3 +643,543 @@ button#submit-button:hover {
   display: none;
 }
 }
+
+/* Map */
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.marker {
+  background-image: url('mapbox-icon.png');
+  background-size: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.motor {
+  background-image: url('motor.jpg');
+  background-size: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.mapboxgl-popup {
+  max-width: 200px;
+}
+
+.mapboxgl-popup-content {
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+}
+
+/* Signn-Up and Registration Form */
+.input-container {
+  display: flex;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.tabs .icon {
+  padding: 10px;
+  background: #00c6fb;
+  color: white;
+  min-width: 10%;
+  text-align: center;
+}
+
+#padding{
+  display: inline-block;
+ padding-left: 2em;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  outline: none;
+}
+
+.input-field:focus {
+  border: 2px solid #00c6fb;
+}
+
+/* Set a style for the submit button */
+.btnn {
+  background-color: #00c6fb;
+  color: white;
+  padding: 15px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.btnn:hover {
+  opacity: 1;
+}
+
+/*START OF THE MAP*/
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.marker {
+  background-image: url('mapbox-icon.png');
+  background-size: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.mapboxgl-popup {
+  max-width: 200px;
+}
+
+.mapboxgl-popup-content {
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+}
+/*END OF THE MAP*/
+ 
+/* Drag and drop */
+#fileslbl {
+  width: 100%;
+  height: 256px;
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  cursor: pointer;
+  color: #cccccc;
+  border: 4px dashed #009578;
+  border-radius: 10px;
+}
+
+#filesfld {
+  display: none;
+}
+
+#progress {
+  width: 0;
+  background-color: greenyellow;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 25px;
+  /* padding: 0 20px; */
+  margin-top: 0.5em;
+}
+
+@keyframes dropbox {
+  0% {
+      background-image: repeating-linear-gradient(30deg, green 1%, green 3%, darkgreen 5%, darkgreen 5%);
+  }
+
+  50% {
+      background-image: repeating-linear-gradient(30deg, darkgreen 1%, darkgreen 3%, green 5%, green 5%);
+  }
+
+  100% {
+      background-image: repeating-linear-gradient(30deg, green 1%, green 3%, darkgreen 5%, darkgreen 5%);
+  }
+}
+
+/* Newsletter Styling */
+/* include the board in the center of the viewport */
+.board {
+  max-width: 90%;
+  width: 90vw;
+  height: 100%;
+  margin: 4rem auto;
+  /* display grid without specifying any structure, at least beyond the media query
+  this is mostly helpful for alignment purposes
+  */
+  display: grid;
+  border: 4px solid hsl(207, 79%, 21%);
+  background: #fff;
+  box-shadow: 0 2px 5px hsla(0, 0%, 0%, 0.3);
+  /* position relative to absolute position the pseudo element */
+  position: relative;
+}
+/* include a slightly rotated rectangle of the same size of the board, right behind it */
+.board:before {
+  position: absolute;
+  content: "";
+  background: #00c6fb;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-2deg) scale(1.02);
+  z-index: -5;
+}
+
+/* for the heading include a slightly darker background */
+.board__heading {
+  /* margin to have the heading overlap on the surrounding border */
+  margin: -4px;
+  margin-bottom: 1.75rem;
+  font-family: "Chivo", sans-serif;
+  font-size: 1.25rem;
+  color: #fff;
+  background: hsl(200, 100%, 10%);
+  padding: 0.75rem;
+  padding-left: 1.5rem;
+}
+
+
+/* for the section describing the news items, display the items in a single column layout */
+.board__news {
+  display: flex;
+  margin: 1rem 0 3rem;
+  flex-direction: column;
+  width: 80%;
+  justify-self: center;
+  /* dictate a maximum height to allow for vertical scroll */
+  max-height: 15em;
+  overflow-y: auto;
+}
+/* minor style changes for the scrollbar */
+.board__news::-webkit-scrollbar {
+  width: 0.25rem;
+}
+.board__news::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px hsla(200, 100%, 5%, 0.3);
+}
+.board__news::-webkit-scrollbar-thumb {
+  background: hsl(200, 100%, 10%);
+  border-radius: 5px;
+}
+
+/* remove the default properties of the anchor links describing the news items */
+.news--item {
+  text-decoration: none;
+  color: inherit;
+  margin: 1.25rem 0;
+  padding-left: 0.75rem;
+  border-left: 5px solid greenyellow;
+}
+/* on hover and when focused slightly decrease the weight of the anchor links */
+.news--item:hover,
+.news--item:focus {
+  color: hsl(0, 0%, 35%);
+}
+.news--item .date {
+  font-size: 0.8rem;
+}
+.news--item .brief {
+  font-size: 0.9rem;
+}
+
+/* on smaller viewports */
+@media (max-width: 700px) {
+  /* change the grid layout to have the heading atop the navigation and section elements */
+  .board {
+    grid-template-areas: "heading heading" "nav section";
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: auto 1fr;
+  }
+  .board__heading {
+    grid-area: heading;
+  }
+
+  /* slightly increase the height of the container to include a taller board */
+  .board__news {
+    grid-area: section;
+    width: 90%;
+    max-height: 380px;
+  }
+}
+
+/* Cols */
+.column {
+  width: 100%;
+}
+@media (min-width: 48em) {
+  .column {
+    float: left;
+    width: 33.33%;
+    /* border: 1px solid red; */
+    /* margin-left: 2em; */
+  }
+  #col .column {
+    float: left;
+    width: 30%;
+  }
+
+  #cont .column{
+    float: left;
+    width: 45%;
+  }
+  /* Stops the float property from affecting content after the columns */
+  .columns:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+.containerr {
+   padding: 1em 2em;
+   height: 100%;
+}
+
+/* Query page */
+.head-notification {
+  background-color: #54B3FF;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+}
+/*****
+      queryyS
+*****/
+.body-notification {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: #474747;
+}
+.line {
+  position: absolute;
+  right: 15px;
+  height: 100%;
+  width: 3px;
+  background-color: lightgray;
+}
+.queryy {
+  position: relative;
+  padding-left: 0px;
+  padding-top: 20px;
+  z-index: 2;
+}
+.circle {
+  background-color: #fff;
+  color: #4071a3;
+  position: absolute;
+right: 10px;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  border: 2px #4071a3 solid;
+  /*adding white space around circle*/
+  box-shadow: 0 0 0 3px #fff;
+}
+.new {
+  background-color: red;
+  color:#4071a3;
+  position: absolute;
+  right: 10px;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  border: 2px #4071a3 solid;
+  /*adding white space around circle*/
+  box-shadow: 0 0 0 3px #fff;
+}
+.pending {
+  background-color:yellow;
+  color: yellow;
+  position: absolute;
+right: 10px;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  border: 2px #4071a3 solid;
+  /*adding white space around circle*/
+  box-shadow: 0 0 0 3px #fff;
+}
+.attended {
+  background-color:green;
+  color:green;
+  position: absolute;
+right: 10px;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  border: 2px #4071a3 solid;
+  /*adding white space around circle*/
+  box-shadow: 0 0 0 3px #fff;
+}
+.queryy p {
+  margin-top: 0;
+margin-right: 1.5em;
+  padding: 0 15px;
+}
+.time {
+  left: 16px;
+  position: relative;
+  font-size: 12px;
+  display: block;
+  line-height: 1;
+}
+.mains{
+position:relative;
+width: 100%;
+}
+
+.button2 {
+  display:block; 
+  margin:auto; 
+  margin-top:5em;
+  background-color: #3B413C; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  width: 50%;
+}
+.button2:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+/* .container {
+	background-color: #C9C9C9;
+	padding: 1em;
+	width: 80%;
+	margin: auto;
+	border-radius: 0.5em;
+} */
+
+.sec {
+	background-color: whitesmoke;
+	padding: 1em;
+	border-radius: 0.5em;
+	 margin: 1em;
+   height: 100%;
+}
+
+.late {
+	color: #D1345B;
+} 
+
+.home{
+  margin-top: 2em;
+  color: whitesmoke;
+}
+
+/* input[type="text"] {
+	border-radius : 0.25em;
+	margin: 1em;
+	padding: 1em;
+} */
+
+.label {
+	width: 8em;
+	padding : 1em;
+	margin: 0em;
+	display: inline-block;
+}
+
+textarea{
+  height: 13.9em;
+  width: 100%;
+}
+
+.bigger-button {
+	padding: 1em;
+	font-weight: bold;
+}
+
+.small-button {
+	padding: 0.25em;
+	margin: 0.25em;
+	font-weight:100;
+}
+
+
+/* Have to fix it */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  width:80%;
+}
+ 
+.tabs label {
+  order: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 2rem;
+  margin-right: 0.2rem;
+  cursor: pointer;
+  background-color: #00c6fb;
+  font-weight: bold;
+  transition: background ease 0.3s;
+}
+.center {
+  margin-left: auto;
+  margin-right: auto;
+  display: table;
+}
+
+.tabs .tab {
+  order: 9;
+  flex-grow: 1;
+  width: 80%;
+  height: 100%;
+  display: none;
+  padding: 1rem;
+  background: #fff;
+  padding: 60px;
+ 
+  /* box-shadow: -10px 10px 0px 0px black; */
+}
+ 
+.tabs input[type="radio"] {
+  display: none;
+}
+ 
+.tabs input[type="radio"]:checked + label {
+  background: #fff;
+}
+ 
+.tabs input[type="radio"]:checked + label + .tab {
+  display: block;
+}
+ 
+@media (max-width: 465px) {
+  .tabs .tab,
+  .tabs label {
+   order: initial;
+
+  }
+ 
+  .tabs label {
+    width: 100%;
+    margin-left: 50px;
+  }
+}
+.away-from-margin{
+  margin-left: 0sem;
+  margin-top: 6em;
+  }
+
+  #tabs input[type="radio"] {
+    display:inline-flex;
+    margin: auto;
+  }
+
+  #tabs{
+    display: inline-flex;
+  }
