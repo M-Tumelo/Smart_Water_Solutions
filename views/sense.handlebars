@@ -69,7 +69,7 @@
             const scores = result.scores; // probability of prediction for each class
 
                 console.log(scores);
-                const leak = scores[0];
+                const leak = scores[2];
                 const value = leak.toFixed(1);
 
                 if (value > 0.8) {

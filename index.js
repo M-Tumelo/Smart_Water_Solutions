@@ -122,36 +122,39 @@ open({
     const mapToken = 'pk.eyJ1IjoicmVnaW9uYWxkIiwiYSI6ImNrdmt0a29sbDBmMmMyb281NjNzaXVqeGUifQ.2ml1Z3_-h8SkvMJR9YDT0Q';
 
     if (req.session.techLong == undefined && req.session.techLat == undefined) {
+       try {
+        const geojson = await Promise.all(
 
-      const geojson = await Promise.all(
-
-        querries.map(async function (column) {
-
-          const adressUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${column.longitude},${column.lattitude}.json?access_token=${mapToken}`;
-
-
-          //REVERSE GEOLOCATOR API MAPBOX
-          const adrress = await fetch(adressUrl);
-          const location = await adrress.json();
-          const standNo = await location.features[0].address;
-          const streetName = await location.features[0].text;
-
-          return {
-            id: column.id,
-            picture: column.picture,
-            standNo: standNo,
-            streetName: streetName,
-            name: column.name,
-            longitude: column.longitude,
-            lattitude: column.lattitude,
-            query: column.query,
-            date: column.date,
-            status: column.status
+          querries.map(async function (column) {
+  
+            const adressUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${column.longitude},${column.lattitude}.json?access_token=${mapToken}`;
+  
+  
+            //REVERSE GEOLOCATOR API MAPBOX
+            const adrress = await fetch(adressUrl);
+            const location = await adrress.json();
+            const standNo = await location.features[0].address;
+            const streetName = await location.features[0].text;
+  
+            return {
+              id: column.id,
+              picture: column.picture,
+              standNo: standNo,
+              streetName: streetName,
+              name: column.name,
+              longitude: column.longitude,
+              lattitude: column.lattitude,
+              query: column.query,
+              date: column.date,
+              status: column.status
+            }
           }
-        }
-
-        ))
-      res.render('admin');
+  
+          ))
+        res.render('admin');
+       } catch (error) {
+         console.log(error);
+       }
     }
 
     else {
@@ -280,11 +283,11 @@ open({
       for (var i = 0; i < arr.length; i++) {
         var file = arr[i];
         if (file.mimetype.substring(0, 5).toLowerCase() == "image") {
-          images[i] = file.name;
-          upload = images[i];
+          images[i] = "/" + file.name;
+          upload = "./upload" + images[i];
           console.log(upload);
           const insertDataUser = ('INSERT INTO QUERY (name,longitude,lattitude,query,date,picture,status)  VALUES (?,?,?,?,?,?,?)');
-          await db.run(insertDataUser, 'user',  req.session.longitude, req.session.lattitude,req.session.query, moment(new Date()).format('MMM D, YYYY'),upload,'new');
+          await db.run(insertDataUser, 'user',  req.session.longitude, req.session.lattitude,req.session.query, moment(new Date()).format('MMM D, YYYY'),file.name,'new');
 
           file.mv(upload, function (err) {
             if (err) {
