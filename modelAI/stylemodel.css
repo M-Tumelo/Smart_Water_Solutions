@@ -1,0 +1,46 @@
+body{
+    background-color: #000000;
+}
+
+.head{
+    background-color: #4A817D;
+    width: 500px;
+    border: 2px wheat solid;
+    border-radius: 1em;
+    margin: 1em;
+    padding: 1em;
+}
+.container{
+    top: 50em;
+    background-color: #4A817D;
+    width: 500px;
+    border: 2px wheat solid;
+    border-radius: 1em;
+    margin: 1em;
+    padding: 1em;
+}
+
+.text{
+    color: white;
+}
+.leak {
+    color: black;
+    font-size: medium;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    padding: 0.5em;
+    margin: 0.5em;
+}
+
+.leak:hover{
+    cursor: pointer;
+}
+
+@media (max-width: 600px) {
+    .head {
+        width: 300px;
+    }
+.container{
+    width: 300px;
+}
+} 
